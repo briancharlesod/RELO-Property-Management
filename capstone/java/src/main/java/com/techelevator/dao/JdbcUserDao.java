@@ -83,6 +83,11 @@ public class JdbcUserDao implements UserDao {
         return jdbcTemplate.update(insertUserSql, username, password_hash, ssRole) == 1;
     }
 
+    @Override
+    public List<Integer> getAllPropertiesByUser(int userID) {
+        return null;
+    }
+
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
         user.setId(rs.getInt("user_id"));
