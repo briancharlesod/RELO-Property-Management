@@ -85,7 +85,49 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public List<Integer> getAllPropertiesByUser(int userID) {
-        return null;
+        List<Integer> listOfProperties = null;
+        String sql = "Select rental_id " +
+                "From user_rental " +
+                "Where user_id = ?;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userID);
+            while(result.next())
+            {
+                listOfProperties.add(result.getInt("rental_id"));
+            }
+        }catch (Exception e)
+        {
+            System.out.println("Could not find any properties by that ID");
+        }
+        return listOfProperties;
+    }
+
+    @Override
+    public boolean setUserToProperty(int userID, int rentalID) {
+        String sql = "Insert Into user_rental (user_id, rental_id) " +
+                "Values (?, ?);";
+        try{
+            jdbcTemplate.update(sql, userID, rentalID);
+            return true;
+        }catch (Exception e)
+        {
+            System.out.println("Could not add record");
+            return false;
+        }
+    }
+
+    @Override
+    public boolean setUserToMaintenance(int userID, int maintenanceID) {
+        String sql = "Insert Into user_maintenance (user_id, maintenance_id) " +
+                "Values (?, ?);";
+        try{
+            jdbcTemplate.update(sql, userID, maintenanceID);
+            return true;
+        }catch (Exception e)
+        {
+            System.out.println("Could not add record");
+            return false;
+        }
     }
 
     private User mapRowToUser(SqlRowSet rs) {
