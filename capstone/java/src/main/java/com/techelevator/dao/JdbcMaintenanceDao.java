@@ -47,7 +47,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
     }
 
     @Override
-    public List<Maintenance> viewMaintenanceRequests(List<Integer> rentalProperties, int userID) {
+    public List<Maintenance> viewMaintenanceRequests(int userID) {
 
         List<Integer> propertiesList = getRentalProperties(userID);
         List<Maintenance> requestList = null;
