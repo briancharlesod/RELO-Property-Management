@@ -1,8 +1,6 @@
 package com.techelevator.dao;
 
-import com.sun.tools.javac.Main;
 import com.techelevator.model.Maintenance;
-import com.techelevator.model.Rental;
 import com.techelevator.model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -10,7 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 @Component
 @CrossOrigin
@@ -24,7 +21,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
 
     @Override
     public int addMaintenanceRequest(Maintenance request) {
-        String sql = "Insert Into Maintenance (maintenance_request, rental_id) " +
+        String sql = "Insert Into maintenance (maintenance_request, rental_id) " +
                 "Values(?, ?) Returning maintenance_id;";
         Integer newRequest = -1;
         try {
@@ -38,7 +35,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
 
     @Override
     public boolean addMaintenanceToUser(Maintenance request, User user) {
-        String sql = "Insert Into User_Maintenance (user_id, maintenance_id) " +
+        String sql = "Insert Into sser_maintenance (user_id, maintenance_id) " +
                 "Values(?, ?);";
         try{
             jdbcTemplate.update(sql, user.getId(), request.getMaintenanceID());
@@ -55,7 +52,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
         List<Integer> propertiesList = getRentalProperties(userID);
         List<Maintenance> requestList = null;
         String sql = "Select * " +
-                "From Maintenance " +
+                "From maintenance " +
                 "Where rental_id In ?;";
         try{
             SqlRowSet result = jdbcTemplate.queryForRowSet(sql, propertiesList);
@@ -74,7 +71,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
     {
         List<Integer> rentalList = null;
         String sql = "Select rental_id " +
-                "From users_rentals " +
+                "From user_rentals " +
                 "Where user_id = ?;";
         try{
             SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userID);
@@ -91,7 +88,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
 
     @Override
     public boolean completeMaintenanceRequest(int maintenanceID) {
-        String sql = "Update Maintenance " +
+        String sql = "Update maintenance " +
                 "Set completed = ? " +
                 "Where maintenance_id = ?;";
         LocalDate lt = LocalDate.now();
@@ -108,7 +105,8 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
     private Maintenance mapRowToMaintenance(SqlRowSet result)
     {
         Maintenance maintenance = new Maintenance();
-        maintenance.setCompleted(result.getString("completed"));
+        maintenance.setCompletionDate(result.getString("completion_date"));
+        maintenance.setCompleted(result.getBoolean("completed"));
         maintenance.setMaintenanceID(result.getInt("maintenance_id"));
         maintenance.setMaintenanceRequest(result.getString("maintenance_request"));
         maintenance.setRentalID(result.getInt("rental_id"));

@@ -71,28 +71,43 @@ public class JdbcRentalDao implements RentalDao{
     public List<Rental> propertiesByLandlord(int userID) {
         List<Rental> rentalList = null;
         String sql = "Select * " +
-                "From Rental " +
+                "From rental_property " +
                 "Join user_rental Using (rental_id) " +
                 "Where users.user_id = ?;";
         try{
             SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userID);
-            
+            while(result.next())
+            {
+                rentalList.add(mapToRental(result));
+            }
+        }catch (Exception e)
+        {
+            System.out.println("Could not find any properties");
         }
-        return null;
+        return rentalList;
     }
 
     @Override
     public int addNewProperty(Rental rental) {
-        return 0;
+        int rentalID = -1;
+        String sql = "Insert Into rental_property (rental_address, rental_amount, bathrooms, bedrooms, is_rented, type_of_residence) " +
+                "Values(?, ?, ?, ?, ?, ?) Returning rental_id;";
+        try{
+            rentalID = jdbcTemplate.queryForObject(sql, Integer.class, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence());
+        }catch(Exception e)
+        {
+            System.out.println("Could not add property to database");
+        }
+        return rentalID;
     }
 
     private Rental mapToRental(SqlRowSet result)
     {
         Rental rental = new Rental();
-        rental.setAddress(result.getString("address"));
+        rental.setAddress(result.getString("rental_address"));
         rental.setBathroom(result.getString("bathrooms"));
         rental.setBedroom((result.getString("bedrooms")));
-        rental.setPrice(result.getBigDecimal("price"));
+        rental.setPrice(result.getBigDecimal("rental_amount"));
         rental.setRentalID((result.getInt("rental_id")));
         rental.setRented(result.getBoolean("is_rented"));
         rental.setTypeOfResidence(result.getString("type_of_residence"));
