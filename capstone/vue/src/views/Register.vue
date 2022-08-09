@@ -1,41 +1,48 @@
 <template>
-  <div id="register" class="text-center">
+  <div id="register" class="text-center content is-medium">
     <form class="form-register" @submit.prevent="register">
-      <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
+      <h3 class="h3 mb-3 font-weight-normal">Create Account</h3>
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
+      <p>  </p>
       <label for="username" class="sr-only">Username</label>
+      <p>  </p>
       <input
         type="text"
         id="username"
-        class="form-control"
+        class="form-control input is-rounded"
         placeholder="Username"
         v-model="user.username"
         required
         autofocus
       />
+      <p>  </p>
       <label for="password" class="sr-only">Password</label>
+      <p>  </p>
       <input
         type="password"
         id="password"
-        class="form-control"
+        class="form-control input is-rounded"
         placeholder="Password"
         v-model="user.password"
         required
       />
+      <p>  </p>
       <input
         type="password"
         id="confirmPassword"
-        class="form-control"
+        class="form-control input is-rounded"
         placeholder="Confirm Password"
         v-model="user.confirmPassword"
         required
       />
-      <router-link :to="{ name: 'login' }">Have an account?</router-link>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">
+      <p>  </p>
+      <button class="btn btn-lg btn-primary btn-block button" type="submit">
         Create Account
       </button>
+      <p>  </p>
+      <router-link :to="{ name: 'login' }">Have an account?</router-link>
     </form>
   </div>
 </template>
@@ -90,4 +97,22 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+div#register {
+  display: flex;
+  justify-content: center;
+}
+form {
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  background:limegreen;
+  border-radius: 5%;
+  padding: 20px;
+  
+ 
+}
+
+</style>

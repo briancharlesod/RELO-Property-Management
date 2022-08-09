@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import store from '../store/index'
+import Feed from '../views/Feed.vue'
 
 Vue.use(Router)
 
@@ -25,6 +26,14 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: '/feed',
+      name: 'feed',
+      component: Feed,
       meta: {
         requiresAuth: true
       }
