@@ -1,15 +1,16 @@
 <template>
   <div id="app">
     <div id="nav">
+
       <nav
-        class="navbar has-background-grey-lighter"
+        class="navbar"
         role="navigation"
         aria-label="main navigation"
       >
         <div class="navbar-brand">
           <a class="navbar-item">
             <router-link :to="{ name: 'home' }">
-              <i class="fa-solid fa-building-user fa-4x"></i>
+              <img id="logo" src="./assets/LogoMakr-9Gar3F.png" />
               <br />
             </router-link>
           </a>
@@ -31,7 +32,7 @@
           <div class="navbar-start">
             <a class="navbar-item">
                <router-link :to="{ name: 'home' }">
-              <strong>Insert Company Name Here!</strong>
+              <strong>RELO Property Management</strong>
                </router-link>
             </a>
 
@@ -56,8 +57,11 @@
                     <strong>Sign up</strong>
                   </router-link>
                 </a>
-                <router-link :to="{ name: 'login' }">
+                <router-link :to="{ name: 'login' }" v-if="Object.keys(this.$store.state.user).length === 0">
                   <a class="button is-light"> Log in </a>
+                </router-link>
+                <router-link :to="{ name: 'logout' }" v-else>
+                  <a class="button is-light"> Log out </a>
                 </router-link>
               </div>
             </div>
@@ -82,5 +86,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.navbar{
+    background: limegreen;
 }
 </style>
