@@ -1,12 +1,15 @@
 <template>
-  <div class="home">
-    <h1>Home</h1>
-    <p>You must be authenticated to see this</p>
-  </div>
+  <browse />
 </template>
 
 <script>
+import browse from '../components/browse'
 export default {
-  name: "home"
-};
+  components: { browse },
+
+}
 </script>
+
+<style>
+
+</style>
