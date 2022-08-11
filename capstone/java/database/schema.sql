@@ -22,8 +22,8 @@ CREATE TABLE rental_property (
 	bedrooms varchar (20) NOT NULL,
 	is_rented BOOLEAN NOT NULL,
 	type_of_residence varchar (50) NOT NULL,
-	description varchar (500) NOT NULL,
-	picture varchar(100),
+	description varchar NOT NULL,
+	picture varchar(500),
 	landlord_id int NOT NULL,
 
 	CONSTRAINT PK_rental_property PRIMARY KEY (rental_id),
