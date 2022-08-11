@@ -1,9 +1,7 @@
-
-
 <template>
   <form>
 <h1 class="title">RELO</h1>
-<h2 class="subtitle">Maintenance Request Form</h2>
+<h2 class="subtitle">Rental Payment Form</h2>
     <label>Email:</label>
     <input type="email" required v-model="email" />
     <label>Name:</label>
@@ -13,11 +11,29 @@
     <p>Email: {{ email }}</p>
     <p>Name: {{ name }}</p>
     <p>Address: {{ address }}</p>
-<textarea class="textarea" placeholder="What needs fixed?" rows="10"></textarea>
+    <div class="select">
+      <select>
+        <option>Select Payment</option>
+        <option>Cash</option>
+        <option>Check</option>
+        <option>Money Order</option>
+      </select>
+      <div class="field has-addons">
+  <p class="control">
+    <span class="select">
+    </span>
+  </p>
+  <p class="control">
+    <input class="input" type="text" placeholder="Amount of money">
+  </p>
+</div>
 <input date = "Date" type = "date" />
 <p></p>
+    </div>
+    <div class="field is-grouped">
  <button class="button">Submit</button>
  <button class="button">Cancel</button>
+</div>
   </form>
 </template>
 <script>
@@ -32,10 +48,6 @@ export default {
 };
 </script>
 <style>
-textarea{
-  height: 176px;
-  width: 415px;
-}
 h1{
   text-align: center;
 }
