@@ -22,7 +22,13 @@ CREATE TABLE rental_property (
 	bedrooms varchar (20) NOT NULL,
 	is_rented BOOLEAN NOT NULL,
 	type_of_residence varchar (50) NOT NULL,
-	CONSTRAINT PK_rental_property PRIMARY KEY (rental_id)
+	description varchar (500) NOT NULL,
+	picture varchar(100),
+	landlord_id int NOT NULL,
+
+	CONSTRAINT PK_rental_property PRIMARY KEY (rental_id),
+	CONSTRAINT FK_landlord_rental_property FOREIGN KEY (landlord_id) REFERENCES users(user_id)
+
 );
 
 CREATE TABLE user_rental (
