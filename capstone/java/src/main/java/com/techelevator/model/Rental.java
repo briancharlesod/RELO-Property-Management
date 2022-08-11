@@ -6,13 +6,13 @@ public class Rental {
 
     private int rentalID;
     private String address;
-    private BigDecimal price;
-    private String bedroom;
-    private String bathroom;
+    private double price;
+    private int bedroom;
+    private int bathroom;
     private boolean isRented;
     private String typeOfResidence;
 
-    public Rental(int rentalID, String address, BigDecimal price, String bedroom, String bathroom, boolean isRented, String typeOfResidence) {
+    public Rental(int rentalID, String address, double price, int bedroom, int bathroom, boolean isRented, String typeOfResidence) {
         this.rentalID = rentalID;
         this.address = address;
         this.price = price;
@@ -40,27 +40,27 @@ public class Rental {
         this.address = address;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public String getBedroom() {
+    public int getBedroom() {
         return bedroom;
     }
 
-    public void setBedroom(String bedroom) {
+    public void setBedroom(int bedroom) {
         this.bedroom = bedroom;
     }
 
-    public String getBathroom() {
+    public int getBathroom() {
         return bathroom;
     }
 
-    public void setBathroom(String bathroom) {
+    public void setBathroom(int bathroom) {
         this.bathroom = bathroom;
     }
 

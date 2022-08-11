@@ -28,9 +28,11 @@ export default {
                 address: "",
                 bedrooms: "",
                 bathrooms: "",
-                description: "",
-                isRented: "",
-                price: ""
+                
+                isRented: false,
+                price: "",
+                typeOfResidence: '',
+                
             },
             addPropsVar : false,
             updatePropsVar: false,
