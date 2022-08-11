@@ -11,7 +11,7 @@ public interface MaintenanceDao {
 
     boolean addMaintenanceToUser(Maintenance request, User user);
 
-    List<Maintenance> viewMaintenanceRequests(List<Integer> rentalProperties, int userID);
+    List<Maintenance> viewMaintenanceRequests(int userID);
 
     boolean completeMaintenanceRequest(int maintenanceID);
 }
