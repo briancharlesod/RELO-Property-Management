@@ -11,8 +11,11 @@ public class Rental {
     private int bathroom;
     private boolean isRented;
     private String typeOfResidence;
+    private String description;
+    private String imgURL;
+    private int landlord_id;
 
-    public Rental(int rentalID, String address, double price, int bedroom, int bathroom, boolean isRented, String typeOfResidence) {
+    public Rental(int rentalID, String address, double price, int bedroom, int bathroom, boolean isRented, String typeOfResidence, String description, String imgURL, int landlord_id) {
         this.rentalID = rentalID;
         this.address = address;
         this.price = price;
@@ -20,12 +23,40 @@ public class Rental {
         this.bathroom = bathroom;
         this.isRented = isRented;
         this.typeOfResidence = typeOfResidence;
+        this.description = description;
+        this.imgURL = imgURL;
+        this.landlord_id = landlord_id;
+
     }
 
     public Rental(){}
 
     public int getRentalID() {
         return rentalID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
+    }
+
+    public int getLandlord_id() {
+        return landlord_id;
+    }
+
+    public void setLandlord_id(int landlord_id) {
+        this.landlord_id = landlord_id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setRentalID(int rentalID) {

@@ -95,10 +95,10 @@ public class JdbcRentalDao implements RentalDao{
     @Override
     public boolean addNewProperty(Rental rental) {
 
-        String sql = "INSERT INTO rental_property(rental_id, rental_address, rental_amount, bathrooms, bedrooms, is_rented, type_of_residence) " +
-                "VALUES(DEFAULT, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO rental_property(rental_id, rental_address, rental_amount, bathrooms, bedrooms, is_rented, type_of_residence, description, picture, landlord_id) " +
+                "VALUES(DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try{
-            jdbcTemplate.update(sql, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence());
+            jdbcTemplate.update(sql, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence(), rental.getDescription(), rental.getImgURL(), rental.getLandlord_id());
         return true;
         }catch(Exception e)
         {
@@ -110,9 +110,9 @@ public class JdbcRentalDao implements RentalDao{
 
     @Override
     public boolean updateProperty(Rental rental) {
-        String sql = "UPDATE FROM rental_property SET rental_address = ?, rental_amount = ?, bathrooms = ?, bedrooms = ?, is_rented = ?, type_of_residence = ? WHERE rental_id = ?";
+        String sql = "UPDATE FROM rental_property SET rental_address = ?, rental_amount = ?, bathrooms = ?, bedrooms = ?, is_rented = ?, type_of_residence = ?, description = ? WHERE rental_id = ?";
        try {
-           jdbcTemplate.update(sql, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence(), rental.getRentalID());
+           jdbcTemplate.update(sql, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence(), rental.getDescription(), rental.getRentalID());
        return true;
        } catch (Exception e) {
            System.out.println(e);
