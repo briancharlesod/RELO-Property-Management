@@ -8,11 +8,14 @@ public class Rental {
     private String address;
     private BigDecimal price;
     private String bedroom;
-    private String bathroom;
+    private double bathroom;
     private boolean isRented;
     private String typeOfResidence;
+    private int landlord;
+    private String description;
+    private String picture;
 
-    public Rental(int rentalID, String address, BigDecimal price, String bedroom, String bathroom, boolean isRented, String typeOfResidence) {
+    public Rental(int landlord, int rentalID, String address, BigDecimal price, String bedroom, double bathroom, boolean isRented, String typeOfResidence) {
         this.rentalID = rentalID;
         this.address = address;
         this.price = price;
@@ -20,7 +23,9 @@ public class Rental {
         this.bathroom = bathroom;
         this.isRented = isRented;
         this.typeOfResidence = typeOfResidence;
+        this.landlord = landlord;
     }
+
 
     public Rental(){}
 
@@ -56,11 +61,11 @@ public class Rental {
         this.bedroom = bedroom;
     }
 
-    public String getBathroom() {
+    public double getBathroom() {
         return bathroom;
     }
 
-    public void setBathroom(String bathroom) {
+    public void setBathroom(double bathroom) {
         this.bathroom = bathroom;
     }
 
@@ -78,5 +83,29 @@ public class Rental {
 
     public void setTypeOfResidence(String typeOfResidence) {
         this.typeOfResidence = typeOfResidence;
+    }
+
+    public void setLandlord(int landlord) {
+        this.landlord = landlord;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public int getLandlord() {
+        return landlord;
     }
 }
