@@ -194,7 +194,7 @@ public class JdbcUserDao implements UserDao {
             SqlRowSet result = jdbcTemplate.queryForRowSet(sql, maintenanceID);
             if(result.next())
             {
-                rentalID = result.getInt("maintenance_id");
+                rentalID = result.getInt("rental_id");
             }
         }catch (Exception e)
         {

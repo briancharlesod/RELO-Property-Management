@@ -50,13 +50,13 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
             SqlRowSet result = jdbcTemplate.queryForRowSet(sql, rentalID);
             if(result.next())
             {
-                userID = result.getInt("rental_id");
+                userID = result.getInt("user_id");
             }
         }catch (Exception e)
         {
             System.out.println("Could not find property");
         }
-        return rentalID;
+        return userID;
     }
 
     @Override
@@ -65,10 +65,15 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
         if(userID != getUserIDFromUsername(username))
         {
             System.out.println("Cannot access someone else's maintenance list");
+            return null;
         }
         List<Integer> propertiesList = getRentalProperties(userID);
         List<Maintenance> requestList = null;
         String inStatement = getStatement(propertiesList);
+        if(inStatement == null)
+        {
+            return null;
+        }
         String sql = "Select * " +
                 "From maintenance " +
                 "Where rental_id In "+inStatement+";";
@@ -90,6 +95,10 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
     private String getStatement(List<Integer> propertiesList)
     {
         String inStatement = "(";
+        if(propertiesList.size() == 0)
+        {
+            return null;
+        }
         for (int i = 0; i < propertiesList.size(); i++) {
             if(i < propertiesList.size()-1) {
                 inStatement = inStatement + propertiesList.get(i) + ",";
@@ -196,7 +205,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
             SqlRowSet result = jdbcTemplate.queryForRowSet(sql, maintenanceID);
             if(result.next())
             {
-               rentalID = result.getInt("maintenance_id");
+               rentalID = result.getInt("rental_id");
             }
         }catch (Exception e)
         {
@@ -253,22 +262,5 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
         return userID;
     }
 
-    private String getRole(int userID)
-    {
-        String role = "";
-        String sql = "Select role " +
-                "From users " +
-                "Where user_id = ?;";
-        try{
-            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userID);
-            if(result.next())
-            {
-                role = result.getString("role");
-            }
-        }catch (Exception e){
-            System.out.println("Could not find user");
-        }
-        return role;
-    }
 
 }
