@@ -82,7 +82,12 @@ public class JdbcRentalDao implements RentalDao{
     }
 
     @Override
-    public List<Rental> propertiesByLandlord(int userID) {
+    public List<Rental> propertiesByLandlord(int userID, String username) {
+        if(getUserIDFromUsername(username) != userID)
+        {
+            System.out.println("try accessing the data from your own account");
+            return null;
+        }
         List<Rental> rentalList = null;
         String sql = "Select * " +
                 "From rental_property " +
@@ -102,7 +107,17 @@ public class JdbcRentalDao implements RentalDao{
     }
 
     @Override
-    public int addNewProperty(Rental rental) {
+    public int addNewProperty(Rental rental, String username) {
+        if(!getRole(rental.getLandlord()).contains("LANDLORD"))
+        {
+            System.out.println("A landlord has to have that role");
+            return -1;
+        }
+        if(getUserIDFromUsername(username) != rental.getLandlord())
+        {
+            System.out.println("You cannot list a property in someone else's name");
+            return -2;
+        }
         int rentalID = -1;
         String sql = "Insert Into rental_property (rental_address, rental_amount, bathrooms, bedrooms, is_rented, type_of_residence) " +
                 "Values(?, ?, ?, ?, ?, ?) Returning rental_id;";
@@ -117,8 +132,13 @@ public class JdbcRentalDao implements RentalDao{
     }
 
     @Override
-    public BigDecimal getRent(int rentalID)
+    public BigDecimal getRent(int rentalID, String username)
     {
+        if(checkProperty(username) != rentalID)
+        {
+            System.out.println("You do not live here");
+            return null;
+        }
         BigDecimal rent = null;
         String sql = "Select rental_amount " +
                 "From rental_property " +
@@ -136,6 +156,44 @@ public class JdbcRentalDao implements RentalDao{
         return rent;
     }
 
+    private int checkProperty(String username)
+    {
+        int rental_id = -1;
+        String sql = "Select rental_id " +
+                "From user_rental " +
+                "Join users Using (user_id) " +
+                "Where username = ?;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, username);
+            if(result.next())
+            {
+                rental_id = result.getInt("rental_id");
+            }
+        }catch (Exception e)
+        {
+            System.out.println("Could not get the required data");
+        }
+        return rental_id;
+    }
+
+    private String getRole(int userID)
+    {
+        String role = "";
+        String sql = "Select role " +
+                "From users " +
+                "Where user_id = ?;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userID);
+            if(result.next())
+            {
+                role = result.getString("role");
+            }
+        }catch (Exception e){
+            System.out.println("Could not find user");
+        }
+        return role;
+    }
+
     private Rental mapToRental(SqlRowSet result)
     {
         Rental rental = new Rental();
@@ -150,5 +208,23 @@ public class JdbcRentalDao implements RentalDao{
         rental.setPicture(result.getString("picture"));
         rental.setDescription(result.getString("description"));
         return rental;
+    }
+
+    private int getUserIDFromUsername(String username){
+        int userID = -1;
+        String sql = "Select user_id " +
+                "From users " +
+                "Where username = ?;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, username);
+            if(result.next())
+            {
+                userID = result.getInt("user_id");
+            }
+        }catch (Exception e)
+        {
+            System.out.println("Could not find that username");
+        }
+        return userID;
     }
 }

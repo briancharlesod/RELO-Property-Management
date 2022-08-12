@@ -103,7 +103,16 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public boolean setUserToProperty(int userID, int rentalID) {
+    public boolean setUserToProperty(int userID, int rentalID, String username) {
+        if(!getRole(userID).contains("RENTER")){
+            System.out.println("Enter a renter");
+            return false;
+        }
+        if(getUserIDFromUsername(username) != getLandlordFromRentalID(rentalID))
+        {
+            System.out.println("Could not assign a renter if you do not own the property");
+            return false;
+        }
         String sql = "Start Transaction; " +
                 "Insert Into user_rental (user_id, rental_id) " +
                 "Values (?, ?); " +
@@ -123,7 +132,17 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public boolean setUserToMaintenance(int userID, int maintenanceID) {
+    public boolean setUserToMaintenance(int userID, int maintenanceID, String username) {
+        if(!getRole(userID).contains("EMPLOYEE"))
+        {
+            System.out.println("Enter an employee");
+            return false;
+        }
+        if(getUserIDFromUsername(username) != getLandlordFromRentalID(getRentalIDFromMaintenanceID(maintenanceID)))
+        {
+            System.out.println("Could not assign maintenance if you do not own the property");
+            return false;
+        }
         String sql = "Insert Into user_maintenance (user_id, maintenance_id) " +
                 "Values (?, ?);";
         try{
@@ -136,6 +155,24 @@ public class JdbcUserDao implements UserDao {
         }
     }
 
+    private String getRole(int userID)
+    {
+        String role = "";
+        String sql = "Select role " +
+                "From users " +
+                "Where user_id = ?;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userID);
+            if(result.next())
+            {
+                role = result.getString("role");
+            }
+        }catch (Exception e){
+            System.out.println("Could not find user");
+        }
+        return role;
+    }
+
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
         user.setId(rs.getInt("user_id"));
@@ -144,5 +181,62 @@ public class JdbcUserDao implements UserDao {
         user.setAuthorities(Objects.requireNonNull(rs.getString("role")));
         user.setActivated(true);
         return user;
+    }
+
+
+    private int getRentalIDFromMaintenanceID(int maintenanceID)
+    {
+        int rentalID = -1;
+        String sql = "Select rental_id " +
+                "From maintenance " +
+                "Where maintenance_id = ?;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, maintenanceID);
+            if(result.next())
+            {
+                rentalID = result.getInt("maintenance_id");
+            }
+        }catch (Exception e)
+        {
+            System.out.println("could not find that maintenance request");
+        }
+
+        return rentalID;
+    }
+
+    private int getLandlordFromRentalID(int rentalID){
+        int landlordID = -1;
+        String sql = "Select landlord_id " +
+                "From rental_property " +
+                "Where rental_id = ?;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, rentalID);
+            if(result.next())
+            {
+                landlordID = result.getInt("landlord_id");
+            }
+        }catch (Exception e)
+        {
+            System.out.println("Could not find rental property");
+        }
+        return landlordID;
+    }
+
+    private int getUserIDFromUsername(String username){
+        int userID = -1;
+        String sql = "Select user_id " +
+                "From users " +
+                "Where username = ?;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, username);
+            if(result.next())
+            {
+                userID = result.getInt("user_id");
+            }
+        }catch (Exception e)
+        {
+            System.out.println("Could not find that username");
+        }
+        return userID;
     }
 }

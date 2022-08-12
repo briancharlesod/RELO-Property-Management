@@ -8,13 +8,11 @@ import java.util.List;
 
 public interface MaintenanceDao {
 
-    int addMaintenanceRequest(Maintenance request);
+    int addMaintenanceRequest(Maintenance request, String username);
 
-    boolean addMaintenanceToUser(UserMaintenance request);
+    List<Maintenance> viewMaintenanceRequests(int userID, String username);
 
-    List<Maintenance> viewMaintenanceRequests(int userID);
+    Maintenance viewSpecificMaintenanceRequests(int maintenanceID, String username);
 
-    Maintenance viewSpecificMaintenanceRequests(int maintenanceID);
-
-    boolean completeMaintenanceRequest(int maintenanceID);
+    boolean completeMaintenanceRequest(int maintenanceID, String username);
 }

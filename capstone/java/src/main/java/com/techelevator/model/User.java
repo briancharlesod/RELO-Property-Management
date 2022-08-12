@@ -2,18 +2,27 @@ package com.techelevator.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 public class User {
 
+   @Min(value = 1)
    private int id;
+   @NotNull
+   @NotEmpty
+   @NotBlank
    private String username;
    @JsonIgnore
    private String password;
    @JsonIgnore
    private boolean activated;
+   @NotNull
    private Set<Authority> authorities = new HashSet<>();
 
    public User() { }

@@ -6,6 +6,7 @@ import com.techelevator.model.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.techelevator.dao.UserDao;
 import com.techelevator.security.jwt.JWTFilter;
 import com.techelevator.security.jwt.TokenProvider;
+
+import java.security.Principal;
 
 @RestController
 @CrossOrigin
@@ -92,16 +95,18 @@ public class AuthenticationController {
 		}
     }
 
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "user/set/rental", method = RequestMethod.POST)
-    public void setUserToProperty(@RequestBody UserRental uR)
+    public void setUserToProperty(@RequestBody @Valid UserRental uR, Principal principal)
     {
-        userDao.setUserToProperty(uR.getUserID(), uR.getRentalID());
+        userDao.setUserToProperty(uR.getUserID(), uR.getRentalID(), principal.getName());
     }
 
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "user/set/maintenance", method = RequestMethod.POST)
-    public void setUserToMaintenance(@RequestBody UserMaintenance uR)
+    public void setUserToMaintenance(@RequestBody @Valid UserMaintenance uR, Principal principal)
     {
-        userDao.setUserToMaintenance(uR.getUserID(), uR.getMaintenanceID());
+        userDao.setUserToMaintenance(uR.getUserID(), uR.getMaintenanceID(), principal.getName());
     }
 }
 

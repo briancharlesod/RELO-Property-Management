@@ -7,8 +7,11 @@ import com.techelevator.model.Maintenance;
 
 import com.techelevator.model.User;
 import com.techelevator.model.UserMaintenance;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -21,29 +24,29 @@ public class MaintenanceController {
         this.dao = dao;
     }
 
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "/maintenance/all/{id}", method = RequestMethod.GET)
-    public List<Maintenance> viewMaintenanceRequests(@PathVariable int id) {
+    public List<Maintenance> viewMaintenanceRequests(@PathVariable int id, Principal principal) {
 
-        return dao.viewMaintenanceRequests(id);
+        return dao.viewMaintenanceRequests(id, principal.getName());
     }
-
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "/maintenance/{id}", method = RequestMethod.GET)
-    public Maintenance getMaintenanceRequest(@PathVariable int id) {
-        return dao.viewSpecificMaintenanceRequests(id);
+    public Maintenance getMaintenanceRequest(@PathVariable int id, Principal principal) {
+        return dao.viewSpecificMaintenanceRequests(id, principal.getName());
     }
 
+    @PreAuthorize("hasRole('ROLE_LANDLORD') OR hasRole('ROLE_RENTER')")
     @RequestMapping(path = "/maintenance", method = RequestMethod.POST)
-    public void addMaintenanceRequest(@RequestBody Maintenance request) {
-//        if (request != null) {
-//            Maintenance.add(request);
-//        }
-        dao.addMaintenanceRequest(request);
+    public void addMaintenanceRequest(@RequestBody @Valid Maintenance request, Principal principal) {
+        dao.addMaintenanceRequest(request, principal.getName());
     }
 
-    @RequestMapping(path = "/maintenance/complete", method = RequestMethod.POST)
-    public void setCompleted(@RequestBody Maintenance id)
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_LANDLORD')")
+    @RequestMapping(path = "/maintenance/complete/{id}", method = RequestMethod.POST)
+    public void setCompleted(@PathVariable int id, Principal principal)
     {
-        dao.completeMaintenanceRequest(id.getMaintenanceID());
+        dao.completeMaintenanceRequest(id, principal.getName());
     }
 
 }

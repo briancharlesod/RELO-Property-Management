@@ -15,9 +15,9 @@ public interface RentalDao {
 
     int rentDueDate();
 
-    BigDecimal getRent(int rentalID);
+    BigDecimal getRent(int rentalID, String username);
 
-    List<Rental> propertiesByLandlord(int userID);
+    List<Rental> propertiesByLandlord(int userID, String username);
 
-    int addNewProperty(Rental rental);
+    int addNewProperty(Rental rental, String username);
 }

@@ -6,9 +6,12 @@ import com.techelevator.dao.RentalDao;
 
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Rental;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -23,6 +26,7 @@ public class RentalController {
         this.userDao = userDao;
     }
 
+
     @RequestMapping(path = "/rental", method = RequestMethod.GET)
     public List<Rental> viewAllAvailableProperties() {
         return rentalDao.viewAllAvailableProperties();
@@ -33,29 +37,29 @@ public class RentalController {
         return rentalDao.viewSpecificProperty(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "/rental", method = RequestMethod.POST)
-    public void addNewProperty(@RequestBody Rental request) {
+    public void addNewProperty(@RequestBody @Valid Rental request, Principal principal) {
 //        if (request != null) {
 //            Rental.add(request);
 //        }
-        int id = rentalDao.addNewProperty(request);
+        int id = rentalDao.addNewProperty(request, principal.getName());
     }
-
+    @PreAuthorize("hasRole('ROLE_RENTER')")
     @RequestMapping(path = "/rent", method = RequestMethod.GET)
     public int rentDue(){
         return rentalDao.rentDueDate();
     }
 
+    @PreAuthorize("hasRole('ROLE_RENTER')")
     @RequestMapping(path = "/rent/{amount}", method = RequestMethod.GET)
-    public BigDecimal rentAmount(@PathVariable int amount){
-        return rentalDao.getRent(amount);
+    public BigDecimal rentAmount(@PathVariable int amount, Principal principal){
+        return rentalDao.getRent(amount, principal.getName());
     }
-
-
-
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "/landlord/{id}")
-    public List<Rental> byLandlord(@PathVariable int id){
-        return rentalDao.propertiesByLandlord(id);
+    public List<Rental> byLandlord(@PathVariable int id, Principal principal){
+        return rentalDao.propertiesByLandlord(id, principal.getName());
     }
 
 }

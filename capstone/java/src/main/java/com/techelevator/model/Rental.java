@@ -1,18 +1,39 @@
 package com.techelevator.model;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class Rental {
-
     private int rentalID;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String address;
+    @Min(value = 0)
     private BigDecimal price;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String bedroom;
+    @Min(value = 1)
     private double bathroom;
     private boolean isRented;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String typeOfResidence;
+    @Min(value = 1)
     private int landlord;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String description;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String picture;
 
     public Rental(int landlord, int rentalID, String address, BigDecimal price, String bedroom, double bathroom, boolean isRented, String typeOfResidence) {
