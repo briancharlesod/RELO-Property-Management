@@ -92,13 +92,13 @@ public class AuthenticationController {
 		}
     }
 
-    @RequestMapping(path = "user/set/rental")
+    @RequestMapping(path = "user/set/rental", method = RequestMethod.POST)
     public void setUserToProperty(@RequestBody UserRental uR)
     {
         userDao.setUserToProperty(uR.getUserID(), uR.getRentalID());
     }
 
-    @RequestMapping(path = "user/set/maintenance")
+    @RequestMapping(path = "user/set/maintenance", method = RequestMethod.POST)
     public void setUserToMaintenance(@RequestBody UserMaintenance uR)
     {
         userDao.setUserToMaintenance(uR.getUserID(), uR.getMaintenanceID());

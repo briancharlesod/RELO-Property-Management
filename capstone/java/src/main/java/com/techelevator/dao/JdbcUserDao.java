@@ -104,13 +104,19 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public boolean setUserToProperty(int userID, int rentalID) {
-        String sql = "Insert Into user_rental (user_id, rental_id) " +
-                "Values (?, ?);";
+        String sql = "Start Transaction; " +
+                "Insert Into user_rental (user_id, rental_id) " +
+                "Values (?, ?); " +
+                "Update rental_property " +
+                "Set is_rented = 'true' " +
+                "Where rental_id = ?; " +
+                "Commit;";
         try{
-            jdbcTemplate.update(sql, userID, rentalID);
+            jdbcTemplate.update(sql, userID, rentalID, rentalID);
             return true;
         }catch (Exception e)
         {
+            e.printStackTrace();
             System.out.println("Could not add record");
             return false;
         }
