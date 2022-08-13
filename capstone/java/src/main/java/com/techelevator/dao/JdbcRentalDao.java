@@ -110,6 +110,7 @@ public class JdbcRentalDao implements RentalDao{
     public int addNewProperty(Rental rental, String username) {
         if(!getRole(rental.getLandlord()).contains("LANDLORD"))
         {
+            System.out.println(getRole(rental.getLandlord()));
             System.out.println("A landlord has to have that role");
             return -1;
         }
@@ -119,10 +120,10 @@ public class JdbcRentalDao implements RentalDao{
             return -2;
         }
         int rentalID = -1;
-        String sql = "Insert Into rental_property (rental_address, rental_amount, bathrooms, bedrooms, is_rented, type_of_residence) " +
-                "Values(?, ?, ?, ?, ?, ?) Returning rental_id;";
+        String sql = "Insert Into rental_property (rental_address, rental_amount, bathrooms, bedrooms, is_rented, type_of_residence, description, picture, landlord_id) " +
+                "Values(?, ?, ?, ?, ?, ?, ?, ?, ?) Returning rental_id;";
         try{
-            rentalID = jdbcTemplate.queryForObject(sql, Integer.class, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence());
+            rentalID = jdbcTemplate.queryForObject(sql, Integer.class, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence(), rental.getDescription(), rental.getPicture(), rental.getLandlord());
         }catch(Exception e)
         {
             e.printStackTrace();

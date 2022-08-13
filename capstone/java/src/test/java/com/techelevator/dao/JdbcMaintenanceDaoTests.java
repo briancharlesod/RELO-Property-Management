@@ -36,7 +36,7 @@ public class JdbcMaintenanceDaoTests extends BaseDaoTests{
         maint.setMaintenanceRequest("Roof is leaking again");
         String username = "landlord1";
         int test = sut.addMaintenanceRequest(maint, username);
-        Assert.assertEquals(5, test);
+        Assert.assertEquals(6, test);
     }
     @Test
     public void happyPathAddMaintenanceRequestFromRenter()
