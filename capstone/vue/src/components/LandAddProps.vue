@@ -103,7 +103,7 @@ data() {
                 price: "",
                 description: '',
                 imgURL: 'placeholder',
-                landlord_id: '3'
+                landlord_id: this.$store.state.user.id
             }
     }
 },
