@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form id="rentForm">
 <h1 class="title">RELO</h1>
 <h2 class="subtitle">Rental Payment Form</h2>
     <label>Email:</label>
@@ -54,7 +54,7 @@ h1{
 h2{
   text-align: center;
 }
-form {
+form#rentForm {
   max-width: 420px;
   margin: 30px auto;
   background: hsl(48, 100%, 29%);

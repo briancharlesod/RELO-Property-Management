@@ -3,35 +3,57 @@ package com.techelevator.controller;
 
 import com.techelevator.dao.RentalDao;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.techelevator.model.Rental;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping
+@CrossOrigin(origins = "http://localhost:8080")
+
 public class RentalController {
     private RentalDao dao;
     private List<String> Rental;
+
+
+
+    public RentalController(RentalDao dao) {
+        this.dao = dao;
+    }
 
     @RequestMapping(path = "/rental", method = RequestMethod.GET)
     public List<String> viewAllAvailableProperties() {
         return viewAllAvailableProperties();
     }
 
+
     @RequestMapping(path = "/rental/{id}", method = RequestMethod.GET)
-    public List<String> viewSpecificProperty(@PathVariable int id) {
-        return (List<String>) dao.viewSpecificProperty(id);
+    public Rental viewSpecificProperty(@PathVariable int id) {
+        return dao.viewSpecificProperty(id);
     }
 
-    @RequestMapping(path = "/rental", method = RequestMethod.POST)
-    public void addNewProperty(String request) {
-        if (request != null) {
-            Rental.add(request);
-        }
+    @RequestMapping(path = "/rental/landlord/{id}", method = RequestMethod.GET)
+    public List<Rental> viewSpecificOwnedProperty(@PathVariable int id) {
+        return dao.propertiesByLandlord(id);
     }
+
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(path = "/rental", method = RequestMethod.POST)
+    public boolean addNewProperty(@RequestBody Rental rental) {
+          return dao.addNewProperty(rental);
+
+    }
+
+    @CrossOrigin
+    @RequestMapping(path = "/rental", method = RequestMethod.PUT)
+    public boolean updateRental(@RequestBody Rental rental) {
+        return dao.updateProperty(rental);
+
+    }
+
+
 
 
 }
