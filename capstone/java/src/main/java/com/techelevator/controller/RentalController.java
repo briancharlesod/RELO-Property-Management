@@ -29,8 +29,13 @@ public class RentalController {
 
 
     @RequestMapping(path = "/rental/{id}", method = RequestMethod.GET)
-    public List<String> viewSpecificProperty(@PathVariable int id) {
-        return (List<String>) dao.viewSpecificProperty(id);
+    public Rental viewSpecificProperty(@PathVariable int id) {
+        return dao.viewSpecificProperty(id);
+    }
+
+    @RequestMapping(path = "/rental/landlord/{id}", method = RequestMethod.GET)
+    public List<Rental> viewSpecificOwnedProperty(@PathVariable int id) {
+        return dao.propertiesByLandlord(id);
     }
 
     @CrossOrigin

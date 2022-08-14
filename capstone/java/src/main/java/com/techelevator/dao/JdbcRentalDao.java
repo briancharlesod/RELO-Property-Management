@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -74,12 +75,12 @@ public class JdbcRentalDao implements RentalDao{
 
     @Override
     public List<Rental> propertiesByLandlord(int userID) {
-        List<Rental> rentalList = null;
+        List<Rental> rentalList = new ArrayList<>();
         String sql = "Select * " +
-                "From rental_property " +
-                "Join user_rental Using (rental_id) " +
-                "Where users.user_id = ?;";
-        try{
+                "From rental_property WHERE landlord_id = ? " ;
+             //   "Join user_rental Using (rental_id) " +
+             //   "Where users.user_id = ?;";
+        try {
             SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userID);
             while(result.next())
             {
@@ -87,6 +88,7 @@ public class JdbcRentalDao implements RentalDao{
             }
         }catch (Exception e)
         {
+            System.out.println(e);
             System.out.println("Could not find any properties");
         }
         return rentalList;
@@ -110,7 +112,7 @@ public class JdbcRentalDao implements RentalDao{
 
     @Override
     public boolean updateProperty(Rental rental) {
-        String sql = "UPDATE FROM rental_property SET rental_address = ?, rental_amount = ?, bathrooms = ?, bedrooms = ?, is_rented = ?, type_of_residence = ?, description = ? WHERE rental_id = ?";
+        String sql = "UPDATE rental_property SET rental_address = ?, rental_amount = ?, bathrooms = ?, bedrooms = ?, is_rented = ?, type_of_residence = ?, description = ? WHERE rental_id = ?";
        try {
            jdbcTemplate.update(sql, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence(), rental.getDescription(), rental.getRentalID());
        return true;
@@ -124,12 +126,15 @@ public class JdbcRentalDao implements RentalDao{
     {
         Rental rental = new Rental();
         rental.setAddress(result.getString("rental_address"));
-        rental.setBathroom(result.getInt("bathrooms"));
-        rental.setBedroom((result.getInt("bedrooms")));
+        rental.setBathroom(result.getDouble("bathrooms"));
+        rental.setBedroom((result.getDouble("bedrooms")));
         rental.setPrice(result.getDouble("rental_amount"));
         rental.setRentalID((result.getInt("rental_id")));
         rental.setRented(result.getBoolean("is_rented"));
         rental.setTypeOfResidence(result.getString("type_of_residence"));
+        rental.setDescription(result.getString("description"));
+        rental.setLandlord_id(result.getInt("landlord_id"));
+        rental.setImgURL(result.getString("picture"));
         return rental;
     }
 }

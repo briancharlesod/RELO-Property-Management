@@ -7,15 +7,15 @@ public class Rental {
     private int rentalID;
     private String address;
     private double price;
-    private int bedroom;
-    private int bathroom;
+    private double bedroom;
+    private double bathroom;
     private boolean isRented;
     private String typeOfResidence;
     private String description;
     private String imgURL;
     private int landlord_id;
 
-    public Rental(int rentalID, String address, double price, int bedroom, int bathroom, boolean isRented, String typeOfResidence, String description, String imgURL, int landlord_id) {
+    public Rental(int rentalID, String address, double price, double bedroom, double bathroom, boolean isRented, String typeOfResidence, String description, String imgURL, int landlord_id) {
         this.rentalID = rentalID;
         this.address = address;
         this.price = price;
@@ -79,19 +79,19 @@ public class Rental {
         this.price = price;
     }
 
-    public int getBedroom() {
+    public double getBedroom() {
         return bedroom;
     }
 
-    public void setBedroom(int bedroom) {
+    public void setBedroom(double bedroom) {
         this.bedroom = bedroom;
     }
 
-    public int getBathroom() {
+    public double getBathroom() {
         return bathroom;
     }
 
-    public void setBathroom(int bathroom) {
+    public void setBathroom(double bathroom) {
         this.bathroom = bathroom;
     }
 

@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form id="maintenance">
 <h1 class="title">RELO</h1>
 <h2 class="subtitle">Maintenance Request Form</h2>
     <label>Email:</label>
@@ -40,7 +40,7 @@ h1{
 h2{
   text-align: center;
 }
-form {
+form#maintenance {
   max-width: 420px;
   margin: 30px auto;
   background: hsl(48, 100%, 29%);
