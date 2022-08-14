@@ -74,13 +74,101 @@ public class JdbcUserDao implements UserDao {
         throw new UsernameNotFoundException("User " + username + " was not found.");
     }
 
+    public boolean updatePassword(int userID, String password)
+    {
+        String sql = "Update users " +
+                "Set password_hash = ? " +
+                "Where user_id = ?;";
+        try{
+            String newPassword = new BCryptPasswordEncoder().encode(password);
+            return jdbcTemplate.update(sql, newPassword, userID) == 1;
+        }catch (Exception e)
+        {
+            System.out.println("Could not change password");
+            return false;
+        }
+    }
+
     @Override
-    public boolean create(String username, String password, String role) {
-        String insertUserSql = "insert into users (username,password_hash,role) values (?,?,?)";
+    public boolean create(String username, String password, String role, String questionOne, String questionTwo, String answerOne, String answerTwo) {
+        String insertUserSql = "Start Transaction; " +
+                "insert into users (username,password_hash,role) values (?,?,?); " +
+                "Insert Into user_retrieval (user_id, question_one, question_two, answer_one, answer_two)" +
+                "Values((Select user_id From users Where username = ?), ?, ?, ?, ?); " +
+                "Commit;";
         String password_hash = new BCryptPasswordEncoder().encode(password);
+        String q1 = new BCryptPasswordEncoder().encode(questionOne);
+        String q2 = new BCryptPasswordEncoder().encode(questionTwo);
+        String a1 = new BCryptPasswordEncoder().encode(answerOne);
+        String a2 = new BCryptPasswordEncoder().encode(answerTwo);
+
         String ssRole = role.toUpperCase().startsWith("ROLE_") ? role.toUpperCase() : "ROLE_" + role.toUpperCase();
 
-        return jdbcTemplate.update(insertUserSql, username, password_hash, ssRole) == 1;
+        return jdbcTemplate.update(insertUserSql, username, password_hash, ssRole, username, q1, q2, a1, a2) == 1;
+    }
+
+    @Override
+    public String getQuestionOne(int userID)
+    {
+        String questionOne = null;
+        String sql = "Select question_one " +
+                "From user_retrieval " +
+                "Where user_id = ?;";
+        try {
+            questionOne = jdbcTemplate.queryForObject(sql, String.class, userID);
+        }catch (Exception e) {
+            System.out.println("Could not retrieve user");
+        }
+        return questionOne;
+    }
+
+
+    @Override
+    public String getQuestionTwo(int userID)
+    {
+        String questionTwo = null;
+        String sql = "Select question_two " +
+                "From user_retrieval " +
+                "Where user_id = ?;";
+        try {
+            questionTwo = jdbcTemplate.queryForObject(sql, String.class, userID);
+        }catch (Exception e)
+        {
+            System.out.println("Could not retrieve user");
+        }
+        return questionTwo;
+    }
+
+    @Override
+    public String getAnswerOne(int userID)
+    {
+        String answerOne = null;
+        String sql = "Select answer_one " +
+                "From user_retrieval " +
+                "Where user_id = ?;";
+        try {
+            answerOne = jdbcTemplate.queryForObject(sql, String.class, userID);
+        }catch (Exception e)
+        {
+            System.out.println("Could not retrieve user");
+        }
+        return answerOne;
+    }
+
+    @Override
+    public String getAnswerTwo(int userID)
+    {
+        String answerTwo = null;
+        String sql = "Select answer_two " +
+                "From user_retrieval " +
+                "Where user_id = ?;";
+        try {
+            answerTwo = jdbcTemplate.queryForObject(sql, String.class, userID);
+        }catch (Exception e)
+        {
+            System.out.println("Could not retrieve user");
+        }
+        return answerTwo;
     }
 
     @Override

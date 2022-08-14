@@ -9,6 +9,8 @@ import Renter from '../views/Renter.vue'
 import Landlord from '../views/Landlord.vue'
 import Employee from '../views/Employee.vue'
 import DetailedView from '../views/DetailedView.vue'
+import RetrievePassword from '../views/RetrievePassword.vue'
+import Reset from '../views/Reset.vue'
 
 Vue.use(Router)
 
@@ -74,9 +76,25 @@ const router = new Router({
       }
     },
     {
+      path: "/retrievePassword",
+      name:"retrieve",
+      component: RetrievePassword,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
       path: "/register",
       name: "register",
       component: Register,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: "/reset",
+      name: "reset",
+      component: Reset,
       meta: {
         requiresAuth: false
       }

@@ -2,10 +2,13 @@ package com.techelevator.controller;
 
 
 import com.techelevator.dao.JdbcRentalDao;
-import com.techelevator.dao.RentalDao;
 
 import com.techelevator.dao.UserDao;
+import com.techelevator.exceptions.AddPropertyException;
+import com.techelevator.exceptions.AvailablePropertyException;
+import com.techelevator.exceptions.UnauthorizedAccessException;
 import com.techelevator.model.Rental;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping
+@CrossOrigin
 public class RentalController {
     private JdbcRentalDao rentalDao;
     private UserDao userDao;
@@ -28,38 +32,65 @@ public class RentalController {
 
 
     @RequestMapping(path = "/rental", method = RequestMethod.GET)
-    public List<Rental> viewAllAvailableProperties() {
-        return rentalDao.viewAllAvailableProperties();
+    @ResponseStatus(HttpStatus.OK)
+    public List<Rental> viewAllAvailableProperties() throws AvailablePropertyException {
+        List<Rental> rentalList = rentalDao.viewAllAvailableProperties();
+        if(rentalList == null)
+        {
+            throw new AvailablePropertyException();
+        }
+        return rentalList;
     }
 
     @RequestMapping(path = "/rental/{id}", method = RequestMethod.GET)
-    public Rental viewSpecificProperty(@PathVariable int id) {
-        return rentalDao.viewSpecificProperty(id);
+    @ResponseStatus(HttpStatus.OK)
+    public Rental viewSpecificProperty(@PathVariable int id) throws AvailablePropertyException {
+        Rental rental =  rentalDao.viewSpecificProperty(id);
+        if(rental == null)
+        {
+            throw new AvailablePropertyException();
+        }
+        return rental;
     }
 
     @PreAuthorize("hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "/rental", method = RequestMethod.POST)
-    public void addNewProperty(@RequestBody @Valid Rental request, Principal principal) {
-//        if (request != null) {
-//            Rental.add(request);
-//        }
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addNewProperty(@RequestBody @Valid Rental request, Principal principal) throws AddPropertyException {
         int id = rentalDao.addNewProperty(request, principal.getName());
+        if(id > 0)
+        {
+            throw new AddPropertyException();
+        }
     }
     @PreAuthorize("hasRole('ROLE_RENTER')")
     @RequestMapping(path = "/rent", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public int rentDue(){
         return rentalDao.rentDueDate();
     }
 
     @PreAuthorize("hasRole('ROLE_RENTER')")
     @RequestMapping(path = "/rent/{amount}", method = RequestMethod.GET)
-    public BigDecimal rentAmount(@PathVariable int amount, Principal principal){
-        return rentalDao.getRent(amount, principal.getName());
+    @ResponseStatus(HttpStatus.OK)
+    public BigDecimal rentAmount(@PathVariable int amount, Principal principal) throws UnauthorizedAccessException {
+        BigDecimal rentAmount = rentalDao.getRent(amount, principal.getName());
+        if(rentAmount == null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+        return rentAmount;
     }
     @PreAuthorize("hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "/landlord/{id}")
-    public List<Rental> byLandlord(@PathVariable int id, Principal principal){
-        return rentalDao.propertiesByLandlord(id, principal.getName());
+    @ResponseStatus(HttpStatus.OK)
+    public List<Rental> byLandlord(@PathVariable int id, Principal principal)throws UnauthorizedAccessException{
+        List<Rental> rentalList = rentalDao.propertiesByLandlord(id, principal.getName());
+        if(rentalList == null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+        return rentalList;
     }
 
 }
