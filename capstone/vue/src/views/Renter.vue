@@ -55,5 +55,7 @@ export default {
 </script>
 
 <style>
-
+ul{
+    background: white;
+}
 </style>

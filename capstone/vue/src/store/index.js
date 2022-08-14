@@ -20,7 +20,21 @@ export default new Vuex.Store({
   state: {
     token: currentToken || '',
     user: currentUser || {},
-    house: []
+    house: [],
+    username: "",
+    hash: "",
+    retrievalQuestions: [
+      "What is your mother's maiden name?",
+      "What is your favorite color?",
+      "What city were you born?",
+      "What is your favorite sports team?",
+      "What was your high school mascot?",
+      "What is the name of your first significant other?",
+      "What was your first car?",
+      "What is your favorite book?",
+      "What was the model of your first car?",
+      "What is the name of this boot camp?",
+    ]
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -31,6 +45,12 @@ export default new Vuex.Store({
     SET_USER(state, user) {
       state.user = user;
       localStorage.setItem('user',JSON.stringify(user));
+    },
+    SET_USERNAME(state, user) {
+      state.username = user;
+    },
+    SET_HASH(state, user) {
+      state.hash = user;
     },
     LOGOUT(state) {
       localStorage.removeItem('token');

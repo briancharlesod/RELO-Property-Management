@@ -57,6 +57,8 @@ export default {
 </script>
 
 <style>
+col
+
 h1{
   text-align: center;
 }

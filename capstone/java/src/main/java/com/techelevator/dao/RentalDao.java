@@ -1,8 +1,10 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.PaymentClass;
 import com.techelevator.model.Rental;
 import org.apache.tomcat.jni.Local;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,11 +14,18 @@ public interface RentalDao {
 
     Rental viewSpecificProperty(int rentalID);
 
-    int rentDueDate(int rentalID);
+    int rentDueDate();
 
-    List<Rental> propertiesByLandlord(int userID);
+    BigDecimal getRent(int rentalID, String username);
 
-    boolean addNewProperty(Rental rental);
+    List<Rental> propertiesByLandlord(int userID, String username);
 
-    boolean updateProperty(Rental rental);
+    int addNewProperty(Rental rental, String username);
+
+    boolean updateProperty(Rental rental, String username);
+
+    boolean payRent(PaymentClass rent, String username);
+
+    List<PaymentClass> getAllRents(int userID, String username);
+
 }

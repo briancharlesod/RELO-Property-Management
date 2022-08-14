@@ -1,21 +1,42 @@
 package com.techelevator.model;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class Rental {
-
     private int rentalID;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String address;
-    private double price;
-    private double bedroom;
+    @Min(value = 0)
+    private BigDecimal price;
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    private String bedroom;
+    @Min(value = 1)
     private double bathroom;
     private boolean isRented;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String typeOfResidence;
+    @Min(value = 1)
+    private int landlord;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String description;
-    private String imgURL;
-    private int landlord_id;
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    private String picture;
 
-    public Rental(int rentalID, String address, double price, double bedroom, double bathroom, boolean isRented, String typeOfResidence, String description, String imgURL, int landlord_id) {
+    public Rental(int landlord, int rentalID, String address, BigDecimal price, String bedroom, double bathroom, boolean isRented, String typeOfResidence) {
         this.rentalID = rentalID;
         this.address = address;
         this.price = price;
@@ -23,11 +44,9 @@ public class Rental {
         this.bathroom = bathroom;
         this.isRented = isRented;
         this.typeOfResidence = typeOfResidence;
-        this.description = description;
-        this.imgURL = imgURL;
-        this.landlord_id = landlord_id;
-
+        this.landlord = landlord;
     }
+
 
     public Rental(){}
 
@@ -40,19 +59,19 @@ public class Rental {
     }
 
     public String getImgURL() {
-        return imgURL;
+        return picture;
     }
 
     public void setImgURL(String imgURL) {
-        this.imgURL = imgURL;
+        this.picture = imgURL;
     }
 
     public int getLandlord_id() {
-        return landlord_id;
+        return landlord;
     }
 
     public void setLandlord_id(int landlord_id) {
-        this.landlord_id = landlord_id;
+        this.landlord = landlord_id;
     }
 
     public void setDescription(String description) {
@@ -109,5 +128,21 @@ public class Rental {
 
     public void setTypeOfResidence(String typeOfResidence) {
         this.typeOfResidence = typeOfResidence;
+    }
+
+    public void setLandlord(int landlord) {
+        this.landlord = landlord;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public int getLandlord() {
+        return landlord;
     }
 }
