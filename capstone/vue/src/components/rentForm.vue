@@ -1,6 +1,7 @@
 <template>
-  <form id="rentForm">
-<h1 class="title">RELO</h1>
+<body>
+  <form>
+<h1 class="subtitle"> <img id="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsdKWpDUN34PFuI52xPmmvYDI-okHioswhgA&usqp=CAU" /></h1>
 <h2 class="subtitle">Rental Payment Form</h2>
     <label>Email:</label>
     <input type="email" required v-model="email" />
