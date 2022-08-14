@@ -14,7 +14,8 @@
     </div>
     </div>
     </div>
-  </div>
+    </div>
+    
 </template>
 <script>
 import ApiService from '../services/newapiservice'
@@ -22,20 +23,38 @@ export default {
   name: "home",
   data() {
     return {
-    houses: []
+    houses: [],
+    search:""
     }
+  },
+  mounted(){
+    console.log("Component Mounted.")
   },
    methods: {
     viewCardDetails(cardID) {
       this.$store.commit("SET_HOUSES", this.houses);
       this.$router.push(`/${cardID}`);
-
+     
     },
+     getHouses(){
+        fetch("https://mashvisor-api.p.rapidapi.com/airbnb-property/newly-listed")
+        .then(response => response.json())
+        .then(res =>{
+          if(this.search){
+            this.houses=res.results.filter(houses=>
+            houses.house.toLowerCase().includes(this.search.toLowerCase()));}
+            else{
+              this.houses=res.results;
+            }
+          });
+        
+      }
    },
 created() {
  ApiService.getHouses().then((response => {
    this.houses = response.data.content.list;
  }));
+ this.getHouses();
 }
 };
 </script>
