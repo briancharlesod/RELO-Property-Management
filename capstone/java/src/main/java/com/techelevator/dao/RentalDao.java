@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.PaymentClass;
 import com.techelevator.model.Rental;
 import org.apache.tomcat.jni.Local;
 
@@ -22,4 +23,9 @@ public interface RentalDao {
     int addNewProperty(Rental rental, String username);
 
     boolean updateProperty(Rental rental, String username);
+
+    boolean payRent(PaymentClass rent, String username);
+
+    List<PaymentClass> getAllRents(int userID, String username);
+
 }

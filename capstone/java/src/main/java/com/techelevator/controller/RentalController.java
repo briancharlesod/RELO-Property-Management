@@ -6,7 +6,9 @@ import com.techelevator.dao.JdbcRentalDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.exceptions.AddPropertyException;
 import com.techelevator.exceptions.AvailablePropertyException;
+import com.techelevator.exceptions.PaymentException;
 import com.techelevator.exceptions.UnauthorizedAccessException;
+import com.techelevator.model.PaymentClass;
 import com.techelevator.model.Rental;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -44,6 +47,24 @@ public class RentalController {
         return rentalList;
     }
 
+    @PreAuthorize("hasRole('ROLE_RENTER')")
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(path = "rental/pay", method =RequestMethod.PUT)
+    public void payRent(@RequestBody PaymentClass rent, Principal principal) throws PaymentException {
+        boolean check = rentalDao.payRent(rent, principal.getName());
+        if(!check)
+        {
+            throw new PaymentException();
+        }
+    }
+
+    @RequestMapping(path = "rental/get/rents/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PaymentClass> getRents(@PathVariable int id, Principal principal)
+    {
+        return rentalDao.getAllRents(id, principal.getName());
+    }
 
     @RequestMapping(path = "/rental/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

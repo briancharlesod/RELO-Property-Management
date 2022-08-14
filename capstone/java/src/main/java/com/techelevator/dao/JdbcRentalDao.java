@@ -1,17 +1,21 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.PaymentClass;
 import com.techelevator.model.Rental;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 
@@ -106,6 +110,106 @@ public class JdbcRentalDao implements RentalDao{
         return rentalList;
     }
 
+    private List<Integer> rentalIDByLandlord(int userID, String username) {
+        if(getUserIDFromUsername(username) != userID)
+        {
+            System.out.println("try accessing the data from your own account");
+            return null;
+        }
+        List<Integer> rentalList = null;
+        String sql = "Select rental_id " +
+                "From rental_property " +
+                "Where landlord_id = ?;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userID);
+            rentalList = new ArrayList<>();
+            while(result.next())
+            {
+                rentalList.add(result.getInt("rental_id"));
+            }
+        }catch (Exception e)
+        {
+            System.out.println("Could not find any properties");
+        }
+        return rentalList;
+    }
+
+    private String getStatement(List<Integer> propertiesList)
+    {
+        String inStatement = "(";
+        if(propertiesList.size() == 0)
+        {
+            return null;
+        }
+        for (int i = 0; i < propertiesList.size(); i++) {
+            if(i < propertiesList.size()-1) {
+                inStatement = inStatement + propertiesList.get(i) + ",";
+            }
+            else{
+                inStatement = inStatement + propertiesList.get(i) + ")";
+            }
+        }
+        return inStatement;
+    }
+
+    @Override
+    public List<PaymentClass> getAllRents(int userID, String username)
+    {
+        if(userID != getUserIDFromUsername(username))
+        {
+            return null;
+        }
+        List<Integer> allProps = rentalIDByLandlord(userID, username);
+        if(allProps.size() == 0)
+        {
+            return null;
+        }
+        List<PaymentClass> rentedProps = new ArrayList<>();
+        String statement = getStatement(allProps);
+        String sql = "Select rental_property.rental_address, user_rental.last_paid, rental_property.rental_id " +
+                "From rental_property " +
+                "Join user_rental Using (rental_id) " +
+                "Where rental_id In "+statement+";";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql);
+            while(result.next())
+            {
+                PaymentClass temp = new PaymentClass();
+                temp.setAddress(result.getString("rental_address"));
+                System.out.println(temp.getAddress());
+                temp.setRent(result.getString("last_paid"));
+                System.out.println(temp.getRent());
+                temp.setRentalID(result.getString("rental_id"));
+                System.out.println(temp.getRentalID());
+                rentedProps.add(temp);
+                System.out.println(rentedProps.size());
+            }
+        }catch (Exception e)
+        {
+            return null;
+        }
+        return rentedProps;
+    }
+
+    @Override
+    public boolean payRent(PaymentClass rent, String username)
+    {
+        System.out.println(checkProperty(username));
+        System.out.println(rent.getRentalID());
+        if (checkProperty(username) == Integer.parseInt(rent.getRentalID())) {
+            String sql = "Update user_rental " +
+                    "Set last_paid = (Select Current_date- INTERVAL '1 DAY') " +
+                    "Where rental_id = ?;";
+            try {
+                jdbcTemplate.update(sql, Integer.parseInt(rent.getRentalID()));
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
     @Override
     public int addNewProperty(Rental rental, String username) {
         if (!getRole(rental.getLandlord()).contains("LANDLORD")) {
@@ -128,7 +232,6 @@ public class JdbcRentalDao implements RentalDao{
         }
         return rentalID;
     }
-
 
     @Override
     public BigDecimal getRent(int rentalID, String username)

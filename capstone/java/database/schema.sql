@@ -44,7 +44,8 @@ CREATE TABLE rental_property (
 
 CREATE TABLE user_rental (
 	user_id int NOT NULL,
-	rental_id int NOT NULL,
+	rental_id int NOT NULL UNIQUE,
+	last_paid date,
 	CONSTRAINT FK_user_rental_user FOREIGN KEY (user_id) REFERENCES users(user_id),
 	CONSTRAINT FK_rental_rental_user FOREIGN KEY (rental_id) REFERENCES rental_property(rental_id)
 );
