@@ -1,6 +1,7 @@
 <template>
-  <form id="maintenance">
-<h1 class="title">RELO</h1>
+<body>
+  <form>
+<h1 class="subtitle"> <img id="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsdKWpDUN34PFuI52xPmmvYDI-okHioswhgA&usqp=CAU" /></h1>
 <h2 class="subtitle">Maintenance Request Form</h2>
     <label>Email:</label>
     <input type="email" required v-model="email" />
@@ -17,6 +18,7 @@
  <button class="button">Submit</button>
  <button class="button">Cancel</button>
   </form>
+</body>
 </template>
 <script>
 export default {
@@ -34,6 +36,11 @@ textarea{
   height: 176px;
   width: 415px;
 }
+
+body{
+  background-color: #80d0f0;
+}
+
 h1{
   text-align: center;
 }
@@ -43,7 +50,7 @@ h2{
 form#maintenance {
   max-width: 420px;
   margin: 30px auto;
-  background: hsl(48, 100%, 29%);
+  background: #00d1b2;
   text-align: left;
   padding: 40px;
   border-radius: 10px;

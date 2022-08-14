@@ -10,7 +10,7 @@
         <div class="navbar-brand">
           <a class="navbar-item">
             <router-link :to="{ name: 'home' }">
-              <img id="logo" src="./assets/LogoMakr-9Gar3F.png" />
+              <img id="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsdKWpDUN34PFuI52xPmmvYDI-okHioswhgA&usqp=CAU" />
               <br />
             </router-link>
           </a>
@@ -32,7 +32,7 @@
           <div class="navbar-start">
             <a class="navbar-item">
                <router-link :to="{ name: 'home' }">
-              <strong>RELO Property Management</strong>
+              <strong>J-LO Property Management</strong>
                </router-link>
             </a>
 
@@ -61,7 +61,7 @@
                   <a class="button is-light"> Log in </a>
                 </router-link>
                 <router-link :to="{ name: 'logout' }" v-else>
-                  <a class="button is-light"> Log out </a>
+                  <a class="button is-light" :style="{color: '#00d1b2'}"> Log out </a>
                 </router-link>
               </div>
             </div>
@@ -88,6 +88,10 @@
 </script>
 
 <style >
+a:link{
+  color:rgb(105, 15, 105)
+}
+
 .navbar-brand {
   display: flex;
   flex-direction: column;
@@ -96,6 +100,7 @@
 }
 
 .navbar{
-    background: limegreen;
+    background: rgb(243, 133, 151);
 }
+
 </style>

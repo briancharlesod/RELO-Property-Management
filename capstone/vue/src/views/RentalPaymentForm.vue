@@ -42,6 +42,7 @@
  <button class="button">Cancel</button>
 </div>
   </form>
+</body>
 </template>
 
 <script>
@@ -57,6 +58,8 @@ export default {
 </script>
 
 <style>
+col
+
 h1{
   text-align: center;
 }

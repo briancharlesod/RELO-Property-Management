@@ -1,6 +1,7 @@
 <template>
-  <form id="rentForm">
-<h1 class="title">RELO</h1>
+<body>
+  <form>
+<h1 class="subtitle"> <img id="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsdKWpDUN34PFuI52xPmmvYDI-okHioswhgA&usqp=CAU" /></h1>
 <h2 class="subtitle">Rental Payment Form</h2>
     <label>Email:</label>
     <input type="email" required v-model="email" />
@@ -35,6 +36,7 @@
  <button class="button">Cancel</button>
 </div>
   </form>
+</body>
 </template>
 <script>
 export default {
@@ -48,6 +50,7 @@ export default {
 };
 </script>
 <style>
+
 h1{
   text-align: center;
 }
@@ -57,7 +60,7 @@ h2{
 form#rentForm {
   max-width: 420px;
   margin: 30px auto;
-  background: hsl(48, 100%, 29%);
+  background: hsl(48, 26%, 48%);
   text-align: left;
   padding: 40px;
   border-radius: 10px;
