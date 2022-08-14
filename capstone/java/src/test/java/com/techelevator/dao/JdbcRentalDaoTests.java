@@ -73,10 +73,85 @@ public class JdbcRentalDaoTests extends BaseDaoTests{
     }
 
     @Test
+    public void happyPathUpdateRental()
+    {
+        Rental rental = new Rental();
+        rental.setDescription("All new description here");
+        rental.setPicture("123456");
+        rental.setTypeOfResidence("house");
+        rental.setRented(false);
+        rental.setPrice(new BigDecimal(1500));
+        rental.setBedroom("3");
+        rental.setBathroom(2.5);
+        rental.setAddress("123 this way");
+        rental.setLandlord(3);
+        rental.setRentalID(1);
+
+        boolean id = sut.updateProperty(rental, "landlord1");
+        Rental rentalCheck = sut.viewSpecificProperty(1);
+        Assert.assertEquals("All new description here", rentalCheck.getDescription());
+        Assert.assertEquals(new BigDecimal("1500.00"), rentalCheck.getPrice());
+    }
+
+    @Test
+    public void unhappyPathUpdateRental_WrongLandlord()
+    {
+        Rental rental = new Rental();
+        rental.setDescription("All new description here");
+        rental.setPicture("123456");
+        rental.setTypeOfResidence("house");
+        rental.setRented(false);
+        rental.setPrice(new BigDecimal(1500));
+        rental.setBedroom("3");
+        rental.setBathroom(2.5);
+        rental.setAddress("123 this way");
+        rental.setLandlord(5);
+
+        boolean id = sut.updateProperty(rental, "landlord2");
+        Assert.assertFalse(id);
+    }
+
+    @Test
+    public void unhappyPathUpdateRental_WrongLandlord2()
+    {
+        Rental rental = new Rental();
+        rental.setDescription("All new description here");
+        rental.setPicture("123456");
+        rental.setTypeOfResidence("house");
+        rental.setRented(false);
+        rental.setPrice(new BigDecimal(1500));
+        rental.setBedroom("3");
+        rental.setBathroom(2.5);
+        rental.setAddress("123 this way");
+        rental.setLandlord(3);
+
+        boolean id = sut.updateProperty(rental, "landlord");
+        Assert.assertFalse(id);
+    }
+
+    @Test
+    public void unhappyPathUpdateRental_Role()
+    {
+        Rental rental = new Rental();
+        rental.setDescription("All new description here");
+        rental.setPicture("123456");
+        rental.setTypeOfResidence("house");
+        rental.setRented(false);
+        rental.setPrice(new BigDecimal(1500));
+        rental.setBedroom("3");
+        rental.setBathroom(2.5);
+        rental.setAddress("123 this way");
+        rental.setLandlord(3);
+
+        boolean id = sut.updateProperty(rental, "user1");
+        Assert.assertFalse(id);
+    }
+
+    @Test
     public void unhappyPathAddRental_WrongLandlord()
     {
         Rental rental = new Rental();
-        rental.setDescription("Located in the historic north side area of Pittsburgh.");
+        rental.setDescription("All new description here");
         rental.setPicture("123456");
         rental.setTypeOfResidence("house");
         rental.setRented(false);

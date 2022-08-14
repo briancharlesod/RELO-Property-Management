@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class JdbcUserDaoTests extends BaseDaoTests {
@@ -204,27 +205,26 @@ public class JdbcUserDaoTests extends BaseDaoTests {
         Assert.assertEquals(USER_2, users.get(1));
     }
 
-   /* @Test(expected = DataIntegrityViolationException.class)
+    @Test(expected = DataIntegrityViolationException.class)
     public void create_user_with_null_username() {
-        sut.create(null, USER_3.getPassword(), "ROLE_USER");
+        sut.create(null, USER_3.getPassword(), "ROLE_USER", "a", "b", "c", "d");
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     public void create_user_with_existing_username() {
-        sut.create(USER_1.getUsername(), USER_3.getPassword(), "ROLE_USER");
+        sut.create(USER_1.getUsername(), USER_3.getPassword(), "ROLE_USER", "a", "b", "c", "d");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void create_user_with_null_password() {
-        sut.create(USER_3.getUsername(), null, "ROLE_USER");
+        sut.create(USER_3.getUsername(), null, "ROLE_USER", "a", "b", "c", "d");
     }
 
     @Test
-    public void create_user_creates_a_user() {
+    public void create_user_creates_a_user() throws SQLException {
         User newUser = new User(-1, "new", "user", "ROLE_USER");
-
-        boolean userWasCreated = sut.create(newUser.getUsername(), newUser.getPassword(), "ROLE_USER");
-
+        boolean userWasCreated = sut.create(newUser.getUsername(), newUser.getPassword(), "ROLE_USER", "a", "b", "c", "d");
+        System.out.println(userWasCreated);
         Assert.assertTrue(userWasCreated);
 
         User actualUser = sut.findByUsername(newUser.getUsername());
@@ -232,7 +232,8 @@ public class JdbcUserDaoTests extends BaseDaoTests {
 
         actualUser.setPassword(newUser.getPassword()); // reset password back to unhashed password for testing
         Assert.assertEquals(newUser, actualUser);
+
     }
 
-    */
+
 }

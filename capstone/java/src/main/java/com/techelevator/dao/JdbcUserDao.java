@@ -104,7 +104,7 @@ public class JdbcUserDao implements UserDao {
 
         String ssRole = role.toUpperCase().startsWith("ROLE_") ? role.toUpperCase() : "ROLE_" + role.toUpperCase();
 
-        return jdbcTemplate.update(insertUserSql, username, password_hash, ssRole, username, q1, q2, a1, a2) == 1;
+        return jdbcTemplate.update(insertUserSql, username, password_hash, ssRole, username, q1, q2, a1, a2) == 0;
     }
 
     @Override

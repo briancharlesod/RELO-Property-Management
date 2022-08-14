@@ -202,7 +202,7 @@ public class JdbcRentalDao implements RentalDao{
             System.out.println("You cannot list a property in someone else's name");
             return false;
         }
-        String sql = "UPDATE FROM rental_property SET rental_address = ?, rental_amount = ?, bathrooms = ?, bedrooms = ?, is_rented = ?, type_of_residence = ?, description = ? WHERE rental_id = ?";
+        String sql = "UPDATE rental_property SET rental_address = ?, rental_amount = ?, bathrooms = ?, bedrooms = ?, is_rented = ?, type_of_residence = ?, description = ? WHERE rental_id = ?";
        try {
            jdbcTemplate.update(sql, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence(), rental.getDescription(), rental.getRentalID());
        return true;
