@@ -1,5 +1,6 @@
 <template>
 <div id="container">
+  <form v-on:submit.prevent="submitRental(); landlordHome">
   <div class="field is-vertical">
 
 
@@ -35,7 +36,7 @@
   <div class="field-body">
     <div class="field">
       <div class="control">
-        <input class="input" type="number" placeholder="Number of Bedrooms" v-model="newProperty.bedrooms">
+        <input class="input" type="number" placeholder="Number of Bedrooms" v-model="newProperty.bedroom">
       </div>
     </div>
   </div>
@@ -48,7 +49,7 @@
   <div class="field-body">
     <div class="field">
       <div class="control">
-        <input class="input" type="number" placeholder="Number of Bathrooms" v-model="newProperty.bathrooms">
+        <input class="input" type="number" placeholder="Number of Bathrooms" v-model="newProperty.bathroom">
       </div>
     </div>
   </div>
@@ -56,22 +57,38 @@
 
 <div class="field is-horizontal">
   <div class="field-label is-normal">
-    <label class="label">Description</label>
+    <label class="label">description</label>
   </div>
   <div class="field-body">
     <div class="field">
       <div class="control">
-        <input class="input" type="text" placeholder="Enter a description of the property" v-model="newProperty.description">
+        <input class="input" type="text" placeholder="Description" v-model="newProperty.description">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="field is-horizontal">
+  <div class="field-label is-normal">
+    <label class="label">Type of Residence</label>
+  </div>
+  <div class="field-body">
+    <div class="field">
+      <div class="control">
+        <input class="input" type="text" placeholder="Enter the type of residence" v-model="newProperty.typeOfResidence">
       </div>
     </div>
   </div>
 </div>
 </div>
-<button type="button" class="button is-primary" @click="landlordHome">Submit Property</button>
+<input type="submit" class="button is-primary" value="Submit Property" />
+  </form>
 </div>
 </template>
 
 <script>
+import ApartmentService from '../services/apartmentService'
+
 export default {
 data() {
     return {
@@ -79,11 +96,14 @@ data() {
         falseTest: false,
         newProperty: {
                 address: "",
-                bedrooms: "",
-                bathrooms: "",
-                description: "",
-                isRented: "",
-                price: ""
+                bedroom: "",
+                bathroom: "",
+                typeOfResidence: "",
+                isRented: false,
+                price: "",
+                description: '',
+                imgURL: 'placeholder',
+                landlord_id: '3'
             }
     }
 },
@@ -91,6 +111,30 @@ methods: {
     landlordHome()
     {
         this.$router.push("/");
+    },
+    clearForm() {
+      this.newProperty.bathroom = '';
+      this.newProperty.price = '';
+      this.newProperty.bedroom = '';
+      this.newProperty.address = '';
+      this.newProperty.isRented = false;
+      this.newProperty.typeOfResidence = '';
+      this.newProperty.description = '';
+    },
+    submitRental() {
+      this.newProperty.price = parseFloat(this.newProperty.price)
+      this.newProperty.bedroom = parseInt(this.newProperty.bedroom)
+      this.newProperty.bathroom = parseInt(this.newProperty.bathroom)
+      try {
+      ApartmentService.addApartment(this.newProperty).then(response => {
+        if (response.status == 201) {
+          this.clearForm();
+          alert("Worked")
+        }
+      })
+      } catch (e) {
+        console.log(e)
+      }
     }
 }
 }

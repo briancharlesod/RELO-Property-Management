@@ -7,6 +7,7 @@ import com.techelevator.dao.RentalDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Rental;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,7 +16,8 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@CrossOrigin(origins = "http://localhost:8080")
+
 public class RentalController {
     private JdbcRentalDao rentalDao;
     private UserDao userDao;
@@ -31,6 +33,7 @@ public class RentalController {
     public List<Rental> viewAllAvailableProperties() {
         return rentalDao.viewAllAvailableProperties();
     }
+
 
     @RequestMapping(path = "/rental/{id}", method = RequestMethod.GET)
     public Rental viewSpecificProperty(@PathVariable int id) {
@@ -50,6 +53,20 @@ public class RentalController {
     public int rentDue(){
         return rentalDao.rentDueDate();
     }
+//    @CrossOrigin
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @RequestMapping(path = "/rental", method = RequestMethod.POST)
+//    public boolean addNewProperty(@RequestBody Rental rental) {
+//          return dao.addNewProperty(rental);
+//
+//    }
+
+    @CrossOrigin
+    @RequestMapping(path = "/rental", method = RequestMethod.PUT)
+    public boolean updateRental(@RequestBody Rental rental) {
+        return rentalDao.updateProperty(rental);
+
+    }
 
     @PreAuthorize("hasRole('ROLE_RENTER')")
     @RequestMapping(path = "/rent/{amount}", method = RequestMethod.GET)
@@ -61,6 +78,8 @@ public class RentalController {
     public List<Rental> byLandlord(@PathVariable int id, Principal principal){
         return rentalDao.propertiesByLandlord(id, principal.getName());
     }
+
+
 
 }
 

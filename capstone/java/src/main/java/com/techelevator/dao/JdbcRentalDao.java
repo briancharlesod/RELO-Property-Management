@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@CrossOrigin
+
 public class JdbcRentalDao implements RentalDao{
 
     private JdbcTemplate jdbcTemplate;
@@ -127,10 +127,7 @@ public class JdbcRentalDao implements RentalDao{
         }catch(Exception e)
         {
             e.printStackTrace();
-            System.out.println("Could not add property to database");
-        }
-        return rentalID;
-    }
+
 
     @Override
     public BigDecimal getRent(int rentalID, String username)
@@ -194,6 +191,16 @@ public class JdbcRentalDao implements RentalDao{
         }
         return role;
     }
+    public boolean updateProperty(Rental rental) {
+        String sql = "UPDATE FROM rental_property SET rental_address = ?, rental_amount = ?, bathrooms = ?, bedrooms = ?, is_rented = ?, type_of_residence = ?, description = ? WHERE rental_id = ?";
+       try {
+           jdbcTemplate.update(sql, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence(), rental.getDescription(), rental.getRentalID());
+       return true;
+       } catch (Exception e) {
+           System.out.println(e);
+       }
+       return false;
+       }
 
     private Rental mapToRental(SqlRowSet result)
     {

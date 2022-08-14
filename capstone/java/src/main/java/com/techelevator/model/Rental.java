@@ -54,6 +54,30 @@ public class Rental {
         return rentalID;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
+    }
+
+    public int getLandlord_id() {
+        return landlord_id;
+    }
+
+    public void setLandlord_id(int landlord_id) {
+        this.landlord_id = landlord_id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setRentalID(int rentalID) {
         this.rentalID = rentalID;
     }
@@ -66,19 +90,19 @@ public class Rental {
         this.address = address;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public String getBedroom() {
+    public int getBedroom() {
         return bedroom;
     }
 
-    public void setBedroom(String bedroom) {
+    public void setBedroom(int bedroom) {
         this.bedroom = bedroom;
     }
 
