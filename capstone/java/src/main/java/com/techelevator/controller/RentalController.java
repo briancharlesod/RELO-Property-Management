@@ -42,10 +42,8 @@ public class RentalController {
 
     @PreAuthorize("hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "/rental", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     public void addNewProperty(@RequestBody @Valid Rental request, Principal principal) {
-//        if (request != null) {
-//            Rental.add(request);
-//        }
         int id = rentalDao.addNewProperty(request, principal.getName());
     }
     @PreAuthorize("hasRole('ROLE_RENTER')")
@@ -53,18 +51,12 @@ public class RentalController {
     public int rentDue(){
         return rentalDao.rentDueDate();
     }
-//    @CrossOrigin
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @RequestMapping(path = "/rental", method = RequestMethod.POST)
-//    public boolean addNewProperty(@RequestBody Rental rental) {
-//          return dao.addNewProperty(rental);
-//
-//    }
+
 
     @CrossOrigin
     @RequestMapping(path = "/rental", method = RequestMethod.PUT)
-    public boolean updateRental(@RequestBody Rental rental) {
-        return rentalDao.updateProperty(rental);
+    public boolean updateRental(@RequestBody Rental rental, Principal principal) {
+        return rentalDao.updateProperty(rental, principal.getName());
 
     }
 

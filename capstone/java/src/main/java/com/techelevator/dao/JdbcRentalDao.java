@@ -108,25 +108,25 @@ public class JdbcRentalDao implements RentalDao{
 
     @Override
     public int addNewProperty(Rental rental, String username) {
-        if(!getRole(rental.getLandlord()).contains("LANDLORD"))
-        {
+        if (!getRole(rental.getLandlord()).contains("LANDLORD")) {
             System.out.println(getRole(rental.getLandlord()));
             System.out.println("A landlord has to have that role");
             return -1;
         }
-        if(getUserIDFromUsername(username) != rental.getLandlord())
-        {
+        if (getUserIDFromUsername(username) != rental.getLandlord()) {
             System.out.println("You cannot list a property in someone else's name");
             return -2;
         }
         int rentalID = -1;
         String sql = "Insert Into rental_property (rental_address, rental_amount, bathrooms, bedrooms, is_rented, type_of_residence, description, picture, landlord_id) " +
                 "Values(?, ?, ?, ?, ?, ?, ?, ?, ?) Returning rental_id;";
-        try{
+        try {
             rentalID = jdbcTemplate.queryForObject(sql, Integer.class, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence(), rental.getDescription(), rental.getPicture(), rental.getLandlord());
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
+        }
+        return rentalID;
+    }
 
 
     @Override
@@ -191,7 +191,16 @@ public class JdbcRentalDao implements RentalDao{
         }
         return role;
     }
-    public boolean updateProperty(Rental rental) {
+    public boolean updateProperty(Rental rental, String username) {
+        if (!getRole(rental.getLandlord()).contains("LANDLORD")) {
+            System.out.println(getRole(rental.getLandlord()));
+            System.out.println("A landlord has to have that role");
+            return false;
+        }
+        if (getUserIDFromUsername(username) != rental.getLandlord()) {
+            System.out.println("You cannot list a property in someone else's name");
+            return false;
+        }
         String sql = "UPDATE FROM rental_property SET rental_address = ?, rental_amount = ?, bathrooms = ?, bedrooms = ?, is_rented = ?, type_of_residence = ?, description = ? WHERE rental_id = ?";
        try {
            jdbcTemplate.update(sql, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence(), rental.getDescription(), rental.getRentalID());

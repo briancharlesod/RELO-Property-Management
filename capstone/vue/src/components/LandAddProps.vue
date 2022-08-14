@@ -127,6 +127,7 @@ methods: {
       this.newProperty.bathroom = parseInt(this.newProperty.bathroom)
       try {
       ApartmentService.addApartment(this.newProperty).then(response => {
+        console.log(response.status)
         if (response.status == 201) {
           this.clearForm();
           alert("Worked")

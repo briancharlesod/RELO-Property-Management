@@ -59,19 +59,19 @@ public class Rental {
     }
 
     public String getImgURL() {
-        return imgURL;
+        return picture;
     }
 
     public void setImgURL(String imgURL) {
-        this.imgURL = imgURL;
+        this.picture = imgURL;
     }
 
     public int getLandlord_id() {
-        return landlord_id;
+        return landlord;
     }
 
     public void setLandlord_id(int landlord_id) {
-        this.landlord_id = landlord_id;
+        this.landlord = landlord_id;
     }
 
     public void setDescription(String description) {
@@ -90,19 +90,19 @@ public class Rental {
         this.address = address;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public int getBedroom() {
+    public String getBedroom() {
         return bedroom;
     }
 
-    public void setBedroom(int bedroom) {
+    public void setBedroom(String bedroom) {
         this.bedroom = bedroom;
     }
 
@@ -132,14 +132,6 @@ public class Rental {
 
     public void setLandlord(int landlord) {
         this.landlord = landlord;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getPicture() {
