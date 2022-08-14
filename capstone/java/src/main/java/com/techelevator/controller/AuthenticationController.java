@@ -159,8 +159,10 @@ public class AuthenticationController {
     public void updatePassword(@RequestBody PasswordRetrieval password, @PathVariable String username) throws RetrievalException {
         int userID = (userDao.findIdByUsername(username));
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        System.out.println(password.getPassword());
+        System.out.println(password.getHash());
         boolean hash1 = bcrypt.matches(password.getHash(), userDao.getAnswerOne(userID));
-        boolean hash2 = bcrypt.matches(password.getHash(), userDao.getAnswerOne(userID));
+        boolean hash2 = bcrypt.matches(password.getHash(), userDao.getAnswerTwo(userID));
         if (hash2 || hash1) {
             userDao.updatePassword(userDao.findIdByUsername(username), password.getPassword());
         }

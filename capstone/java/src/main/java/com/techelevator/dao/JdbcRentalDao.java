@@ -122,6 +122,7 @@ public class JdbcRentalDao implements RentalDao{
                 "Values(?, ?, ?, ?, ?, ?, ?, ?, ?) Returning rental_id;";
         try {
             rentalID = jdbcTemplate.queryForObject(sql, Integer.class, rental.getAddress(), rental.getPrice(), rental.getBathroom(), rental.getBedroom(), rental.isRented(), rental.getTypeOfResidence(), rental.getDescription(), rental.getPicture(), rental.getLandlord());
+            System.out.println(rentalID);
         } catch (Exception e) {
             e.printStackTrace();
         }

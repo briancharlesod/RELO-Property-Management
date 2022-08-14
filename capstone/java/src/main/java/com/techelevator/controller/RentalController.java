@@ -61,7 +61,8 @@ public class RentalController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addNewProperty(@RequestBody @Valid Rental request, Principal principal) throws AddPropertyException {
         int id = rentalDao.addNewProperty(request, principal.getName());
-        if(id > 0)
+        System.out.println(principal.getName());
+        if(id < 0)
         {
             throw new AddPropertyException();
         }
