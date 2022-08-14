@@ -20,4 +20,6 @@ public interface RentalDao {
     List<Rental> propertiesByLandlord(int userID, String username);
 
     int addNewProperty(Rental rental, String username);
+
+    boolean updateProperty(Rental rental, String username);
 }

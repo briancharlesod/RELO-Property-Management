@@ -54,6 +54,30 @@ public class Rental {
         return rentalID;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImgURL() {
+        return picture;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.picture = imgURL;
+    }
+
+    public int getLandlord_id() {
+        return landlord;
+    }
+
+    public void setLandlord_id(int landlord_id) {
+        this.landlord = landlord_id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setRentalID(int rentalID) {
         this.rentalID = rentalID;
     }
@@ -108,14 +132,6 @@ public class Rental {
 
     public void setLandlord(int landlord) {
         this.landlord = landlord;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getPicture() {

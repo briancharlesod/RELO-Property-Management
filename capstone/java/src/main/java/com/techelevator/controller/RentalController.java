@@ -10,6 +10,7 @@ import com.techelevator.exceptions.UnauthorizedAccessException;
 import com.techelevator.model.Rental;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,7 +20,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:8080")
+
 public class RentalController {
     private JdbcRentalDao rentalDao;
     private UserDao userDao;
@@ -41,6 +43,7 @@ public class RentalController {
         }
         return rentalList;
     }
+
 
     @RequestMapping(path = "/rental/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -70,6 +73,14 @@ public class RentalController {
         return rentalDao.rentDueDate();
     }
 
+
+    @CrossOrigin
+    @RequestMapping(path = "/rental", method = RequestMethod.PUT)
+    public boolean updateRental(@RequestBody Rental rental, Principal principal) {
+        return rentalDao.updateProperty(rental, principal.getName());
+
+    }
+
     @PreAuthorize("hasRole('ROLE_RENTER')")
     @RequestMapping(path = "/rent/{amount}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -92,6 +103,8 @@ public class RentalController {
         }
         return rentalList;
     }
+
+
 
 }
 
