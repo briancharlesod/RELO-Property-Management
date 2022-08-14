@@ -43,7 +43,6 @@ created() {
 div#banner {
   display: flex;
   justify-content: space-between;
-  background: limegreen;
 }
 div#cardPond {
   display: flex;
@@ -52,6 +51,7 @@ div#cardPond {
 }
 div#page {
   display: flex;
+  background-color:#80d0f0;
 }
 div#houseCard {
   font-weight: bold;

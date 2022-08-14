@@ -1,5 +1,5 @@
 <template>
-
+<body>
   <form>
 <h1 class="title">RELO</h1>
 <h2 class="subtitle">Rental Payment Form</h2>
@@ -42,6 +42,7 @@
  <button class="button">Cancel</button>
 </div>
   </form>
+</body>
 </template>
 
 <script>
@@ -57,6 +58,8 @@ export default {
 </script>
 
 <style>
+col
+
 h1{
   text-align: center;
 }
