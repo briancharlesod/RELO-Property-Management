@@ -57,7 +57,7 @@ h1{
 h2{
   text-align: center;
 }
-form {
+form#rentForm {
   max-width: 420px;
   margin: 30px auto;
   background: hsl(48, 26%, 48%);

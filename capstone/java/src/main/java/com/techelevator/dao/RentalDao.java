@@ -16,5 +16,7 @@ public interface RentalDao {
 
     List<Rental> propertiesByLandlord(int userID);
 
-    int addNewProperty(Rental rental);
+    boolean addNewProperty(Rental rental);
+
+    boolean updateProperty(Rental rental);
 }

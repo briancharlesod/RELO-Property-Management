@@ -6,13 +6,16 @@ public class Rental {
 
     private int rentalID;
     private String address;
-    private BigDecimal price;
-    private String bedroom;
-    private String bathroom;
+    private double price;
+    private double bedroom;
+    private double bathroom;
     private boolean isRented;
     private String typeOfResidence;
+    private String description;
+    private String imgURL;
+    private int landlord_id;
 
-    public Rental(int rentalID, String address, BigDecimal price, String bedroom, String bathroom, boolean isRented, String typeOfResidence) {
+    public Rental(int rentalID, String address, double price, double bedroom, double bathroom, boolean isRented, String typeOfResidence, String description, String imgURL, int landlord_id) {
         this.rentalID = rentalID;
         this.address = address;
         this.price = price;
@@ -20,12 +23,40 @@ public class Rental {
         this.bathroom = bathroom;
         this.isRented = isRented;
         this.typeOfResidence = typeOfResidence;
+        this.description = description;
+        this.imgURL = imgURL;
+        this.landlord_id = landlord_id;
+
     }
 
     public Rental(){}
 
     public int getRentalID() {
         return rentalID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
+    }
+
+    public int getLandlord_id() {
+        return landlord_id;
+    }
+
+    public void setLandlord_id(int landlord_id) {
+        this.landlord_id = landlord_id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setRentalID(int rentalID) {
@@ -40,27 +71,27 @@ public class Rental {
         this.address = address;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public String getBedroom() {
+    public double getBedroom() {
         return bedroom;
     }
 
-    public void setBedroom(String bedroom) {
+    public void setBedroom(double bedroom) {
         this.bedroom = bedroom;
     }
 
-    public String getBathroom() {
+    public double getBathroom() {
         return bathroom;
     }
 
-    public void setBathroom(String bathroom) {
+    public void setBathroom(double bathroom) {
         this.bathroom = bathroom;
     }
 

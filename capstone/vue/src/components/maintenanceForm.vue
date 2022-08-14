@@ -47,9 +47,7 @@ h1{
 h2{
   text-align: center;
 }
-body{
-}
-form {
+form#maintenance {
   max-width: 420px;
   margin: 30px auto;
   background: #00d1b2;
