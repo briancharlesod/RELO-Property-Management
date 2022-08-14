@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS rental_property;
 DROP TABLE IF EXISTS user_rental;
 DROP TABLE IF EXISTS maintenance;
 DROP TABLE IF EXISTS user_maintenance;
+Drop Table If Exists user_retrieval;
 
 CREATE TABLE users (
 	user_id SERIAL,
@@ -12,6 +13,16 @@ CREATE TABLE users (
 	password_hash varchar(200) NOT NULL,
 	role varchar(50) NOT NULL,
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
+);
+
+Create Table user_retrieval(
+	user_id int Not Null,
+	question_one varchar(200) Not Null,
+	question_two varchar(200) Not Null,
+	answer_one varchar(200) Not Null,
+	answer_two varchar(200) Not Null,
+
+	Constraint fk_user_retrieval_users Foreign Key(user_id) References users(user_id)
 );
 
 CREATE TABLE rental_property (
@@ -33,7 +44,8 @@ CREATE TABLE rental_property (
 
 CREATE TABLE user_rental (
 	user_id int NOT NULL,
-	rental_id int NOT NULL,
+	rental_id int NOT NULL UNIQUE,
+	last_paid date,
 	CONSTRAINT FK_user_rental_user FOREIGN KEY (user_id) REFERENCES users(user_id),
 	CONSTRAINT FK_rental_rental_user FOREIGN KEY (rental_id) REFERENCES rental_property(rental_id)
 );

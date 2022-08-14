@@ -42,7 +42,6 @@
  <button class="button">Cancel</button>
 </div>
   </form>
-</body>
 </template>
 
 <script>

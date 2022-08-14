@@ -9,12 +9,17 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class JdbcUserDaoTests extends BaseDaoTests {
     protected static final User USER_1 = new User(1, "user1", "user1", "ROLE_USER");
     protected static final User USER_2 = new User(2, "user2", "user2", "ROLE_USER");
     private static final User USER_3 = new User(3, "user3", "user3", "ROLE_USER");
+    private static final User USER_4 = new User(5, "renter1", "user3", "ROLE_RENTER");
+    private static final User USER_5 = new User(6, "employee1", "user3", "ROLE_EMPLOYEE");
+
+
 
     private JdbcUserDao sut;
 
@@ -22,6 +27,126 @@ public class JdbcUserDaoTests extends BaseDaoTests {
     public void setup() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         sut = new JdbcUserDao(jdbcTemplate);
+    }
+
+    @Test
+    public void happyPathSetUserToMaintenance()
+    {
+        User newUser = USER_5;
+        int maintenanceID = 1;
+        String landlordName = "landlord1";
+        boolean test = sut.setUserToMaintenance(newUser.getId(), maintenanceID, landlordName);
+        Assert.assertTrue(test);
+    }
+
+   @Test
+    public void unhappyPathSetUserToMaintenance_LandlordIsNotALandlord()
+    {
+        User newUser = USER_5;
+        int maintenanceID = 1;
+        String landlordName = "tom";
+        boolean test = sut.setUserToMaintenance(newUser.getId(), maintenanceID, landlordName);
+        Assert.assertFalse(test);
+    }
+
+    @Test
+    public void unhappyPathSetUserToMaintenance_EmployeeIsNotAnEmployee()
+    {
+        User newUser = USER_4;
+        int maintenanceID = 1;
+        String landlordName = "landlord1";
+        boolean test = sut.setUserToMaintenance(newUser.getId(), maintenanceID, landlordName);
+        Assert.assertFalse(test);
+    }
+
+    @Test
+    public void unhappyPathSetUserToMaintenance_InvalidDataProp()
+    {
+        User newUser = USER_5;
+        int maintenanceID = 0;
+        String landlordName = "landlord1";
+        boolean test = sut.setUserToMaintenance(newUser.getId(), maintenanceID, landlordName);
+        Assert.assertFalse(test);
+    }
+
+    @Test
+    public void unhappyPathSetUserToMaintenance_InvalidDataUser()
+    {
+        User newUser = USER_4;
+        int maintenanceID = 1;
+        String landlordName = "landlord1";
+        boolean test = sut.setUserToMaintenance(newUser.getId(), maintenanceID, landlordName);
+        Assert.assertFalse(test);
+    }
+
+    @Test
+    public void unhappyPathSetUserToMaintenance_LandlordIsTheWrongLandlord()
+    {
+        User newUser = USER_5;
+        int maintenanceID = 1;
+        String landlordName = "landlord2";
+        boolean test = sut.setUserToMaintenance(newUser.getId(), maintenanceID, landlordName);
+        Assert.assertFalse(test);
+    }
+
+    @Test
+    public void happyPathSetUserToRental()
+    {
+        User newUser = USER_4;
+        int property = 1;
+        String landlordName = "landlord1";
+        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        Assert.assertTrue(test);
+    }
+
+    @Test
+    public void unhappyPathSetUserToRental_LandlordIsNotALandlord()
+    {
+        User newUser = USER_4;
+        int property = 1;
+        String landlordName = "tom";
+        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        Assert.assertFalse(test);
+    }
+
+    @Test
+    public void unhappyPathSetUserToRental_LandlordIsTheWrongLandlord()
+    {
+        User newUser = USER_4;
+        int property = 1;
+        String landlordName = "landlord2";
+        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        Assert.assertFalse(test);
+    }
+
+    @Test
+    public void unhappyPathSetUserToRental_RenterIsNotARenter()
+    {
+        User newUser = USER_3;
+        int property = 1;
+        String landlordName = "landlord1";
+        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        Assert.assertFalse(test);
+    }
+
+    @Test
+    public void unhappyPathSetUserToRental_InvalidDataProp()
+    {
+        User newUser = USER_4;
+        int property = 0;
+        String landlordName = "tom";
+        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        Assert.assertFalse(test);
+    }
+
+    @Test
+    public void unhappyPathSetUserToRental_InvalidDataUser()
+    {
+        User newUser = USER_3;
+        int property = 1;
+        String landlordName = "tom";
+        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        Assert.assertFalse(test);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -75,33 +200,31 @@ public class JdbcUserDaoTests extends BaseDaoTests {
         List<User> users = sut.findAll();
 
         Assert.assertNotNull(users);
-        Assert.assertEquals(3, users.size());
+        Assert.assertEquals(9, users.size());
         Assert.assertEquals(USER_1, users.get(0));
         Assert.assertEquals(USER_2, users.get(1));
-        Assert.assertEquals(USER_3, users.get(2));
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     public void create_user_with_null_username() {
-        sut.create(null, USER_3.getPassword(), "ROLE_USER");
+        sut.create(null, USER_3.getPassword(), "ROLE_USER", "a", "b", "c", "d");
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     public void create_user_with_existing_username() {
-        sut.create(USER_1.getUsername(), USER_3.getPassword(), "ROLE_USER");
+        sut.create(USER_1.getUsername(), USER_3.getPassword(), "ROLE_USER", "a", "b", "c", "d");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void create_user_with_null_password() {
-        sut.create(USER_3.getUsername(), null, "ROLE_USER");
+        sut.create(USER_3.getUsername(), null, "ROLE_USER", "a", "b", "c", "d");
     }
 
     @Test
-    public void create_user_creates_a_user() {
+    public void create_user_creates_a_user() throws SQLException {
         User newUser = new User(-1, "new", "user", "ROLE_USER");
-
-        boolean userWasCreated = sut.create(newUser.getUsername(), newUser.getPassword(), "ROLE_USER");
-
+        boolean userWasCreated = sut.create(newUser.getUsername(), newUser.getPassword(), "ROLE_USER", "a", "b", "c", "d");
+        System.out.println(userWasCreated);
         Assert.assertTrue(userWasCreated);
 
         User actualUser = sut.findByUsername(newUser.getUsername());
@@ -109,5 +232,8 @@ public class JdbcUserDaoTests extends BaseDaoTests {
 
         actualUser.setPassword(newUser.getPassword()); // reset password back to unhashed password for testing
         Assert.assertEquals(newUser, actualUser);
+
     }
+
+
 }

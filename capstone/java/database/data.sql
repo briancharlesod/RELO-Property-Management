@@ -21,4 +21,3 @@ INSERT INTO rental_property (rental_address,rental_amount,bathrooms,bedrooms,is_
 
 COMMIT TRANSACTION;
 
-

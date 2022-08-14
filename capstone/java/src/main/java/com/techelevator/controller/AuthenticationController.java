@@ -2,24 +2,30 @@ package com.techelevator.controller;
 
 import javax.validation.Valid;
 
+import com.techelevator.exceptions.RetrievalException;
+import com.techelevator.exceptions.UserNotFoundException;
+import com.techelevator.exceptions.UserToMaintenanceException;
+import com.techelevator.exceptions.UserToPropertyException;
+import com.techelevator.model.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.techelevator.dao.UserDao;
-import com.techelevator.model.LoginDTO;
-import com.techelevator.model.RegisterUserDTO;
-import com.techelevator.model.User;
-import com.techelevator.model.UserAlreadyExistsException;
 import com.techelevator.security.jwt.JWTFilter;
 import com.techelevator.security.jwt.TokenProvider;
+
+import java.security.Principal;
 
 @RestController
 @CrossOrigin
@@ -28,6 +34,7 @@ public class AuthenticationController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private UserDao userDao;
+    private int count = 0;
 
     public AuthenticationController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, UserDao userDao) {
         this.tokenProvider = tokenProvider;
@@ -40,11 +47,10 @@ public class AuthenticationController {
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.createToken(authentication, false);
-        
+
         User user = userDao.findByUsername(loginDto.getUsername());
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -59,7 +65,8 @@ public class AuthenticationController {
             User user = userDao.findByUsername(newUser.getUsername());
             throw new UserAlreadyExistsException();
         } catch (UsernameNotFoundException e) {
-            userDao.create(newUser.getUsername(),newUser.getPassword(), newUser.getRole());
+            boolean test = userDao.create(newUser.getUsername(), newUser.getPassword(), newUser.getRole(), newUser.getQuestionOne(), newUser.getQuestionTwo(), newUser.getAnswerOne(), newUser.getAnswerTwo());
+            System.out.println(test);
         }
     }
 
@@ -86,13 +93,126 @@ public class AuthenticationController {
         }
 
         @JsonProperty("user")
-		public User getUser() {
-			return user;
-		}
+        public User getUser() {
+            return user;
+        }
 
-		public void setUser(User user) {
-			this.user = user;
-		}
+        public void setUser(User user) {
+            this.user = user;
+        }
+    }
+
+
+    @RequestMapping(path = "user/retrieval/question/{username}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String forgotPasswordQuestionOne(@PathVariable String username, @RequestBody String[] possibleQuestions) throws UserNotFoundException, RetrievalException {
+        String question = null;
+        count++;
+        User user = userDao.findByUsername(username);
+        if (user.getUsername().equalsIgnoreCase(username)) {
+            question = userDao.getQuestionOne(user.getId());
+            if (question == null) {
+                throw new RetrievalException();
+            }
+        } else {
+            throw new UserNotFoundException();
+        }
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        for (String aQuestion : possibleQuestions) {
+
+            if (bcrypt.matches(aQuestion, question)) {
+                return aQuestion;
+            }
+        }
+        return null;
+    }
+
+    @RequestMapping(path = "user/retrieval/answer/{username}/{answer}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public boolean checkAnswerOne(@PathVariable String username, @PathVariable String answer) throws UserNotFoundException, RetrievalException {
+        User user = userDao.findByUsername(username);
+        String resp = userDao.getAnswerOne(user.getId());
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        boolean check = bcrypt.matches(answer, resp);
+        if (check) {
+            return true;
+        } else {
+            throw new RetrievalException();
+        }
+    }
+
+    @RequestMapping(path = "user/retrieval/answerTwo/{username}/{answer}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public boolean checkAnswerTwo(@PathVariable String answer, @PathVariable String username) throws UserNotFoundException, RetrievalException {
+        User user = userDao.findByUsername(username);
+        String resp = userDao.getAnswerTwo(user.getId());
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        boolean check = bcrypt.matches(answer, resp);
+        if (check) {
+            return true;
+        } else {
+            throw new RetrievalException();
+        }
+    }
+
+    @RequestMapping(path = "user/retrieve/password/{username}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void updatePassword(@RequestBody PasswordRetrieval password, @PathVariable String username) throws RetrievalException {
+        int userID = (userDao.findIdByUsername(username));
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        System.out.println(password.getPassword());
+        System.out.println(password.getHash());
+        boolean hash1 = bcrypt.matches(password.getHash(), userDao.getAnswerOne(userID));
+        boolean hash2 = bcrypt.matches(password.getHash(), userDao.getAnswerTwo(userID));
+        if (hash2 || hash1) {
+            userDao.updatePassword(userDao.findIdByUsername(username), password.getPassword());
+        }
+        else {
+            throw new RetrievalException();
+        }
+    }
+
+    @RequestMapping(path = "user/retrieval/questionTwo/{username}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String forgotPasswordQuestionTwo(@PathVariable String username, @RequestBody String[] possibleQuestions) throws UserNotFoundException, RetrievalException {
+        String question = null;
+        User user = userDao.findByUsername(username);
+        if (user.getUsername().equalsIgnoreCase(username)) {
+            question = userDao.getQuestionTwo(user.getId());
+            if (question == null) {
+                throw new RetrievalException();
+            }
+        } else {
+            throw new UserNotFoundException();
+        }
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        for (String aQuestion : possibleQuestions) {
+            if (bcrypt.matches(aQuestion, question)) {
+                System.out.println(aQuestion);
+                return aQuestion;
+            }
+        }
+        return question;
+    }
+
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    @RequestMapping(path = "user/set/rental", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void setUserToProperty(@RequestBody @Valid UserRental uR, Principal principal) throws UserToPropertyException {
+        boolean setUSer = userDao.setUserToProperty(uR.getUserID(), uR.getRentalID(), principal.getName());
+        if (!setUSer) {
+            throw new UserToPropertyException();
+        }
+    }
+
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_LANDLORD')")
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(path = "user/set/maintenance", method = RequestMethod.POST)
+    public void setUserToMaintenance(@RequestBody @Valid UserMaintenance uR, Principal principal) throws UserToMaintenanceException {
+        boolean setUser = userDao.setUserToMaintenance(uR.getUserID(), uR.getMaintenanceID(), principal.getName());
+        if (!setUser) {
+            throw new UserToMaintenanceException();
+        }
     }
 }
 

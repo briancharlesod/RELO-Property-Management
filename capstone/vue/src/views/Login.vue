@@ -12,6 +12,11 @@
         role="alert"
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
+            <div
+        class="alert alert-success has-text-info is-size-5 m-3"
+        role="alert"
+        v-if="this.$route.query.reset"
+      >Password reset, please sign in.</div>
             <form class="box">
         <div class="field">
           <label class="label form-control">Username</label>
@@ -36,6 +41,9 @@
         <button type="button" class="button is-primary btn" @click="login">
           Sign In
         </button>
+        <button type="button" class="button is-primary btn" @click="forgot">
+          Forgot Password
+        </button>
       </div>
       </form>
     </form>
@@ -59,6 +67,9 @@ export default {
     };
   },
   methods: {
+    forgot(){
+      this.$router.push("/retrievePassword");
+    },
     login() {
       authService
         .login(this.user)

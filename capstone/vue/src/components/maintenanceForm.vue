@@ -1,3 +1,4 @@
+
 <template>
 <body>
   <form>
@@ -47,7 +48,12 @@ h1{
 h2{
   text-align: center;
 }
-form#maintenance {
+<<<<<<< HEAD
+<<<<<<< HEAD
+body{
+}
+form {
+
   max-width: 420px;
   margin: 30px auto;
   background: #00d1b2;
@@ -73,3 +79,6 @@ input {
   color: #555;
 }
 </style>
+
+
+
