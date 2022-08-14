@@ -47,11 +47,10 @@ public class AuthenticationController {
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-        System.out.println(authenticationToken);
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.createToken(authentication, false);
-        
+
         User user = userDao.findByUsername(loginDto.getUsername());
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -66,7 +65,7 @@ public class AuthenticationController {
             User user = userDao.findByUsername(newUser.getUsername());
             throw new UserAlreadyExistsException();
         } catch (UsernameNotFoundException e) {
-            userDao.create(newUser.getUsername(),newUser.getPassword(), newUser.getRole(), newUser.getQuestionOne(), newUser.getQuestionTwo(), newUser.getAnswerOne(), newUser.getAnswerTwo());
+            userDao.create(newUser.getUsername(), newUser.getPassword(), newUser.getRole(), newUser.getQuestionOne(), newUser.getQuestionTwo(), newUser.getAnswerOne(), newUser.getAnswerTwo());
         }
     }
 
@@ -93,15 +92,14 @@ public class AuthenticationController {
         }
 
         @JsonProperty("user")
-		public User getUser() {
-			return user;
-		}
+        public User getUser() {
+            return user;
+        }
 
-		public void setUser(User user) {
-			this.user = user;
-		}
+        public void setUser(User user) {
+            this.user = user;
+        }
     }
-
 
 
     @RequestMapping(path = "user/retrieval/question/{username}", method = RequestMethod.POST)
@@ -110,24 +108,18 @@ public class AuthenticationController {
         String question = null;
         count++;
         User user = userDao.findByUsername(username);
-        if(user.getUsername().equalsIgnoreCase(username))
-        {
+        if (user.getUsername().equalsIgnoreCase(username)) {
             question = userDao.getQuestionOne(user.getId());
-            if(question == null)
-            {
+            if (question == null) {
                 throw new RetrievalException();
             }
-        }
-        else{
-           throw new UserNotFoundException();
+        } else {
+            throw new UserNotFoundException();
         }
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        for(String aQuestion : possibleQuestions)
-        {
+        for (String aQuestion : possibleQuestions) {
 
-            if(bcrypt.matches(aQuestion, question))
-            {
-                System.out.println(aQuestion);
+            if (bcrypt.matches(aQuestion, question)) {
                 return aQuestion;
             }
         }
@@ -136,18 +128,14 @@ public class AuthenticationController {
 
     @RequestMapping(path = "user/retrieval/answer/{username}/{answer}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public boolean checkAnswerOne( @PathVariable String username, @PathVariable String answer) throws UserNotFoundException, RetrievalException {
+    public boolean checkAnswerOne(@PathVariable String username, @PathVariable String answer) throws UserNotFoundException, RetrievalException {
         User user = userDao.findByUsername(username);
         String resp = userDao.getAnswerOne(user.getId());
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         boolean check = bcrypt.matches(answer, resp);
-        System.out.println(answer);
-
-        if(check)
-        {
+        if (check) {
             return true;
-        }
-        else{
+        } else {
             throw new RetrievalException();
         }
     }
@@ -159,12 +147,9 @@ public class AuthenticationController {
         String resp = userDao.getAnswerTwo(user.getId());
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         boolean check = bcrypt.matches(answer, resp);
-        System.out.println(answer);
-        if(check)
-        {
+        if (check) {
             return true;
-        }
-        else{
+        } else {
             throw new RetrievalException();
         }
     }
@@ -172,19 +157,14 @@ public class AuthenticationController {
     @RequestMapping(path = "user/retrieve/password/{username}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void updatePassword(@RequestBody PasswordRetrieval password, @PathVariable String username) throws RetrievalException {
-        if(count > 0)
-        {
-            int userID = (userDao.findIdByUsername(username));
-            System.out.println(password.getPassword());
-            System.out.println(password.getHash());
-            BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-            boolean hash1 = bcrypt.matches(password.getHash(), userDao.getAnswerOne(userID));
-            boolean hash2 = bcrypt.matches(password.getHash(), userDao.getAnswerOne(userID));
-            if(hash2 || hash1)
+        int userID = (userDao.findIdByUsername(username));
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        boolean hash1 = bcrypt.matches(password.getHash(), userDao.getAnswerOne(userID));
+        boolean hash2 = bcrypt.matches(password.getHash(), userDao.getAnswerOne(userID));
+        if (hash2 || hash1) {
             userDao.updatePassword(userDao.findIdByUsername(username), password.getPassword());
-            count = 0;
         }
-        else{
+        else {
             throw new RetrievalException();
         }
     }
@@ -194,22 +174,17 @@ public class AuthenticationController {
     public String forgotPasswordQuestionTwo(@PathVariable String username, @RequestBody String[] possibleQuestions) throws UserNotFoundException, RetrievalException {
         String question = null;
         User user = userDao.findByUsername(username);
-        if(user.getUsername().equalsIgnoreCase(username))
-        {
+        if (user.getUsername().equalsIgnoreCase(username)) {
             question = userDao.getQuestionTwo(user.getId());
-            if(question == null)
-            {
+            if (question == null) {
                 throw new RetrievalException();
             }
-        }
-        else{
+        } else {
             throw new UserNotFoundException();
         }
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        for(String aQuestion : possibleQuestions)
-        {
-            if(bcrypt.matches(aQuestion, question))
-            {
+        for (String aQuestion : possibleQuestions) {
+            if (bcrypt.matches(aQuestion, question)) {
                 System.out.println(aQuestion);
                 return aQuestion;
             }
@@ -220,11 +195,9 @@ public class AuthenticationController {
     @PreAuthorize("hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "user/set/rental", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void setUserToProperty(@RequestBody @Valid UserRental uR, Principal principal) throws UserToPropertyException
-    {
+    public void setUserToProperty(@RequestBody @Valid UserRental uR, Principal principal) throws UserToPropertyException {
         boolean setUSer = userDao.setUserToProperty(uR.getUserID(), uR.getRentalID(), principal.getName());
-        if(!setUSer)
-        {
+        if (!setUSer) {
             throw new UserToPropertyException();
         }
     }
@@ -232,11 +205,9 @@ public class AuthenticationController {
     @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_LANDLORD')")
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "user/set/maintenance", method = RequestMethod.POST)
-    public void setUserToMaintenance(@RequestBody @Valid UserMaintenance uR, Principal principal) throws UserToMaintenanceException
-    {
+    public void setUserToMaintenance(@RequestBody @Valid UserMaintenance uR, Principal principal) throws UserToMaintenanceException {
         boolean setUser = userDao.setUserToMaintenance(uR.getUserID(), uR.getMaintenanceID(), principal.getName());
-        if(!setUser)
-        {
+        if (!setUser) {
             throw new UserToMaintenanceException();
         }
     }
