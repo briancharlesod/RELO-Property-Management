@@ -105,6 +105,7 @@ public class JdbcRentalDao implements RentalDao{
             }
         }catch (Exception e)
         {
+            System.out.println(e);
             System.out.println("Could not find any properties");
         }
         return rentalList;
@@ -230,7 +231,7 @@ public class JdbcRentalDao implements RentalDao{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return rentalID;
+        return false;
     }
 
     @Override

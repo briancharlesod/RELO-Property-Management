@@ -66,6 +66,7 @@ public class RentalController {
         return rentalDao.getAllRents(id, principal.getName());
     }
 
+
     @RequestMapping(path = "/rental/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Rental viewSpecificProperty(@PathVariable int id) throws AvailablePropertyException {
@@ -125,6 +126,15 @@ public class RentalController {
         }
         return rentalList;
     }
+
+
+    @CrossOrigin
+    @RequestMapping(path = "/rental", method = RequestMethod.PUT)
+    public boolean updateRental(@RequestBody Rental rental) {
+        return dao.updateProperty(rental);
+
+    }
+
 
 
 

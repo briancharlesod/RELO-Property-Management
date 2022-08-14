@@ -48,9 +48,13 @@ h1{
 h2{
   text-align: center;
 }
+<<<<<<< HEAD
 body{
 }
 form {
+=======
+form#maintenance {
+>>>>>>> 8e740f34cd1b31daaf2e1fff784d7565710ca0e0
   max-width: 420px;
   margin: 30px auto;
   background: #00d1b2;

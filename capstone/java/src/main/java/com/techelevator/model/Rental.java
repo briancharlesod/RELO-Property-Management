@@ -90,19 +90,19 @@ public class Rental {
         this.address = address;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public String getBedroom() {
+    public double getBedroom() {
         return bedroom;
     }
 
-    public void setBedroom(String bedroom) {
+    public void setBedroom(double bedroom) {
         this.bedroom = bedroom;
     }
 
