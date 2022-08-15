@@ -10,7 +10,6 @@
 <button class="button is-primary" v-on:click="clearForm(); showAddForm = false">Back</button>
 </div>
 
-
   <form id="manageProps" v-on:submit.prevent="submitRental(); landlordHome">
 
     <div id = "container">

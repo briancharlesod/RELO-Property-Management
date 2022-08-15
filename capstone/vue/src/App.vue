@@ -54,7 +54,7 @@
               <div class="buttons">
                 <a class="button is-primary">
                   <router-link :to="{ name: 'register' }">
-                    <strong>Sign up</strong>
+                    Sign up
                   </router-link>
                 </a>
                 <router-link :to="{ name: 'login' }" v-if="Object.keys(this.$store.state.user).length === 0">
