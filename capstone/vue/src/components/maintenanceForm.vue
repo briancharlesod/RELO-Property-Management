@@ -1,7 +1,7 @@
 
 <template>
 <body>
-  <form>
+  <form id="maintenance">
 <h1 class="subtitle"> <img id="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsdKWpDUN34PFuI52xPmmvYDI-okHioswhgA&usqp=CAU" /></h1>
 <h2 class="subtitle">Maintenance Request Form</h2>
     <label>Email:</label>
@@ -48,11 +48,9 @@ h1{
 h2{
   text-align: center;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
 body{
 }
-form {
+form#maintenance {
 
   max-width: 420px;
   margin: 30px auto;

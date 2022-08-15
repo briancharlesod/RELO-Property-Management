@@ -90,7 +90,7 @@ data() {
                 address: "",
                 bedroom: "",
                 bathroom: "",
-                typeOfResidence: "",
+                typeOfResidence: "house",
                 isRented: false,
                 price: "",
                 description: '',
@@ -121,8 +121,8 @@ methods: {
       this.newProperty.price = rental.price;
       this.newProperty.bedroom = rental.bedroom;
       this.newProperty.address = rental.address;
-      this.newProperty.isRented = rental.rented;
-      this.newProperty.typeOfResidence = rental.typeOfResidence;
+      //this.newProperty.isRented = rental.rented;
+      //this.newProperty.typeOfResidence = rental.typeOfResidence;
       this.newProperty.description = rental.description;
       this.newProperty.imgURL = rental.imgURL;
     },
@@ -160,7 +160,7 @@ methods: {
       this.newProperty.bedroom = '';
       this.newProperty.address = '';
       this.newProperty.isRented = false;
-      this.newProperty.typeOfResidence = '';
+      //this.newProperty.typeOfResidence = '';
       this.newProperty.description = '';
       this.newProperty.imgURL = 'placeholder',
       this.newProperty.rentalID = 0
