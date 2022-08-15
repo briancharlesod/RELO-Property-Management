@@ -191,8 +191,9 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public boolean setUserToProperty(int userID, int rentalID, String username) {
-        if(!getRole(userID).contains("RENTER")){
+    public boolean setUserToProperty(String userID, int rentalID, String username) {
+        int usersid = getUserIDFromUsername(userID);
+        if(!getRole(usersid).contains("RENTER")){
             System.out.println("Enter a renter");
             return false;
         }
@@ -209,7 +210,7 @@ public class JdbcUserDao implements UserDao {
                 "Where rental_id = ?; " +
                 "Commit;";
         try{
-            jdbcTemplate.update(sql, userID, rentalID, rentalID);
+            jdbcTemplate.update(sql, usersid, rentalID, rentalID);
             return true;
         }catch (Exception e)
         {
