@@ -22,7 +22,7 @@ public interface RentalDao {
 
     int addNewProperty(Rental rental, String username);
 
-    boolean updateProperty(Rental rental);
+    boolean updateProperty(Rental rental, String username);
 
     boolean payRent(PaymentClass rent, String username);
 

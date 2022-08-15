@@ -2,15 +2,16 @@
 <div id="container">
  
   <div v-show="showAddForm">
+    <!--Nav Buttons  -->
     <div id="editButtons">
-  <button class="button is-primary">Assign Renters</button>
+  <button class="button is-primary" v-on:click="showAddForm = false; showAssignRenter = true">Assign Renters</button>
 <button class="button is-primary">View Maintenance Requests</button>
 <button class="button is-primary">View Rents</button>
 <button class="button is-primary">Delete Property</button>
-<button class="button is-primary" v-on:click="clearForm(); showAddForm = false">Back</button>
+<button class="button is-primary" v-on:click="clearForm(); showAddForm = false; showLandlordApts = true; showAssignRenter = false ">Back</button>
 </div>
 
-
+<!--Update or Add Form -->
   <form id="manageProps" v-on:submit.prevent="submitRental(); landlordHome">
 
     <div id = "container">
@@ -50,29 +51,39 @@
 </div>
 
 <input id="saveButton" type="submit" class="button is-primary" value="SAVE" />
-
   </form>
-
-  
-
-
   </div>
 
 
   <!--List Apartments by landlord -->
-<div id="listApartments" v-show="!showAddForm">
+<div id="listApartments" v-show="showLandlordApts">
 <div id="houseCard" v-for="apartment in apartments" v-bind:key="apartment.id" class="card" >
       <p>{{apartment.address}}</p>
       <img v-bind:src="apartment.imgURL" alt="Placeholder image" class="is-inline-block" />
       <p class="content">{{apartment.typeOfResidence}}</p>
       <p class="content">${{apartment.price}}.00</p>
-      <button class="button" v-on:click="editForm(apartment); showAddForm = true">EDIT</button>
+      <button class="button" v-on:click="editForm(apartment); showAddForm = true; showLandlordApts = false">EDIT</button>
     </div>
 <div id="houseCard" class="card" v-on:click="showAddForm = true">
   <p class="is-size-1">+</p>
 <p class="is-size-4">Add New Property</p>
 </div>
 </div>
+
+<!--Assign Renters -->
+<div id="assignRenter" v-show="showAssignRenter">
+
+<button v-show="!addRenter" class="button" v-on:click="addRenter = true;">Add new Renter +</button>
+<form v-on:submit.prevent="addRenterToRental()" v-show="addRenter">
+<input v-model="renterToAdd" type="text"  />
+<input class="input" type="submit" value="Submit" />
+
+</form>
+<button class="button" v-on:click="renterToAdd = ''; showAssignRenter = false; showAddForm = true">Cancel</button>
+</div>
+
+
+
 </div>
 
 </template>
@@ -98,7 +109,12 @@ data() {
                 landlord_id: this.$store.state.user.id
             },
         showAddForm: false,
-        apartments: []
+        showLandlordApts: true,
+        showAssignRenter: false,
+        apartments: [],
+        renters: [],
+        renterToAdd: '',
+        addRenter: false
     }
 },
 
@@ -106,6 +122,8 @@ created() {
       this.getApartments();
       this.clearForm();
       this.showAddForm = false;
+      this.showLandlordApts = true;
+      this.showAssignRenter = false;
       console.log(this.$store.state.user)
       
     },
@@ -138,6 +156,21 @@ methods: {
         this.showAddForm = false;
       }
       
+    },
+
+    addRenterToRental() {
+        try {
+          ApartmentService.addRenterToRental(this.renterToAdd, this.newProperty.rentalID).then(response => {
+            if (response.status == 200) {
+              this.renterToAdd = '';
+              alert("Worked add renter");
+            }
+          })
+        } catch (e) {
+          console.log(e)
+        }
+
+
     },
 
     updateForm() {

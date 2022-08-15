@@ -11,6 +11,9 @@ getApartmentByLandlord(id) {
 
 updateApartment(rental) {
     return axios.put('http://localhost:9000/rental', rental)
-}
+},
 
+addRenterToRental(username, rentalID) {
+    return axios.post('http://localhoat:9000/user/set/rental', username, rentalID)
+}
 }

@@ -13,11 +13,11 @@ public class Rental {
     @NotBlank
     private String address;
     @Min(value = 0)
-    private double price;
+    private BigDecimal price;
     @NotNull
     @NotEmpty
     @NotBlank
-    private double bedroom;
+    private String bedroom;
     @Min(value = 1)
     private double bathroom;
     private boolean isRented;
@@ -36,7 +36,7 @@ public class Rental {
     @NotBlank
     private String picture;
 
-    public Rental(int landlord, int rentalID, String address, double price, double bedroom, double bathroom, boolean isRented, String typeOfResidence) {
+    public Rental(int landlord, int rentalID, String address, BigDecimal price, String bedroom, double bathroom, boolean isRented, String typeOfResidence) {
         this.rentalID = rentalID;
         this.address = address;
         this.price = price;

@@ -160,7 +160,7 @@ public class JdbcRentalDao implements RentalDao{
         {
             return null;
         }
-        List<Integer> allProps = rentalIDByLandlord(userID);
+        List<Integer> allProps = rentalIDByLandlord(userID, username);
         if(allProps.size() == 0)
         {
             return null;
@@ -321,8 +321,8 @@ public class JdbcRentalDao implements RentalDao{
         Rental rental = new Rental();
         rental.setAddress(result.getString("rental_address"));
         rental.setBathroom(result.getDouble("bathrooms"));
-        rental.setBedroom((result.getDouble("bedrooms")));
-        rental.setPrice(result.getDouble("rental_amount"));
+        rental.setBedroom((result.getString("bedrooms")));
+        rental.setPrice(result.getBigDecimal("rental_amount"));
         rental.setRentalID((result.getInt("rental_id")));
         rental.setRented(result.getBoolean("is_rented"));
         rental.setTypeOfResidence(result.getString("type_of_residence"));
