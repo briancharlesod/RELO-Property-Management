@@ -90,19 +90,19 @@ public class Rental {
         this.address = address;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public double getBedroom() {
+    public String getBedroom() {
         return bedroom;
     }
 
-    public void setBedroom(double bedroom) {
+    public void setBedroom(String bedroom) {
         this.bedroom = bedroom;
     }
 
@@ -144,5 +144,21 @@ public class Rental {
 
     public int getLandlord() {
         return landlord;
+    }
+
+    @Override
+    public String toString() {
+        return "Rental{" +
+                "rentalID=" + rentalID +
+                ", address='" + address + '\'' +
+                ", price=" + price +
+                ", bedroom='" + bedroom + '\'' +
+                ", bathroom=" + bathroom +
+                ", isRented=" + isRented +
+                ", typeOfResidence='" + typeOfResidence + '\'' +
+                ", landlord=" + landlord +
+                ", description='" + description + '\'' +
+                ", picture='" + picture + '\'' +
+                '}';
     }
 }

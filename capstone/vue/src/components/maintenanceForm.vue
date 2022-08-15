@@ -48,7 +48,6 @@ h1{
 h2{
   text-align: center;
 }
-
 body{
 }
 form#maintenance {
