@@ -131,7 +131,7 @@ public class RentalController {
     @CrossOrigin
     @RequestMapping(path = "/rental", method = RequestMethod.PUT)
     public boolean updateRental(@RequestBody Rental rental) {
-        return dao.updateProperty(rental);
+        return rentalDao.updateProperty(rental);
 
     }
 

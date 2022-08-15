@@ -106,6 +106,7 @@ created() {
       this.getApartments();
       this.clearForm();
       this.showAddForm = false;
+      console.log(this.$store.state.user)
       
     },
 

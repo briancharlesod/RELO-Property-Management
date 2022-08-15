@@ -2,7 +2,8 @@
 <div>
   <browse />
 <!--
-  <div class="tabs" v-if="this.$store.status.user.authorities[0].name == 'ROLE_LANDLORD'">
+  <div class="tabs" v-show="this.$store.state.user.authorities[0].name == 'ROLE_LANDLORD'">
+    
   <ul>
     <li v-bind:class="{ 'is-active' :addPropsVar}" ><a @click="showManageProps = true" >Manage Properties</a></li>
     -----
@@ -15,8 +16,8 @@
 </div>
 
 <land-add-props v-show="showManageProps"/>
-
 -->
+
 </div>
 </template>
 
@@ -34,6 +35,7 @@ data() {
 
 created() {
   this.showManageProps = false;
+  console.log(this.$store.state.user.authorities[0].name)
 }
 
 }
