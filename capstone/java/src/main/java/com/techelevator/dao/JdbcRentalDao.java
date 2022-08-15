@@ -231,7 +231,7 @@ public class JdbcRentalDao implements RentalDao{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return rentalID;
     }
 
     @Override

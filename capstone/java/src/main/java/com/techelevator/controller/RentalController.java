@@ -82,8 +82,8 @@ public class RentalController {
     @RequestMapping(path = "/rental", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void addNewProperty(@RequestBody @Valid Rental request, Principal principal) throws AddPropertyException {
+        System.out.println(request);
         int id = rentalDao.addNewProperty(request, principal.getName());
-        System.out.println(principal.getName());
         if(id < 0)
         {
             throw new AddPropertyException();
@@ -116,7 +116,7 @@ public class RentalController {
         return rentAmount;
     }
     @PreAuthorize("hasRole('ROLE_LANDLORD')")
-    @RequestMapping(path = "/landlord/{id}")
+    @RequestMapping(path = "rental/landlord/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<Rental> byLandlord(@PathVariable int id, Principal principal)throws UnauthorizedAccessException{
         List<Rental> rentalList = rentalDao.propertiesByLandlord(id, principal.getName());
@@ -127,13 +127,6 @@ public class RentalController {
         return rentalList;
     }
 
-
-    @CrossOrigin
-    @RequestMapping(path = "/rental", method = RequestMethod.PUT)
-    public boolean updateRental(@RequestBody Rental rental) {
-        return dao.updateProperty(rental);
-
-    }
 
 
 
