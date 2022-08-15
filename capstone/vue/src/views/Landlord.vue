@@ -8,8 +8,8 @@
     <li v-bind:class="{ 'is-active' :updatePropsVar}"><a @click="updateProps">Update Properties</a></li>
     <li v-bind:class="{ 'is-active' : viewRentsVar}"><a @click="viewRents">View Rents</a></li>
     <li v-bind:class="{ 'is-active' :assignRentersVar}"><a @click="assignRenters">Assign Renters to Property</a></li>
-    <li v-bind:class="{ 'is-active' :assignMaintenanceVar}"> <a @click="assignMaintenance">Assign Maintenance Request</a></li>
-    --
+    <li v-bind:class="{ 'is-active' :assignMaintnanceVar}"> <a @click="assignMaintenance">Assign Maintenance Request</a></li>
+    
   </ul>
 </div>
 
@@ -30,6 +30,7 @@
 <script>
 
 import LandAddProps from '@/components/LandAddProps';
+
 
 export default {
   components: {

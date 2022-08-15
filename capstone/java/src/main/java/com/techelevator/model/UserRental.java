@@ -1,19 +1,20 @@
 package com.techelevator.model;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 public class UserRental {
 
-    @Min(value = 1)
-    int userID;
+    @NotNull
+    String userID;
     @Min(value = 1)
     int rentalID;
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 
