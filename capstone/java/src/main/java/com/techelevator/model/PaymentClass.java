@@ -1,5 +1,6 @@
 package com.techelevator.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class PaymentClass {
@@ -7,6 +8,15 @@ public class PaymentClass {
     String rent;
     String rentalID;
     String address;
+    BigDecimal rentAmount;
+
+    public BigDecimal getRentAmount() {
+        return rentAmount;
+    }
+
+    public void setRentAmount(BigDecimal rentAmount) {
+        this.rentAmount = rentAmount;
+    }
 
     public String getAddress() {
         return address;
