@@ -28,7 +28,6 @@
 </template>
 
 <script>
-
 import LandAddProps from '@/components/LandAddProps';
 
 
