@@ -11,7 +11,7 @@ import Employee from '../views/Employee.vue'
 import DetailedView from '../views/DetailedView.vue'
 import RetrievePassword from '../views/RetrievePassword.vue'
 import Reset from '../views/Reset.vue'
-
+import MaintenanceList from '../components/MaintenanceList.vue'
 Vue.use(Router)
 
 /**
@@ -106,7 +106,15 @@ const router = new Router({
       meta: {
         requiresAuth: false
       }
-    }
+    },
+    {
+      path: "/maintenance",
+      name: "maintenanceRequest",
+      component: MaintenanceList,
+      meta: {
+        requiresAuth: true
+      }
+    },
   ]
 })
 

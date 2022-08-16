@@ -1,5 +1,4 @@
 <template>
-
   <form>
 <h1 class="subtitle"> <img id="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsdKWpDUN34PFuI52xPmmvYDI-okHioswhgA&usqp=CAU" /></h1>
 <h2 class="subtitle">Rental Payment Form</h2>
@@ -36,7 +35,6 @@
  <button class="button">Cancel</button>
 </div>
   </form>
-
 </template>
 <script>
 export default {
@@ -83,8 +81,3 @@ input {
   color: #555;
 }
 </style>
-
-
-
-
-

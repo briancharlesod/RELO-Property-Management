@@ -61,8 +61,7 @@
                   <a class="button is-light"> Log in </a>
                 </router-link>
                 <router-link :to="{ name: 'logout' }" v-else>
-                  <a class="button is-light" :style="{color: '#00d1b2'}"> Log out </a>
-                </router-link>
+<a class="button is-light" style="color: rgb(0, 209, 178);margin-top: 5px;"> Log out </a>                </router-link>
               </div>
             </div>
           </div>
