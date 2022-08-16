@@ -1,5 +1,5 @@
 <template>
-  <table class="table">
+  <table class="table m-auto">
     <thead>
       <tr>
         <th><abbr title="Position">Num</abbr></th>
@@ -19,12 +19,12 @@
       </tr>
     </tfoot>
     <tbody>
-      <tr v-for="props in properties" v-bind:key="props">
-        <th>{{ props.num }}</th>
+      <tr v-for="(props, count) in properties" v-bind:key="props">
+        <th>{{ count + 1 }}</th>
         <td>{{ props.address }}</td>
-        <td>{{ props.rent }}</td>
-        <td>{{ props.daysTillDue }}</td>
-        <td>{{ props.status }}</td>
+        <td>${{ props.rentAmount }}</td>
+        <td>{{ dueOrOverdue(props.rent) }} Days</td>
+        <td>{{ status(props.rent) }}</td>
       </tr>
     </tbody>
   </table>
@@ -36,8 +36,6 @@ export default {
   data() {
     return {
       properties: [],
-      todaysDate: new Date(),
-      dueDate: "",
       rentedProperties: {
         num: "",
         address: "",
@@ -47,34 +45,36 @@ export default {
       },
     };
   },
-  method: {
-    difference(date1, date2) {
-      const date1utc = Date.UTC(
-        date1.getFullYear(),
-        date1.getMonth(),
-        date1.getDate()
-      );
-      const date2utc = Date.UTC(
-        date2.getFullYear(),
-        date2.getMonth(),
-        date2.getDate()
-      );
-      let day = 1000 * 60 * 60 * 24;
-      return (date2utc - date1utc) / day;
+  methods: {
+    status(date1){
+      if(this.dueOrOverdue(date1) > -1)
+      {
+        return "PAID";
+      }
+      return "OVERDUE"
+    },
+    dueOrOverdue(date1) {
+      let Date1 = new Date(date1);
+     let Date2 = new Date();
+     let newDate = Date2;
+      newDate.setMonth(newDate.getMonth() + 1);
+      newDate.setDate(0);
+      const diffTime = Math.abs(newDate - Date1);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      let daysInMonth = newDate.getDate();
+      if(diffDays < daysInMonth)
+      {
+          return Math.floor(Math.abs(newDate - new Date()) / (1000 * 60 * 60 * 24));
+      }
+      let daysInPastMonth = newDate;
+      daysInPastMonth.setMonth(newDate.getMonth() - 1);
+      return  Math.floor(Math.abs(newDate - new Date()) / (1000 * 60 * 60 * 24)) - daysInPastMonth.getDate();
     },
   },
   created() {
-    let daysTillDue = new Date();
-    daysTillDue.setMonth(daysTillDue.getMonth + 1);
-    daysTillDue.setDate(2);
     apartmentService.getRents(this.$store.state.user.id).then((response) => {
       if (response.status == 200) {
         this.properties = response.data;
-      }
-    });
-    apartmentService.getDueDate().then((res) => {
-      if (res.status == 200) {
-        this.dueDate = res.data;
       }
     });
   },

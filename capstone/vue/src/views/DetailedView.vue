@@ -8,13 +8,13 @@
   <div class="tile is-4 is-vertical is-parent">
     <div class="tile is-child box">
       <p class="title">Property Info</p>
-      <p class="is-size-4">Address: 123 Test Street {{property.city}} {{property.state}}, {{property.zipcode}}</p>
-      <p class="is-size-5">Rent: ${{property.price * 10}}/Month</p>
+      <p class="is-size-4">{{property.address}}</p>
+      <p class="is-size-5">Rent: ${{property.price}}/Month</p>
     </div>
     <div class="tile is-child box">
       <p class="title">Room Info</p>
-      <p class="is-size-4">Bedrooms: {{property.bedrooms}}</p>
-      <p class="is-size-4">Bathrooms: {{property.bathrooms}}</p>
+      <p class="is-size-4">Bedrooms: {{property.bedroom}}</p>
+      <p class="is-size-4">Bathrooms: {{property.bathroom}}</p>
     </div>
   </div>
   <div class="tile is-parent is-vertical">
@@ -23,18 +23,12 @@
       <p>
           {{property.description}}
       </p>
-      <p>
-          {{property.summary}}
-      </p>
-      <p>
-          {{property.space}}
-      </p>
      </div>
   </div>
     </div>
     <div class="tile is-child box">
       <p class="title">Photos</p>
-      <img v-bind:src="property.picture_url" alt="Placeholder image" class="is-inline-block" />
+      <img v-bind:src="property.imgURL" alt="Placeholder image" class="is-inline-block" />
 
      </div>
   </div>
@@ -51,9 +45,7 @@ data() {
 },
 
 created() {
-    this.property = this.$store.state.house.find(prop => {
-        return prop.id === this.$route.params.id;
-    });
+    this.property = this.$store.state.house;
 },
 methods: {
     goBack()

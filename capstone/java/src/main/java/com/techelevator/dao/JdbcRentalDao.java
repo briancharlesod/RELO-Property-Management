@@ -167,7 +167,7 @@ public class JdbcRentalDao implements RentalDao{
         }
         List<PaymentClass> rentedProps = new ArrayList<>();
         String statement = getStatement(allProps);
-        String sql = "Select rental_property.rental_address, user_rental.last_paid, rental_property.rental_id " +
+        String sql = "Select rental_property.rental_address, user_rental.last_paid, rental_property.rental_id, rental_property.rental_amount " +
                 "From rental_property " +
                 "Join user_rental Using (rental_id) " +
                 "Where rental_id In "+statement+";";
@@ -181,6 +181,7 @@ public class JdbcRentalDao implements RentalDao{
                 temp.setRent(result.getString("last_paid"));
                 System.out.println(temp.getRent());
                 temp.setRentalID(result.getString("rental_id"));
+                temp.setRentAmount(result.getBigDecimal("rental_amount"));
                 System.out.println(temp.getRentalID());
                 rentedProps.add(temp);
                 System.out.println(rentedProps.size());

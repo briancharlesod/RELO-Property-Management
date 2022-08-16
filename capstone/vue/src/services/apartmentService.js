@@ -21,6 +21,10 @@ getDueDate(){
     return axios.get('http://localhost:9000/rent')
 },
 
+getAvailableProps(){
+    return axios.get('http://localhost:9000/rental')
+},
+
 addRenterToRental(userRental) {
     return axios.post('http://localhost:9000/user/set/rental', userRental)
 },
