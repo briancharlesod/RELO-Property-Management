@@ -6,9 +6,9 @@
     </div>-->
     <div id="page">
     <div id="cardPond">
-    <div id="houseCard" v-for="house in houses" v-bind:key="house.id" class="card" v-on:click="viewCardDetails(house.id)">
+    <div id="houseCard" v-for="(house, count) in houses" v-bind:key="house.id" class="card" v-on:click="viewCardDetails(count, house)">
       <p>{{house.name}}</p>
-      <img v-bind:src="house.thumbnail_url" alt="Placeholder image" class="is-inline-block" />
+      <img v-bind:src="house.imgURL" alt="Placeholder image" class="is-inline-block" />
       <p class="content">{{house.address}}</p>
       <p class="content">${{house.price * 10}}.00</p>
     </div>
@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import ApiService from '../services/newapiservice'
+import apartmentService from '../services/apartmentService'
 export default {
   name: "home",
   data() {
@@ -26,15 +26,15 @@ export default {
     }
   },
    methods: {
-    viewCardDetails(cardID) {
-      this.$store.commit("SET_HOUSES", this.houses);
+    viewCardDetails(cardID, house) {
+      this.$store.commit("SET_HOUSES", house);
       this.$router.push(`/${cardID}`);
 
     },
    },
 created() {
- ApiService.getHouses().then((response => {
-   this.houses = response.data.content.list;
+ apartmentService.getAvailableProps().then((response => {
+   this.houses = response.data;
  }));
 }
 };
