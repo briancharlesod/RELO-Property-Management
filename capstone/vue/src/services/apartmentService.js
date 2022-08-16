@@ -21,7 +21,7 @@ getDueDate(){
     return axios.get('http://localhost:9000/rent')
 },
 
-addRenterToRental(username, rentalID) {
-    return axios.post('http://localhoat:9000/user/set/rental', username, rentalID)
+addRenterToRental(userRental) {
+    return axios.post('http://localhost:9000/user/set/rental', userRental)
 }
 }

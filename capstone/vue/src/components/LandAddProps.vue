@@ -74,12 +74,13 @@
 <div id="assignRenter" v-show="showAssignRenter">
 
 <button v-show="!addRenter" class="button" v-on:click="addRenter = true;">Add new Renter +</button>
+
 <form v-on:submit.prevent="addRenterToRental()" v-show="addRenter">
-<input v-model="renterToAdd" type="text"  />
-<input class="input" type="submit" value="Submit" />
+<input v-model="renterToAdd.userID" type="text"  />
+<input class="button" type="submit" value="Submit" />
 
 </form>
-<button class="button" v-on:click="renterToAdd = ''; showAssignRenter = false; showAddForm = true">Cancel</button>
+<button class="button" v-on:click="showAssignRenter = false; showAddForm = true">Cancel</button>
 </div>
 
 
@@ -113,7 +114,10 @@ data() {
         showAssignRenter: false,
         apartments: [],
         renters: [],
-        renterToAdd: '',
+        renterToAdd: {
+          userID: '',
+          rentalID: ''
+        },
         addRenter: false
     }
 },
@@ -159,10 +163,14 @@ methods: {
     },
 
     addRenterToRental() {
+      this.renterToAdd.rentalID = parseInt(this.newProperty.rentalID);
+      
+
         try {
           ApartmentService.addRenterToRental(this.renterToAdd, this.newProperty.rentalID).then(response => {
-            if (response.status == 200) {
-              this.renterToAdd = '';
+            if (response.status == 201) {
+              this.renterToAdd.rentalID = '';
+              this.renterToAdd.userID = '';
               alert("Worked add renter");
             }
           })

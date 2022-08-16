@@ -198,8 +198,8 @@ public class AuthenticationController {
     @PreAuthorize("hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "user/set/rental", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void setUserToProperty(@RequestBody @Valid UserRental uR, Principal principal) throws UserToPropertyException {
-        boolean setUSer = userDao.setUserToProperty(uR.getUserID(), uR.getRentalID(), principal.getName());
+    public void setUserToProperty(@RequestBody @Valid UserRental ur, Principal principal) throws UserToPropertyException {
+        boolean setUSer = userDao.setUserToProperty(ur.getUserID(), ur.getRentalID(), principal.getName());
         if (!setUSer) {
             throw new UserToPropertyException();
         }
