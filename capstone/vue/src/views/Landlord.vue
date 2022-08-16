@@ -1,44 +1,60 @@
 <template>
     <div id = "container">
+        <!--
   <div class="tabs">
   <ul>
     <li v-bind:class="{ 'is-active' :addPropsVar}" ><a @click="showManageProps = true" >Manage Properties</a></li>
-    <!--
+    
     <li v-bind:class="{ 'is-active' :updatePropsVar}"><a @click="updateProps">Update Properties</a></li>
     <li v-bind:class="{ 'is-active' : viewRentsVar}"><a @click="viewRents">View Rents</a></li>
     <li v-bind:class="{ 'is-active' :assignRentersVar}"><a @click="assignRenters">Assign Renters to Property</a></li>
-    <li v-bind:class="{ 'is-active' :assignMaintenanceVar}"> <a @click="assignMaintenance">Assign Maintenance Request</a></li>
-    -->
+    <li v-bind:class="{ 'is-active' :assignMaintnanceVar}"> <a @click="assignMaintenance">Assign Maintenance Request</a></li>
+    
   </ul>
 </div>
 
 
-<!--
+--
 <div v-if="addPropsVar">
     <h3>Add Properties</h3>
     <land-add-props />
     
 </div>
 -->
+<<<<<<< HEAD
 
 <maintenance-list />
 <land-add-props v-show="showManageProps" />
 <browse v-show="!showManageProps"/>
+=======
+<land-add-props />
+
+>>>>>>> eb209074737b4d082c0145579a913b166a03232b
     </div>
 
 </template>
 
 <script>
+<<<<<<< HEAD
 import MaintenanceList from '../components/MaintenanceList';
 import browse from '../components/browse'
+=======
+
+>>>>>>> eb209074737b4d082c0145579a913b166a03232b
 import LandAddProps from '@/components/LandAddProps';
 
 
 export default {
   components: {
+<<<<<<< HEAD
        LandAddProps,
        browse,
        MaintenanceList
+=======
+       LandAddProps
+       
+    
+>>>>>>> eb209074737b4d082c0145579a913b166a03232b
   },
     data() {
         return {

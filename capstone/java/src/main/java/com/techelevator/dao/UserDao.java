@@ -18,7 +18,7 @@ public interface UserDao {
 
     List<Integer> getAllPropertiesByUser(int userID);
 
-    boolean setUserToProperty(int userID, int rentalID, String username);
+    boolean setUserToProperty(String userID, int rentalID, String username);
 
     boolean setUserToMaintenance(int userID, int maintenanceID, String username);
 

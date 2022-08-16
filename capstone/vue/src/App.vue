@@ -27,7 +27,7 @@
             <span aria-hidden="true"></span>
           </a>
         </div>
-
+ 
         <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-start">
             <a class="navbar-item">
@@ -54,7 +54,7 @@
               <div class="buttons">
                 <a class="button is-primary">
                   <router-link :to="{ name: 'register' }">
-                    <strong>Sign up</strong>
+                    Sign up
                   </router-link>
                 </a>
                 <router-link :to="{ name: 'login' }" v-if="Object.keys(this.$store.state.user).length === 0">
@@ -74,6 +74,21 @@
         v-if="$store.state.token != ''"
         >Logout</router-link
       >-->
+
+      <div class="tabs" >
+  <ul v-if="Object.keys(this.$store.state.user).length != 0">
+    <li v-bind:class="{ 'is-active' :addPropsVar}"><a @click="$router.push('/landlord')">Manage Properties</a></li>
+    <li v-bind:class="{ 'is-active' :addPropsVar}"><a @click="$router.push('/renter')">Your Apartments</a></li>
+    <!--
+    <li v-bind:class="{ 'is-active' :updatePropsVar}"><a @click="updateProps">Update Properties</a></li>
+    <li v-bind:class="{ 'is-active' : viewRentsVar}"><a @click="viewRents">View Rents</a></li>
+    <li v-bind:class="{ 'is-active' :assignRentersVar}"><a @click="assignRenters">Assign Renters to Property</a></li>
+    <li v-bind:class="{ 'is-active' :assignMaintenanceVar}"> <a @click="assignMaintenance">Assign Maintenance Request</a></li>
+    -->
+  </ul>
+</div>
+
+
     </div>
     <router-view />
 
