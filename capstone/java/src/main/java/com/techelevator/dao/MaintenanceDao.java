@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.Maintenance;
+import com.techelevator.model.Rental;
 import com.techelevator.model.User;
 import com.techelevator.model.UserMaintenance;
 
@@ -15,4 +16,6 @@ public interface MaintenanceDao {
     Maintenance viewSpecificMaintenanceRequests(int maintenanceID, String username);
 
     boolean completeMaintenanceRequest(int maintenanceID, String username);
+
+    List<Maintenance> maintenanceByProperty(int rental_id, String username);
 }
