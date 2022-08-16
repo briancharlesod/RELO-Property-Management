@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.Renter;
 import com.techelevator.model.User;
 
 import java.util.List;
@@ -31,5 +32,7 @@ public interface UserDao {
     String getQuestionOne(int userID);
 
     boolean updatePassword(int userID, String password);
+
+    List<Renter> getUsersOfRentersByRentalId(int rental_id);
 
 }

@@ -196,6 +196,8 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
         return rentalList;
     }
 
+
+
     @Override
     public boolean completeMaintenanceRequest(int maintenanceID, String username) {
         if(getLandlordFromRentalID(getRentalIDFromMaintenanceID(maintenanceID)) != getUserIDFromUsername(username))
