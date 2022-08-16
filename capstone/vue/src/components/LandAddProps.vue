@@ -4,7 +4,7 @@
   <div v-show="showAddForm">
     <!--Nav Buttons  -->
     <div id="editButtons">
-  <button class="button is-primary" v-on:click="showAddForm = false; showAssignRenter = true">Assign Renters</button>
+  <button class="button is-primary" v-on:click="getRenters(); showAddForm = false; showAssignRenter = true;">Assign Renters</button>
 <button class="button is-primary">View Maintenance Requests</button>
 <button class="button is-primary">View Rents</button>
 <button class="button is-primary">Delete Property</button>
@@ -71,16 +71,20 @@
 </div>
 
 <!--Assign Renters -->
-<div id="assignRenter" v-show="showAssignRenter">
+<div id="assignRenter" v-show="showAssignRenter">&nbsp;
 
-<button v-show="!addRenter" class="button" v-on:click="addRenter = true;">Add new Renter +</button>
 
-<form v-on:submit.prevent="addRenterToRental()" v-show="addRenter">
-<input v-model="renterToAdd.userID" type="text"  />
-<input class="button" type="submit" value="Submit" />
+<div id="renterBox" v-for="user in users" v-bind:key="user.user_id" class="box has-text-weight-bold">
+  {{ user.username}}          {{user.last_paid}}
+</div>&nbsp;
+<button v-show="!addRenter" class="button is-primary" v-on:click="addRenter = true;">Add new Renter +</button>
+
+<form v-on:submit.prevent="addRenterToRental(); addRenter = false" v-show="addRenter">
+<input class="input" v-model="renterToAdd.userID" type="text"  />
+<input class="button is-primary" type="submit" value="Submit" />
 
 </form>
-<button class="button" v-on:click="showAssignRenter = false; showAddForm = true">Cancel</button>
+<button class="button is-primary" v-on:click="showAssignRenter = false; showAddForm = true; users = []; addRenter = false">Cancel</button>
 </div>
 
 
@@ -118,7 +122,8 @@ data() {
           userID: '',
           rentalID: ''
         },
-        addRenter: false
+        addRenter: false,
+        users: []
     }
 },
 
@@ -195,6 +200,15 @@ methods: {
       }
     },
 
+    getRenters() {
+      try {
+      ApartmentService.getRenters(this.newProperty.rentalID).then(response => {
+        this.users = response.data
+      })
+      } catch (e) {
+        console.log(e)
+      }
+    },
 
     clearForm() {
       this.newProperty.bathroom = '';
@@ -248,7 +262,11 @@ div#addCard {
   width: 300px;
 }
 
-
+div#renterBox {
+  margin-top: 25px;
+  background: rgb(243, 133, 151);
+  width: 500px;
+}
 
 
 </style>
