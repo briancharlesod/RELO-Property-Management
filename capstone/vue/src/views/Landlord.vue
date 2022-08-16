@@ -3,12 +3,12 @@
   <div class="tabs">
   <ul>
     <li v-bind:class="{ 'is-active' :addPropsVar}" ><a @click="showManageProps = true" >Manage Properties</a></li>
-    <!--
+    
     <li v-bind:class="{ 'is-active' :updatePropsVar}"><a @click="updateProps">Update Properties</a></li>
     <li v-bind:class="{ 'is-active' : viewRentsVar}"><a @click="viewRents">View Rents</a></li>
     <li v-bind:class="{ 'is-active' :assignRentersVar}"><a @click="assignRenters">Assign Renters to Property</a></li>
-    <li v-bind:class="{ 'is-active' :assignMaintenanceVar}"> <a @click="assignMaintenance">Assign Maintenance Request</a></li>
-    -->
+    <li v-bind:class="{ 'is-active' :assignMaintnanceVar}"> <a @click="assignMaintenance">Assign Maintenance Request</a></li>
+    
   </ul>
 </div>
 
@@ -22,18 +22,20 @@
 -->
 <land-add-props v-show="showManageProps" />
 <browse v-show="!showManageProps"/>
-    </div>
-
+<view-rents v-show="viewRentsVar"/>
+</div>
 </template>
 
 <script>
 import browse from '../components/browse'
 import LandAddProps from '@/components/LandAddProps';
+import ViewRents from '../components/ViewRents.vue';
 
 export default {
   components: {
        LandAddProps,
-       browse
+       browse,
+    ViewRents
     
   },
     data() {

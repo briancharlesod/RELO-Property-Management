@@ -93,9 +93,9 @@ public class JdbcUserDaoTests extends BaseDaoTests {
     public void happyPathSetUserToRental()
     {
         User newUser = USER_4;
-        int property = 1;
+        int property = 3;
         String landlordName = "landlord1";
-        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        boolean test = sut.setUserToProperty(newUser.getUsername(), property, landlordName);
         Assert.assertTrue(test);
     }
 
@@ -105,7 +105,7 @@ public class JdbcUserDaoTests extends BaseDaoTests {
         User newUser = USER_4;
         int property = 1;
         String landlordName = "tom";
-        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        boolean test = sut.setUserToProperty(newUser.getUsername(), property, landlordName);
         Assert.assertFalse(test);
     }
 
@@ -115,7 +115,7 @@ public class JdbcUserDaoTests extends BaseDaoTests {
         User newUser = USER_4;
         int property = 1;
         String landlordName = "landlord2";
-        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        boolean test = sut.setUserToProperty(newUser.getUsername(), property, landlordName);
         Assert.assertFalse(test);
     }
 
@@ -125,7 +125,7 @@ public class JdbcUserDaoTests extends BaseDaoTests {
         User newUser = USER_3;
         int property = 1;
         String landlordName = "landlord1";
-        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        boolean test = sut.setUserToProperty(newUser.getUsername(), property, landlordName);
         Assert.assertFalse(test);
     }
 
@@ -135,7 +135,7 @@ public class JdbcUserDaoTests extends BaseDaoTests {
         User newUser = USER_4;
         int property = 0;
         String landlordName = "tom";
-        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        boolean test = sut.setUserToProperty(newUser.getUsername(), property, landlordName);
         Assert.assertFalse(test);
     }
 
@@ -145,7 +145,7 @@ public class JdbcUserDaoTests extends BaseDaoTests {
         User newUser = USER_3;
         int property = 1;
         String landlordName = "tom";
-        boolean test = sut.setUserToProperty(newUser.getId(), property, landlordName);
+        boolean test = sut.setUserToProperty(newUser.getUsername(), property, landlordName);
         Assert.assertFalse(test);
     }
 
