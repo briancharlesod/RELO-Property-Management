@@ -79,6 +79,8 @@
 <script>
 import ApartmentService from '../services/apartmentService'
 
+
+
 export default {
 data() {
     return {
@@ -97,7 +99,8 @@ data() {
                 landlord_id: this.$store.state.user.id
             },
         showAddForm: false,
-        apartments: []
+        apartments: [],
+        showRents: false,
     }
 },
 

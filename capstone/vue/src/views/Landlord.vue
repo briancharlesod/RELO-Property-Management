@@ -3,23 +3,23 @@
   <div class="tabs">
   <ul>
     <li v-bind:class="{ 'is-active' :addPropsVar}" ><a @click="addProps" >Manage Properties</a></li>
-    
+    <!--
     <li v-bind:class="{ 'is-active' :updatePropsVar}"><a @click="updateProps">Update Properties</a></li>
     <li v-bind:class="{ 'is-active' : viewRentsVar}"><a @click="viewRents">View Rents</a></li>
     <li v-bind:class="{ 'is-active' :assignRentersVar}"><a @click="assignRenters">Assign Renters to Property</a></li>
-    <li v-bind:class="{ 'is-active' :assignMaintenanceVar}"> <a @click="assignMaintenance">Assign Maintenance Request</a></li>
+    <li v-bind:class="{ 'is-active' :assignMaintenanceVar}"> <a @click="assignMaintenance">Assign Maintenance Request</a></li>-->
     
   </ul>
 </div>
 
 
-<!--
+
 <div v-if="addPropsVar">
     <h3>Add Properties</h3>
     <land-add-props />
     
 </div>
--->
+
 <land-add-props v-if="addPropsVar" />
 <browse v-show="!showManageProps"/>
 <view-rents v-if="viewRentsVar"/>
