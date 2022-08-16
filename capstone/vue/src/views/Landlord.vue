@@ -21,40 +21,21 @@
     
 </div>
 -->
-<<<<<<< HEAD
-
-<maintenance-list />
-<land-add-props v-show="showManageProps" />
-<browse v-show="!showManageProps"/>
-=======
 <land-add-props />
 
->>>>>>> eb209074737b4d082c0145579a913b166a03232b
     </div>
 
 </template>
 
 <script>
-<<<<<<< HEAD
-import MaintenanceList from '../components/MaintenanceList';
-import browse from '../components/browse'
-=======
-
->>>>>>> eb209074737b4d082c0145579a913b166a03232b
 import LandAddProps from '@/components/LandAddProps';
 
 
 export default {
   components: {
-<<<<<<< HEAD
-       LandAddProps,
-       browse,
-       MaintenanceList
-=======
        LandAddProps
        
     
->>>>>>> eb209074737b4d082c0145579a913b166a03232b
   },
     data() {
         return {

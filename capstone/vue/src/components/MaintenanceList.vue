@@ -1,6 +1,6 @@
 <template>
 <div>
-  <table>
+  <!--<table>
     <thead>
       <tr>
         <th>&nbsp;</th>
@@ -12,10 +12,10 @@
     </thead>
     <tbody>
       <tr v-for="doc in requests" :key="doc.id">
-        <!--<td class="docs-icon">
+        <td class="docs-icon">
           <img src="../assets/icons8-google-docs-48.png" />
         </td>-->
-        <td class="name">{{ doc.request }}</td>
+       <!-- <td class="name">{{ doc.request }}</td>
         <td>
           <span class="ownedby">{{ doc.name }}</span>
         </td>
@@ -26,11 +26,11 @@
         </td>
       </tr>
     </tbody>
-  </table>
+  </table> -->
 </div>
 </template>
 
-<script>
+<!--<script>
 import maintenanceService from "../services/maintenanceService";
 
 export default {
@@ -131,3 +131,4 @@ td.name {
   vertical-align: middle;
 }
 </style>
+-->
