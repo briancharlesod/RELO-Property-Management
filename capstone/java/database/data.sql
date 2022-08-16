@@ -78,5 +78,7 @@ INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (11,5,(Select Cur
 INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (12,6, (Select Current_Date - 35));
 
 
+
+INSERT INTO maintenance(maintenance_request, completed) VALUES ('shitters full', false);
 COMMIT TRANSACTION;
 

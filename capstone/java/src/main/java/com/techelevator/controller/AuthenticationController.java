@@ -2,10 +2,8 @@ package com.techelevator.controller;
 
 import javax.validation.Valid;
 
-import com.techelevator.exceptions.RetrievalException;
+import com.techelevator.exceptions.*;
 import com.techelevator.exceptions.UserNotFoundException;
-import com.techelevator.exceptions.UserToMaintenanceException;
-import com.techelevator.exceptions.UserToPropertyException;
 import com.techelevator.model.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,6 +24,7 @@ import com.techelevator.security.jwt.JWTFilter;
 import com.techelevator.security.jwt.TokenProvider;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -198,11 +197,22 @@ public class AuthenticationController {
     @PreAuthorize("hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "user/set/rental", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void setUserToProperty(@RequestBody @Valid UserRental uR, Principal principal) throws UserToPropertyException {
-        boolean setUSer = userDao.setUserToProperty(uR.getUserID(), uR.getRentalID(), principal.getName());
+    public void setUserToProperty(@RequestBody @Valid UserRental ur, Principal principal) throws UserToPropertyException {
+        boolean setUSer = userDao.setUserToProperty(ur.getUserID(), ur.getRentalID(), principal.getName());
         if (!setUSer) {
             throw new UserToPropertyException();
         }
+    }
+
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    @RequestMapping(path = "/rental/renters/{rentalId}", method = RequestMethod.GET)
+    public List<Renter> getUsersFromProperty(@PathVariable int rentalId) throws UserToPropertyException {
+        List<Renter> userList = userDao.getUsersOfRentersByRentalId(rentalId);
+        if (userList == null) {
+            throw new UserToPropertyException();
+        }
+        return userList;
+
     }
 
     @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_LANDLORD')")

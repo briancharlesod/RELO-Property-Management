@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.techelevator.model.Renter;
 import com.techelevator.model.UserNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -272,6 +273,27 @@ public class JdbcUserDao implements UserDao {
         return user;
     }
 
+    private Renter mapRowToRenter(SqlRowSet rs) {
+        Renter renter = new Renter();
+        renter.setUsername(rs.getString("username"));
+        renter.setUser_id(rs.getInt("user_id"));
+        renter.setLast_paid(rs.getString("last_paid"));
+        return renter;
+    }
+    public List<Renter> getUsersOfRentersByRentalId(int rental_id) {
+        List<Renter> users = new ArrayList<>();
+
+                String sql = "Select * from user_rental Join users using(user_id) Where rental_id = ?;";
+        try {
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, rental_id);
+        while(results.next()) {
+            users.add(mapRowToRenter(results));
+        }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return users;
+    }
 
     private int getRentalIDFromMaintenanceID(int maintenanceID)
     {
@@ -328,4 +350,7 @@ public class JdbcUserDao implements UserDao {
         }
         return userID;
     }
+
+
+
 }

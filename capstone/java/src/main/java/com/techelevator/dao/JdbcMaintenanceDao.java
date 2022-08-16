@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.Maintenance;
+import com.techelevator.model.Rental;
 import com.techelevator.model.User;
 import com.techelevator.model.UserMaintenance;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -40,6 +41,28 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
         return -1;
     }
 
+    @Override
+    public List<Maintenance> maintenanceByProperty(int rental_id, String username) {
+
+        List<Maintenance> maintenanceList = null;
+        String sql = "Select * " +
+                "From maintenance " +
+                "Where rental_id = ?;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, rental_id);
+            maintenanceList = new ArrayList<>();
+            while(result.next())
+            {
+                maintenanceList.add(mapRowToMaintenance(result));
+            }
+        }catch (Exception e)
+        {
+            System.out.println(e);
+            System.out.println("Could not find any properties");
+        }
+        return maintenanceList;
+    }
+
     private int getUserIDFromRentalID(int rentalID)
     {
         int userID = -1;
@@ -72,6 +95,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
         String inStatement = getStatement(propertiesList);
         if(inStatement == null)
         {
+            System.out.println("1");
             return null;
         }
         String sql = "Select * " +
@@ -171,6 +195,8 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
         }
         return rentalList;
     }
+
+
 
     @Override
     public boolean completeMaintenanceRequest(int maintenanceID, String username) {

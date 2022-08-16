@@ -1,15 +1,18 @@
 <template>
+<body>
 <div id="container">
  
   <div v-show="showAddForm">
+    <!--Nav Buttons  -->
     <div id="editButtons">
-  <button class="button is-primary">Assign Renters</button>
-<button class="button is-primary">View Maintenance Requests</button>
+  <button class="button is-primary" v-on:click="getRenters(); showAddForm = false; showAssignRenter = true;">Assign Renters</button>
+<button class="button is-primary" v-on:click="getMaintenanceRequests(); showAddForm = false; showMaintenance = true">View Maintenance Requests</button>
 <button class="button is-primary">View Rents</button>
 <button class="button is-primary">Delete Property</button>
-<button class="button is-primary" v-on:click="clearForm(); showAddForm = false">Back</button>
+<button class="button is-primary" v-on:click="clearForm(); showAddForm = false; showLandlordApts = true; showAssignRenter = false ">Back</button>
 </div>
 
+<!--Update or Add Form -->
   <form id="manageProps" v-on:submit.prevent="submitRental(); landlordHome">
 
     <div id = "container">
@@ -49,35 +52,84 @@
 </div>
 
 <input id="saveButton" type="submit" class="button is-primary" value="SAVE" />
-
   </form>
-
-  
-
-
   </div>
 
 
   <!--List Apartments by landlord -->
-<div id="listApartments" v-show="!showAddForm">
+<div id="listApartments" v-show="showLandlordApts">
 <div id="houseCard" v-for="apartment in apartments" v-bind:key="apartment.id" class="card" >
       <p>{{apartment.address}}</p>
       <img v-bind:src="apartment.imgURL" alt="Placeholder image" class="is-inline-block" />
       <p class="content">{{apartment.typeOfResidence}}</p>
       <p class="content">${{apartment.price}}.00</p>
-      <button class="button" v-on:click="editForm(apartment); showAddForm = true">EDIT</button>
+      <button class="button" v-on:click="editForm(apartment); showAddForm = true; showLandlordApts = false">EDIT</button>
     </div>
-<div id="houseCard" class="card" v-on:click="showAddForm = true">
+<div id="houseCard" class="card" v-on:click="showAddForm = true; showLandlordApts = false">
   <p class="is-size-1">+</p>
 <p class="is-size-4">Add New Property</p>
 </div>
 </div>
+
+<!--Assign Renters -->
+<div id="assignRenter" v-show="showAssignRenter">&nbsp;
+
+
+<div id="renterBox" v-for="user in users" v-bind:key="user.user_id" class="box has-text-weight-bold">
+  {{ user.username}}          {{user.last_paid}}
+</div>&nbsp;
+<button v-show="!addRenter" class="button is-primary" v-on:click="addRenter = true;">Add new Renter +</button>
+
+<form v-on:submit.prevent="addRenterToRental(); addRenter = false" v-show="addRenter">
+<input class="input" v-model="renterToAdd.userID" type="text"  />
+<input class="button is-primary" type="submit" value="Submit" />
+
+</form>
+<button class="button is-primary" v-on:click="showAssignRenter = false; showAddForm = true; renters = []; addRenter = false">Cancel</button>
 </div>
 
+
+
+
+<!--Maintenance Form -->
+<div v-show="showMaintenance">
+ <table class="table">
+    <thead>
+      <tr>
+       
+        <th>Issue</th>
+       <!-- <th>Author</th>-->
+        <!--<th>Actions</th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="doc in requests" :key="doc.id">
+        <!--<td class="docs-icon">
+          <img src="../assets/icons8-google-docs-48.png" />
+        </td>-->
+        <td class="name">{{ doc.maintenanceRequest }}</td>
+        <!--<td>
+          <span class="ownedby">{{ doc.completed }}</span>
+        </td>-->
+        <td>{{ doc.completion_date }}</td>
+        <td>
+          <button v-on:click="viewRequest(doc.id)">View</button>&nbsp;
+          <button v-on:click="deleteDocument(doc.id)">Delete</button>
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="back" v-on:click="showMaintenance = false; showAddForm = true">Back</button>
+</div>
+
+</div>
+</body>
 </template>
 
 <script>
 import ApartmentService from '../services/apartmentService'
+import maintenanceService from "../services/maintenanceService";
 
 
 
@@ -99,8 +151,19 @@ data() {
                 landlord_id: this.$store.state.user.id
             },
         showAddForm: false,
+        showLandlordApts: true,
+        showAssignRenter: false,
         apartments: [],
-        showRents: false,
+        renters: [],
+        renterToAdd: {
+          userID: '',
+          rentalID: ''
+        },
+        addRenter: false,
+         response: "",
+      requests: [],
+      users: [],
+      showMaintenance: false
     }
 },
 
@@ -108,8 +171,22 @@ created() {
       this.getApartments();
       this.clearForm();
       this.showAddForm = false;
+      this.showLandlordApts = true;
+      this.showAssignRenter = false;
+      console.log(this.$store.state.user);
       
+       maintenanceService.list(this.$store.state.user.id).then((response) => {
+            console.log(response)
+            if(response.status == 200)
+            {
+              this.response = response;
+              this.$store.commit("SET_MAINTENANCE_REQUESTS", response.data);
+            }
+      });
+    
     },
+
+
 
 methods: {
     landlordHome()
@@ -141,6 +218,25 @@ methods: {
       
     },
 
+    addRenterToRental() {
+      this.renterToAdd.rentalID = parseInt(this.newProperty.rentalID);
+      
+
+        try {
+          ApartmentService.addRenterToRental(this.renterToAdd, this.newProperty.rentalID).then(response => {
+            if (response.status == 201) {
+              this.renterToAdd.rentalID = '';
+              this.renterToAdd.userID = '';
+              alert("Worked add renter");
+            }
+          })
+        } catch (e) {
+          console.log(e)
+        }
+
+
+    },
+
     updateForm() {
       try{
         ApartmentService.updateApartment(this.newProperty).then(response => {
@@ -155,6 +251,15 @@ methods: {
       }
     },
 
+    getRenters() {
+      try {
+      ApartmentService.getRenters(this.newProperty.rentalID).then(response => {
+        this.users = response.data
+      })
+      } catch (e) {
+        console.log(e)
+      }
+    },
 
     clearForm() {
       this.newProperty.bathroom = '';
@@ -192,9 +297,56 @@ methods: {
       } catch (e) {
         console.log(e)
       }
+    },
+    viewMaintenanceRequest(id) {
+      this.$router.push(`/maintenance/all/${id}`);
+    },
+    deleteMaintenanceRequest(id) {
+      maintenanceService
+        .delete(id)
+        .then(response => {
+          if (response.status === 200) {
+            this.getMaintenanceRequest();
+          }
+        })
+        .catch(error => {
+          if (error.response.status === 404) {
+            this.$router.push("/404");
+          } else {
+            console.error(error);
+          }
+        });
+    },
+    getMaintenanceRequests() {
+      maintenanceService.get(this.newProperty.rentalID).then(response => {
+        //this.$store.commit("SET_MAINTENANCE_REQUESTS", response.data);
+        this.requests = response.data
+      });
+    }
+  },
+  /*created() {
+          maintenanceService.list(this.$store.state.user.id).then((response) => {
+            console.log(response)
+            if(response.status == 200)
+            {
+              this.response = response;
+              this.$store.commit("SET_MAINTENANCE_REQUESTS", response.data);
+            }
+      });
+    this.getMaintenanceRequests();
+  },*/
+  computed: {
+    sortedMaintenanceRequests() {
+      return this.$store.state.maintenanceRequests
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(b.lastOpened.replace("th", "")) -
+            new Date(a.lastOpened.replace("th", ""))
+        );
     }
 }
-}
+};
 </script>
 
 <style>
@@ -207,6 +359,25 @@ div#listApartments {
 div#addCard {
   width: 300px;
 }
+
+div#renterBox {
+  margin-top: 25px;
+  background: rgb(243, 133, 151);
+  width: 500px;
+}
+.table {
+  padding: 100%;
+    background: rgb(243, 133, 151);
+margin: 0;
+}
+
+.view{
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+
 
 
 

@@ -21,6 +21,7 @@ export default new Vuex.Store({
     token: currentToken || '',
     user: currentUser || {},
     house: [],
+    maintenance: [],
     username: "",
     hash: "",
     retrievalQuestions: [
@@ -48,6 +49,9 @@ export default new Vuex.Store({
     },
     SET_USERNAME(state, user) {
       state.username = user;
+    },
+    SET_MAINTENANCE_REQUESTS(state, maintenance) {
+      state.maintenance = maintenance;
     },
     SET_HASH(state, user) {
       state.hash = user;
