@@ -1,5 +1,5 @@
 <template>
-  <table class="table">
+  <table class="table m-auto">
     <thead>
       <tr>
         <th><abbr title="Position">Num</abbr></th>

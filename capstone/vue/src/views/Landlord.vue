@@ -2,12 +2,12 @@
     <div id = "container">
   <div class="tabs">
   <ul>
-    <li v-bind:class="{ 'is-active' :addPropsVar}" ><a @click="showManageProps = true" >Manage Properties</a></li>
+    <li v-bind:class="{ 'is-active' :addPropsVar}" ><a @click="addProps" >Manage Properties</a></li>
     
     <li v-bind:class="{ 'is-active' :updatePropsVar}"><a @click="updateProps">Update Properties</a></li>
     <li v-bind:class="{ 'is-active' : viewRentsVar}"><a @click="viewRents">View Rents</a></li>
     <li v-bind:class="{ 'is-active' :assignRentersVar}"><a @click="assignRenters">Assign Renters to Property</a></li>
-    <li v-bind:class="{ 'is-active' :assignMaintnanceVar}"> <a @click="assignMaintenance">Assign Maintenance Request</a></li>
+    <li v-bind:class="{ 'is-active' :assignMaintenanceVar}"> <a @click="assignMaintenance">Assign Maintenance Request</a></li>
     
   </ul>
 </div>
@@ -20,9 +20,9 @@
     
 </div>
 -->
-<land-add-props v-show="showManageProps" />
+<land-add-props v-if="addPropsVar" />
 <browse v-show="!showManageProps"/>
-<view-rents v-show="viewRentsVar"/>
+<view-rents v-if="viewRentsVar"/>
 </div>
 </template>
 
@@ -66,6 +66,7 @@ export default {
             this.viewRentsVar = false;
             this.assignRentersVar = false;
             this.assignMaintenanceVar = false;
+            this.showManageProps = true;
         },
         updateProps(){
             this.addPropsVar = false;
