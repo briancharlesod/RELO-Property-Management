@@ -127,6 +127,18 @@ public class RentalController {
         return rentalList;
     }
 
+    @PreAuthorize("hasRole('ROLE_RENTER') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_LANDLORD')")
+    @RequestMapping(path = "renter/owned/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Rental> byRenter(@PathVariable int id, Principal principal)throws UnauthorizedAccessException{
+        List<Rental> rentalList = rentalDao.viewOwnedPropertiesRenter(id, principal.getName());
+        if(rentalList == null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+        return rentalList;
+    }
+
 
 
 

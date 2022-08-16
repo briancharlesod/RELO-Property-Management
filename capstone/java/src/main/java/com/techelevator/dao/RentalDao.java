@@ -28,4 +28,6 @@ public interface RentalDao {
 
     List<PaymentClass> getAllRents(int userID, String username);
 
+    List<Rental> viewOwnedPropertiesRenter(int userID, String username);
+
 }

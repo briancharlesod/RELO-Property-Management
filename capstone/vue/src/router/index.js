@@ -5,13 +5,14 @@ import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import store from '../store/index'
-import Renter from '../views/Renter.vue'
+
 import Landlord from '../views/Landlord.vue'
 import Employee from '../views/Employee.vue'
 import DetailedView from '../views/DetailedView.vue'
 import RetrievePassword from '../views/RetrievePassword.vue'
 import Reset from '../views/Reset.vue'
 import MaintenanceList from '../components/MaintenanceList.vue'
+import OwnedApartments from '../components/OwnedApartments.vue'
 Vue.use(Router)
 
 /**
@@ -54,11 +55,14 @@ const router = new Router({
     {
       path: "/renter",
       name: "renter",
-      component: Renter,
+      component: OwnedApartments,
       meta: {
         requiresAuth: true
       }
     },
+
+    
+
     {
       path: "/landlord",
       name: "landlord",

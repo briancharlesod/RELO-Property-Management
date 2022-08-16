@@ -49,6 +49,33 @@ public class JdbcRentalDao implements RentalDao{
     }
 
     @Override
+    public List<Rental> viewOwnedPropertiesRenter(int userID, String username) {
+
+            if(getUserIDFromUsername(username) != userID)
+            {
+                System.out.println("try accessing the data from your own account");
+                return null;
+            }
+            List<Rental> rentalList = null;
+            String sql = "Select rental_id, rental_address, rental_amount, bathrooms, bedrooms, is_rented, type_of_residence, description, picture, landlord_id " +
+                    "from user_rental Join users using(user_id) Join rental_property using(rental_id) Where user_id = ?;";
+            try{
+                SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userID);
+                rentalList = new ArrayList<>();
+                while(result.next())
+                {
+                    rentalList.add(mapToRental(result));
+                }
+            }catch (Exception e)
+            {
+                System.out.println(e);
+                System.out.println("Could not find any properties");
+            }
+            return rentalList;
+
+    }
+
+    @Override
     public Rental viewSpecificProperty(int rentalID) {
         Rental result = null;
         String sql = "Select * " +

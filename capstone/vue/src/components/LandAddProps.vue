@@ -61,8 +61,8 @@
 <div id="houseCard" v-for="apartment in apartments" v-bind:key="apartment.id" class="card" >
       <p>{{apartment.address}}</p>
       <img v-bind:src="apartment.imgURL" alt="Placeholder image" class="is-inline-block" />
-      <p class="content">{{apartment.typeOfResidence}}</p>
-      <p class="content">${{apartment.price}}.00</p>
+      <p class="content">Rent - ${{apartment.price}}.00</p>
+      <p class="content" v-show="apartment.isRented">On Market</p>
       <button class="button" v-on:click="editForm(apartment); showAddForm = true; showLandlordApts = false">EDIT</button>
     </div>
 <div id="houseCard" class="card" v-on:click="showAddForm = true; showLandlordApts = false">
@@ -225,7 +225,7 @@ methods: {
             if (response.status == 201) {
               this.renterToAdd.rentalID = '';
               this.renterToAdd.userID = '';
-              alert("Worked add renter");
+              this.getRenters();
             }
           })
         } catch (e) {

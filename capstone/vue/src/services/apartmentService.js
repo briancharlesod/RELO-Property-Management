@@ -27,5 +27,11 @@ addRenterToRental(userRental) {
 
 getRenters(rental_id) {
     return axios.get(`http://localhost:9000/rental/renters/${rental_id}`)
+},
+
+getApartmentsOwned(userId) {
+    return axios.get(`http://localhost:9000/renter/owned/${userId}`)
 }
+
+
 }
