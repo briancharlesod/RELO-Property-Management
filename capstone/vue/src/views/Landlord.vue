@@ -20,6 +20,8 @@
     
 </div>
 -->
+
+<maintenance-list />
 <land-add-props v-show="showManageProps" />
 <browse v-show="!showManageProps"/>
     </div>
@@ -27,14 +29,16 @@
 </template>
 
 <script>
+import MaintenanceList from '../components/MaintenanceList';
 import browse from '../components/browse'
 import LandAddProps from '@/components/LandAddProps';
+
 
 export default {
   components: {
        LandAddProps,
-       browse
-    
+       browse,
+       MaintenanceList
   },
     data() {
         return {

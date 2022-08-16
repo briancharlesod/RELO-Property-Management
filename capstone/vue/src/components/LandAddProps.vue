@@ -4,7 +4,7 @@
   <div v-show="showAddForm">
     <div id="editButtons">
   <button class="button is-primary">Assign Renters</button>
-<button class="button is-primary">View Maintenance Requests</button>
+<button class="button is-primary" @click="$router.push('/maintenance')">View Maintenance Requests</button>
 <button class="button is-primary">View Rents</button>
 <button class="button is-primary">Delete Property</button>
 <button class="button is-primary" v-on:click="clearForm(); showAddForm = false">Back</button>

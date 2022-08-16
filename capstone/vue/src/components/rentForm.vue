@@ -35,7 +35,6 @@
  <button class="button">Cancel</button>
 </div>
   </form>
-</body>
 </template>
 <script>
 export default {
@@ -82,8 +81,3 @@ input {
   color: #555;
 }
 </style>
-
-
-
-
-
