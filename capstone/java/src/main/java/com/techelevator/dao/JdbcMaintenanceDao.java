@@ -95,6 +95,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
         String inStatement = getStatement(propertiesList);
         if(inStatement == null)
         {
+            System.out.println("1");
             return null;
         }
         String sql = "Select * " +

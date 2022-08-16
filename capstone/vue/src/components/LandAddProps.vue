@@ -1,11 +1,12 @@
 <template>
+<body>
 <div id="container">
  
   <div v-show="showAddForm">
     <!--Nav Buttons  -->
     <div id="editButtons">
   <button class="button is-primary" v-on:click="getRenters(); showAddForm = false; showAssignRenter = true;">Assign Renters</button>
-<button class="button is-primary">View Maintenance Requests</button>
+<button class="button is-primary" v-on:click="getMaintenanceRequests(); showAddForm = false; showMaintenance = true">View Maintenance Requests</button>
 <button class="button is-primary">View Rents</button>
 <button class="button is-primary">Delete Property</button>
 <button class="button is-primary" v-on:click="clearForm(); showAddForm = false; showLandlordApts = true; showAssignRenter = false ">Back</button>
@@ -84,17 +85,51 @@
 <input class="button is-primary" type="submit" value="Submit" />
 
 </form>
-<button class="button is-primary" v-on:click="showAssignRenter = false; showAddForm = true; users = []; addRenter = false">Cancel</button>
+<button class="button is-primary" v-on:click="showAssignRenter = false; showAddForm = true; renters = []; addRenter = false">Cancel</button>
 </div>
 
 
 
+
+<!--Maintenance Form -->
+<div v-show="showMaintenance">
+ <table class="table">
+    <thead>
+      <tr>
+       
+        <th>Issue</th>
+       <!-- <th>Author</th>-->
+        <!--<th>Actions</th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="doc in requests" :key="doc.id">
+        <!--<td class="docs-icon">
+          <img src="../assets/icons8-google-docs-48.png" />
+        </td>-->
+        <td class="name">{{ doc.maintenanceRequest }}</td>
+        <!--<td>
+          <span class="ownedby">{{ doc.completed }}</span>
+        </td>-->
+        <td>{{ doc.completion_date }}</td>
+        <td>
+          <button v-on:click="viewRequest(doc.id)">View</button>&nbsp;
+          <button v-on:click="deleteDocument(doc.id)">Delete</button>
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="back" v-on:click="showMaintenance = false; showAddForm = true">Back</button>
 </div>
 
+</div>
+</body>
 </template>
 
 <script>
 import ApartmentService from '../services/apartmentService'
+import maintenanceService from "../services/maintenanceService";
 
 export default {
 data() {
@@ -123,7 +158,10 @@ data() {
           rentalID: ''
         },
         addRenter: false,
-        users: []
+         response: "",
+      requests: [],
+      users: [],
+      showMaintenance: false
     }
 },
 
@@ -133,9 +171,20 @@ created() {
       this.showAddForm = false;
       this.showLandlordApts = true;
       this.showAssignRenter = false;
-      console.log(this.$store.state.user)
+      console.log(this.$store.state.user);
       
+       maintenanceService.list(this.$store.state.user.id).then((response) => {
+            console.log(response)
+            if(response.status == 200)
+            {
+              this.response = response;
+              this.$store.commit("SET_MAINTENANCE_REQUESTS", response.data);
+            }
+      });
+    
     },
+
+
 
 methods: {
     landlordHome()
@@ -246,9 +295,56 @@ methods: {
       } catch (e) {
         console.log(e)
       }
+    },
+    viewMaintenanceRequest(id) {
+      this.$router.push(`/maintenance/all/${id}`);
+    },
+    deleteMaintenanceRequest(id) {
+      maintenanceService
+        .delete(id)
+        .then(response => {
+          if (response.status === 200) {
+            this.getMaintenanceRequest();
+          }
+        })
+        .catch(error => {
+          if (error.response.status === 404) {
+            this.$router.push("/404");
+          } else {
+            console.error(error);
+          }
+        });
+    },
+    getMaintenanceRequests() {
+      maintenanceService.get(this.newProperty.rentalID).then(response => {
+        //this.$store.commit("SET_MAINTENANCE_REQUESTS", response.data);
+        this.requests = response.data
+      });
+    }
+  },
+  /*created() {
+          maintenanceService.list(this.$store.state.user.id).then((response) => {
+            console.log(response)
+            if(response.status == 200)
+            {
+              this.response = response;
+              this.$store.commit("SET_MAINTENANCE_REQUESTS", response.data);
+            }
+      });
+    this.getMaintenanceRequests();
+  },*/
+  computed: {
+    sortedMaintenanceRequests() {
+      return this.$store.state.maintenanceRequests
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(b.lastOpened.replace("th", "")) -
+            new Date(a.lastOpened.replace("th", ""))
+        );
     }
 }
-}
+};
 </script>
 
 <style>
@@ -267,6 +363,21 @@ div#renterBox {
   background: rgb(243, 133, 151);
   width: 500px;
 }
+.table {
+  padding: 100%;
+    background: rgb(243, 133, 151);
+margin: 0;
+}
+
+.view{
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+
+
+
 
 
 </style>
