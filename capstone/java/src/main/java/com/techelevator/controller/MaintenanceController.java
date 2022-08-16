@@ -55,6 +55,18 @@ public class MaintenanceController {
         return maintenance;
     }
 
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_LANDLORD')")
+    @RequestMapping(path = "/rental/maintenance/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Maintenance> getMaintenanceByProperty(@PathVariable int id, Principal principal) throws UnauthorizedAccessException{
+        List<Maintenance> maintenance = dao.maintenanceByProperty(id, principal.getName());
+        if(maintenance == null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+        return maintenance;
+    }
+
     @PreAuthorize("hasRole('ROLE_LANDLORD') OR hasRole('ROLE_RENTER')")
     @RequestMapping(path = "/maintenance", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

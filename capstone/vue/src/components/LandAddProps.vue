@@ -64,7 +64,7 @@
       <p class="content">${{apartment.price}}.00</p>
       <button class="button" v-on:click="editForm(apartment); showAddForm = true; showLandlordApts = false">EDIT</button>
     </div>
-<div id="houseCard" class="card" v-on:click="showAddForm = true">
+<div id="houseCard" class="card" v-on:click="showAddForm = true; showLandlordApts = false">
   <p class="is-size-1">+</p>
 <p class="is-size-4">Add New Property</p>
 </div>
