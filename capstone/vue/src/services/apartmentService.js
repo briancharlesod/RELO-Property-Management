@@ -21,4 +21,8 @@ getDueDate(){
     return axios.get('http://localhost:9000/rent')
 },
 
+getAvailableProps(){
+    return axios.get('http://localhost:9000/rental')
+}
+
 }

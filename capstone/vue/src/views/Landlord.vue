@@ -23,6 +23,7 @@
 <land-add-props v-if="addPropsVar" />
 <browse v-show="!showManageProps"/>
 <view-rents v-if="viewRentsVar"/>
+<assign-maintenance-requests />
 </div>
 </template>
 
@@ -30,12 +31,14 @@
 import browse from '../components/browse'
 import LandAddProps from '@/components/LandAddProps';
 import ViewRents from '../components/ViewRents.vue';
+import AssignMaintenanceRequests from '../components/AssignMaintenanceRequests.vue';
 
 export default {
   components: {
        LandAddProps,
        browse,
-    ViewRents
+    ViewRents,
+    AssignMaintenanceRequests
     
   },
     data() {
