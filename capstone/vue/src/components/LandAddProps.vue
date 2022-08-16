@@ -1,11 +1,12 @@
 <template>
+<body>
 <div id="container">
  
   <div v-show="showAddForm">
     <!--Nav Buttons  -->
     <div id="editButtons">
   <button class="button is-primary" v-on:click="showAddForm = false; showAssignRenter = true">Assign Renters</button>
-<button class="button is-primary">View Maintenance Requests</button>
+<button class="button is-primary" v-on:click="getMaintenanceRequests(); showAddForm = false; showMaintenance = true">View Maintenance Requests</button>
 <button class="button is-primary">View Rents</button>
 <button class="button is-primary">Delete Property</button>
 <button class="button is-primary" v-on:click="clearForm(); showAddForm = false; showLandlordApts = true; showAssignRenter = false ">Back</button>
@@ -83,15 +84,16 @@
 <button class="button" v-on:click="showAssignRenter = false; showAddForm = true">Cancel</button>
 
 </div>
-<div>
- <table>
+
+<!--Maintenance Form -->
+<div v-show="showMaintenance">
+ <table class="table">
     <thead>
       <tr>
-        <th>&nbsp;</th>
-        <th>Document Name</th>
-        <th>Author</th>
-        <th>Last Opened by me</th>
-        <th>Actions</th>
+       
+        <th>Issue</th>
+       <!-- <th>Author</th>-->
+        <!--<th>Actions</th>-->
       </tr>
     </thead>
     <tbody>
@@ -99,22 +101,24 @@
         <!--<td class="docs-icon">
           <img src="../assets/icons8-google-docs-48.png" />
         </td>-->
-        <td class="name">{{ doc.request }}</td>
-        <td>
-          <span class="ownedby">{{ doc.name }}</span>
-        </td>
-        <td>{{ doc.lastOpened }}</td>
+        <td class="name">{{ doc.maintenanceRequest }}</td>
+        <!--<td>
+          <span class="ownedby">{{ doc.completed }}</span>
+        </td>-->
+        <td>{{ doc.completion_date }}</td>
         <td>
           <button v-on:click="viewRequest(doc.id)">View</button>&nbsp;
-          <button v-on:click="deleteRequest(doc.id)">Delete</button>
+          <button v-on:click="deleteDocument(doc.id)">Delete</button>
+          
         </td>
       </tr>
     </tbody>
   </table>
+  <button class="back" v-on:click="showMaintenance = false; showAddForm = true">Back</button>
 </div>
 
 </div>
-
+</body>
 </template>
 
 <script>
@@ -149,7 +153,8 @@ data() {
         },
         addRenter: false,
          response: "",
-      requests: []
+      requests: [],
+      showMaintenance: false
     }
 },
 
@@ -169,7 +174,7 @@ created() {
               this.$store.commit("SET_MAINTENANCE_REQUESTS", response.data);
             }
       });
-    this.getMaintenanceRequests();
+    
     },
 
 
@@ -295,9 +300,9 @@ methods: {
         });
     },
     getMaintenanceRequests() {
-      maintenanceService.list(this.$store.state.user.id).then(response => {
-        this.$store.commit("SET_MAINTENANCE_REQUESTS", response.data);
-        //this.requests = response.data
+      maintenanceService.get(this.newProperty.rentalID).then(response => {
+        //this.$store.commit("SET_MAINTENANCE_REQUESTS", response.data);
+        this.requests = response.data
       });
     }
   },
@@ -336,6 +341,20 @@ div#listApartments {
 div#addCard {
   width: 300px;
 }
+
+.table {
+  padding: 100%;
+    background: rgb(243, 133, 151);
+margin: 0;
+}
+
+.view{
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+
 
 
 

@@ -8,7 +8,7 @@ export default {
     },
   
     get(id) {
-      return axios.get(`http://localhost:9000/maintenance/${id}`)
+      return axios.get(`http://localhost:9000/rental/maintenance/${id}`)
     },
   
   

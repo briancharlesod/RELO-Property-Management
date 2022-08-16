@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:8080")
 public class MaintenanceController {
     private JdbcMaintenanceDao dao;
     private List<String> Maintenance;
