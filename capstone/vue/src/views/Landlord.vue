@@ -1,5 +1,6 @@
 <template>
     <div id = "container">
+        <!--
   <div class="tabs">
   <ul>
     <li v-bind:class="{ 'is-active' :addPropsVar}" ><a @click="showManageProps = true" >Manage Properties</a></li>
@@ -13,29 +14,28 @@
 </div>
 
 
-<!--
+--
 <div v-if="addPropsVar">
     <h3>Add Properties</h3>
     <land-add-props />
     
 </div>
 -->
-<land-add-props v-show="showManageProps" />
-<browse v-show="!showManageProps"/>
-<view-rents v-show="viewRentsVar"/>
-</div>
+<land-add-props />
+
+    </div>
+
 </template>
 
 <script>
-import browse from '../components/browse'
+
 import LandAddProps from '@/components/LandAddProps';
-import ViewRents from '../components/ViewRents.vue';
+
 
 export default {
   components: {
-       LandAddProps,
-       browse,
-    ViewRents
+       LandAddProps
+       
     
   },
     data() {
