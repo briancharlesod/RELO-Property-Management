@@ -344,6 +344,7 @@ public class JdbcRentalDao implements RentalDao{
        return false;
        }
 
+       @Override
     public boolean OnMarket(int rental_id) {
         String sql = "UPDATE rental_property SET is_rented = false WHERE rental_id = ? ";
         try {
@@ -355,6 +356,7 @@ public class JdbcRentalDao implements RentalDao{
         return false;
     }
 
+    @Override
     public boolean OffMarket(int rental_id) {
         String sql = "UPDATE rental_property SET is_rented = true WHERE rental_id = ? ";
         try {
