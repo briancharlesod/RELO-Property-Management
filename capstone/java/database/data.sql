@@ -13,6 +13,9 @@ INSERT INTO users (username,password_hash,role) VALUES ('renter5','$2a$08$UkVvwp
 INSERT INTO users (username,password_hash,role) VALUES ('renter6','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_RENTER');
 INSERT INTO users (username,password_hash,role) VALUES ('renter7','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_RENTER');
 INSERT INTO users (username,password_hash,role) VALUES ('renter8','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_RENTER');
+INSERT INTO users (username,password_hash,role) VALUES ('employee1','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_EMPLOYEE');
+INSERT INTO users (username,password_hash,role) VALUES ('employee2','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_EMPLOYEE');
+
 
 
 
@@ -61,11 +64,11 @@ INSERT INTO rental_property (rental_address,rental_amount,bathrooms,bedrooms,is_
 INSERT INTO rental_property (rental_address,rental_amount,bathrooms,bedrooms,is_rented,type_of_residence, description, picture, landlord_id) VALUES ('645 choreographers Street, Pittsburgh, Pa 15224', 1000.00, 1.5, 2, false, 'apartment', 'Guest will have access to everything but closets and garage, ', 'https://a0.muscache.com/im/pictures/5b2f38fa-67e7-4371-9927-a7462fae2a0b.jpg?aki_policy=x_large', 1);
 
 
-Insert Into maintenance(maintenance_request, rental_id) Values ('Roof is leaking', 1);
-Insert Into maintenance(maintenance_request, rental_id) Values ('Bathtub is leaking', 14);
-Insert Into maintenance(maintenance_request, rental_id) Values ('Sink is leaking', 17);
-Insert Into maintenance(maintenance_request, rental_id) Values ('Something else is leaking', 5);
-INSERT INTO maintenance(maintenance_request, rental_id) VALUES ('shitters full', 18);
+Insert Into maintenance(maintenance_request, rental_id, completed) Values ('Roof is leaking', 1, false);
+Insert Into maintenance(maintenance_request, rental_id, completed) Values ('Bathtub is leaking', 14, false);
+Insert Into maintenance(maintenance_request, rental_id, completed) Values ('Sink is leaking', 17, false);
+Insert Into maintenance(maintenance_request, rental_id, completed) Values ('Something else is leaking', 5, false);
+INSERT INTO maintenance(maintenance_request, rental_id, completed) VALUES ('shitters full', 18, false);
 
 
 
@@ -79,7 +82,18 @@ INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (10,18,(Select Cu
 INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (11,5,(Select Current_Date - 25));
 INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (12,6, (Select Current_Date - 35));
 
-
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (1, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (2, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (3, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (4, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (5, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (6, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (7, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (8, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (9, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (10, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (11, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
+Insert Into user_retrieval(user_id, question_one, question_two, answer_one, answer_two) Values (12, '$2a$10$Smy25D3WdTvX8iVG2Nooseyb4KimXe69ceuskzqtGR5G.dQCunGzq', '$2a$10$4YtJOEGUg6l6JjTQJkySNuJk9z6wKk0xxM3JoH9zYCkmILE9iEMeC', '$2a$10$v6a2Fchmw5Xf8hJlMV9PnehMtgT/O2q1wSziMxl9kXaGB/3OVWzwS', '$2a$10$Dd42RIQ0AKnx3TO4qq/OxOFoX2DMPnQwHg8IVDjBrK7CQa287ewxS');
 
 COMMIT TRANSACTION;
 
