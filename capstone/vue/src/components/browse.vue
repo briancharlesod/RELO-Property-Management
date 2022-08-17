@@ -59,7 +59,7 @@ div#houseCard {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  width: 300px;
+  width: 400px;
   margin-right: 40px;
   margin-left: 40px;
   margin-top: 15px;

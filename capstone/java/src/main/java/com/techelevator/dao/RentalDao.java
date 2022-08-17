@@ -30,4 +30,8 @@ public interface RentalDao {
 
     List<Rental> viewOwnedPropertiesRenter(int userID, String username);
 
+    boolean OffMarket(int rental_id);
+
+    boolean OnMarket(int rental_id);
+
 }

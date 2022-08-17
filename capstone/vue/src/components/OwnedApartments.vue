@@ -1,10 +1,12 @@
 <template>
   <div>
       <!--List of owned Apartments -->
-<div v-show="showAllOwned" id="ownedPond">
-<div id="houseCard" v-for="apartment in ownedApartments" v-bind:key="apartment.id" class="card" v-on:click="detailedView(apartment); showAllOwned = false; showDetailed = true">
+      
+<div v-show="showAllOwned" id="ownedPond" >
+<div id="renterBox" class="box" v-if="ownedApartments.length === 0">No Apartments Owned</div>
+<div v-else id="houseCard" v-for="apartment in ownedApartments" v-bind:key="apartment.id" class="card" v-on:click="detailedView(apartment); showAllOwned = false; showDetailed = true">
       <p>{{apartment.address}}</p>
-      <img v-bind:src="apartment.imgURL" alt="Placeholder image" class="is-inline-block" />
+      <img id="cardImg" v-bind:src="apartment.imgURL" alt="Placeholder image" class="is-inline-block" />
       
       <p class="content">Rent - ${{apartment.price}}.00</p>
     </div>
@@ -28,8 +30,8 @@
     </div>
     <div class="tile is-child box">
       <p class="title">Room Info</p>
-      <p class="is-size-4">Bedrooms: {{apartment.bedrooms}}</p>
-      <p class="is-size-4">Bathrooms: {{apartment.bathrooms}}</p>
+      <p class="is-size-4">Bedrooms: {{apartment.bedroom}}</p>
+      <p class="is-size-4">Bathrooms: {{apartment.bathroom}}</p>
     </div>
   </div>
   <div class="tile is-parent is-vertical">
@@ -78,7 +80,8 @@ data() {
 
 created() {
 this.getOwnedApartments();
-console.log(this.$store.state.user.id);
+
+
 },
 
 methods: {

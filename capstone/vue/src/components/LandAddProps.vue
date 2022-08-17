@@ -8,6 +8,8 @@
   <button class="button is-primary" v-on:click="getRenters(); showAddForm = false; showAssignRenter = true;">Assign Renters</button>
 <button class="button is-primary" v-on:click="getMaintenanceRequests(); showAddForm = false; showMaintenance = true">View Maintenance Requests</button>
 <button class="button is-primary">View Rents</button>
+<button class="button is-primary" v-if="newProperty.isRented" @click="putOnMarket()">Put On The Market</button>
+<button class="button is-primary" v-else @click="takeOffMarket()" >Take Off The Market</button>
 <button class="button is-primary">Delete Property</button>
 <button class="button is-primary" v-on:click="clearForm(); showAddForm = false; showLandlordApts = true; showAssignRenter = false ">Back</button>
 </div>
@@ -45,7 +47,8 @@
     <div class="tile is-child box">
       <p class="title">Photos</p>
       <img v-bind:src="newProperty.imgURL" alt="Placeholder image" class="is-inline-block" />
-      <input class="is-size-4" type="text" v-model="newProperty.imgURL" />
+      <label for="imageInput" class=" is-size-4">Image URL:</label>
+      <input id="imageInput" class="is-size-4" type="text" v-model="newProperty.imgURL" />
 
      </div>
   </div>
@@ -60,9 +63,8 @@
 <div id="listApartments" v-show="showLandlordApts">
 <div id="houseCard" v-for="apartment in apartments" v-bind:key="apartment.id" class="card" >
       <p>{{apartment.address}}</p>
-      <img v-bind:src="apartment.imgURL" alt="Placeholder image" class="is-inline-block" />
+      <img id="cardImg" v-bind:src="apartment.imgURL" alt="Placeholder image" class="is-inline-block" />
       <p class="content">Rent - ${{apartment.price}}.00</p>
-      <p class="content" v-show="apartment.isRented">On Market</p>
       <button class="button" v-on:click="editForm(apartment); showAddForm = true; showLandlordApts = false">EDIT</button>
     </div>
 <div id="houseCard" class="card" v-on:click="showAddForm = true; showLandlordApts = false">
@@ -191,6 +193,25 @@ methods: {
     {
         this.$router.push("/");
     },
+
+    putOnMarket() {
+      ApartmentService.putOnMarket(this.newProperty.rentalID).then(response => {
+        if (response.status == 200) {
+          this.newProperty.isRented = false;
+          this.getApartments()
+        }
+      })
+      
+    },
+
+    takeOffMarket() {
+      ApartmentService.putOffMarket(this.newProperty.rentalID).then(response => {
+        if (response.status == 200) {
+          this.newProperty.isRented = true;
+          this.getApartments()
+        }
+      })
+    },
    
     editForm(rental) {
       this.newProperty.rentalID = rental.rentalID;
@@ -198,7 +219,7 @@ methods: {
       this.newProperty.price = rental.price;
       this.newProperty.bedroom = rental.bedroom;
       this.newProperty.address = rental.address;
-      //this.newProperty.isRented = rental.rented;
+      this.newProperty.isRented = rental.rented;
       //this.newProperty.typeOfResidence = rental.typeOfResidence;
       this.newProperty.description = rental.description;
       this.newProperty.imgURL = rental.imgURL;
@@ -209,9 +230,11 @@ methods: {
         this.newProperty.rentalID = '';
         this.addRental();
         this.showAddForm = false;
+        this.showLandlordApts = true;
       } else {
         this.updateForm();
         this.showAddForm = false;
+        this.showLandlordApts = true;
       }
       
     },
@@ -240,7 +263,7 @@ methods: {
         ApartmentService.updateApartment(this.newProperty).then(response => {
         if (response.status == 200) {
           this.clearForm();
-          alert("Worked edit");
+          
           this.getApartments();
         }}
         );
@@ -289,7 +312,7 @@ methods: {
         if (response.status == 201) {
           this.clearForm();
           this.getApartments();
-          alert("Worked")
+         
         }
       })
       } catch (e) {
@@ -374,7 +397,9 @@ margin: 0;
   justify-content: flex-end;
 }
 
-
+img#cardImg {
+  height: 200px;
+}
 
 
 

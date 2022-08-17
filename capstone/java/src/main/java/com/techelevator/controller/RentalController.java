@@ -139,7 +139,21 @@ public class RentalController {
         return rentalList;
     }
 
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    @CrossOrigin
+    @RequestMapping(path = "/rental/onmarket/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public boolean updateRentalonMarket(@PathVariable int id, Principal principal) {
+        return rentalDao.OnMarket(id);
 
+    }
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    @RequestMapping(path = "/rental/offmarket/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public boolean updateRentaloffMarket(@PathVariable int id, Principal principal) {
+        return rentalDao.OffMarket(id);
+
+    }
 
 
 

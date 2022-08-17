@@ -343,6 +343,29 @@ public class JdbcRentalDao implements RentalDao{
        return false;
        }
 
+    public boolean OnMarket(int rental_id) {
+        String sql = "UPDATE rental_property SET is_rented = false WHERE rental_id = ? ";
+        try {
+            jdbcTemplate.update(sql, rental_id);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public boolean OffMarket(int rental_id) {
+        String sql = "UPDATE rental_property SET is_rented = true WHERE rental_id = ? ";
+        try {
+            jdbcTemplate.update(sql, rental_id);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+
     private Rental mapToRental(SqlRowSet result)
     {
         Rental rental = new Rental();
