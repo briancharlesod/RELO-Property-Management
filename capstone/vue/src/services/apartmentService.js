@@ -52,6 +52,10 @@ putOnMarket(rental_id) {
 
 putOffMarket(rental_id) {
     return axios.put(`http://localhost:9000/rental/offmarket/${rental_id}`)
+},
+
+deleteRental(rental_id) {
+    return axios.delete(`http://localhost:9000/rental/${rental_id}`)
 }
 
 }

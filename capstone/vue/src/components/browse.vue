@@ -8,7 +8,7 @@
     <div id="cardPond">
     <div id="houseCard" v-for="(house, count) in houses" v-bind:key="house.id" class="card" v-on:click="viewCardDetails(count, house)">
       <p>{{house.name}}</p>
-      <img v-bind:src="house.imgURL" alt="Placeholder image" class="is-inline-block" />
+      <img id="cardImg" v-bind:src="house.imgURL" alt="Placeholder image" class="is-inline-block" />
       <p class="content">{{house.address}}</p>
       <p class="content">${{house.price }}.00</p>
     </div>

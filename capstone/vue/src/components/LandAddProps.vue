@@ -4,14 +4,14 @@
  
   <div v-show="showAddForm">
     <!--Nav Buttons  -->
-    <div id="editButtons">
+        <div id="editButtons">
   <button class="button is-primary" v-on:click="getRenters(); showRents= false; showAddForm = false; showAssignRenter = true; assignRequestsVar = false">Assign Renters</button>
 <button class="button is-primary" v-on:click="getMaintenanceRequests(); showRents = false; showAddForm = false; showMaintenance = true; assignRequestsVar = false">View Maintenance Requests</button>
 <button class="button is-primary" v-on:click="clearForm(); showRents = false; showAddForm = false; showLandlordApts = false; showAssignRenter = false ; assignRequestsVar = true">Assign Maintenance Requests</button>
 <button class="button is-primary" v-on:click=" showRents= true; showAddForm = false; showAssignRenter = false; ; assignRequestsVar = false">View Rents</button>
 <button class="button is-primary" v-if="newProperty.isRented" @click="putOnMarket()">Put On The Market</button>
 <button class="button is-primary" v-else @click="takeOffMarket()" >Take Off The Market</button>
-<button class="button is-primary">Delete Property</button>
+<button class="button is-primary" v-on:click="deleteProperty()">Delete Property</button>
 <button class="button is-primary" v-on:click="clearForm(); showRents = false; showAddForm = false; showLandlordApts = true; showAssignRenter = false; assignRequestsVar = false ">Back</button>
 </div>
 
@@ -77,18 +77,18 @@
 
 
 <div id="renterBox" v-for="user in users" v-bind:key="user.user_id" class="box has-text-weight-bold">
-  {{ user.username}}          {{user.last_paid}}
+  {{ user.username}}      
 </div>&nbsp;
 <button v-show="!addRenter" class="button is-primary" v-on:click="addRenter = true;">Add new Renter +</button>
 
 <form v-on:submit.prevent="addRenterToRental(); addRenter = false" v-show="addRenter">
-<input class="input" v-model="renterToAdd.userID" type="text"  />
-<input class="button is-primary" type="submit" value="Submit" />
+<input class="input" id="inputrenterBox" v-model="renterToAdd.userID" type="text"  />
+<button class="button is-primary" type="submit">Submit</button>
 
 </form>
-<button class="button is-primary" v-on:click="showAssignRenter = false; showAddForm = true; renters = []; addRenter = false">Cancel</button>
+<button class="button is-primary" v-on:click="showAssignRenter = false; showAddForm = true; renters = []; addRenter = false">Back</button>
 </div>
-
+<!--Show Rents-->
 <div v-show="showRents">
   <view-rents />
     <button class="back" v-on:click="showRents = false; showAddForm = false; showLandlordApts = true; showAssignRenter = false; assignRequestsVar = false ">Back</button>
@@ -187,7 +187,9 @@ created() {
       this.showAddForm = false;
       this.showLandlordApts = true;
       this.showAssignRenter = false;
-      console.log(this.$store.state.user);
+      this.renterToAdd.rentalID = '';
+      this.renterToAdd.userID = '';
+      
       
        maintenanceService.list(this.$store.state.user.id).then((response) => {
             console.log(response)
@@ -225,6 +227,18 @@ methods: {
           this.getApartments()
         }
       })
+    },
+
+    deleteProperty() {
+      if(confirm("Are you Sure you want to delete this property")) { 
+      ApartmentService.deleteRental(this.newProperty.rentalID).then(response => {
+        if (response.status == 200) {
+          this.getApartments();
+          this.showLandlordApts = true;
+          this.showAddForm = false;
+        }
+      })
+      }
     },
    
     editForm(rental) {
@@ -395,9 +409,15 @@ div#addCard {
   width: 300px;
 }
 
-div#renterBox {
+#renterBox {
   margin-top: 25px;
   background: rgb(243, 133, 151);
+  width: 500px;
+}
+
+#inputrenterBox {
+  
+  
   width: 500px;
 }
 .table {
