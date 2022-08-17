@@ -19,7 +19,23 @@ export default {
     request(form)
     {
       return axios.post(`http://localhost:9000/maintenance/`, form)
+    },
+
+    assignMaintenance(form)
+    {
+      return axios.post(`http://localhost:9000/user/set/maintenance`, form)
+    },
+
+    getAllRequests()
+    {
+      return axios.get(`http://localhost:9000/maintenance/requests`)
+    },
+
+    setComplete(id)
+    {
+      return axios.post(`http://localhost:9000/maintenance/complete/${id}`)
     }
   
+
   }
   

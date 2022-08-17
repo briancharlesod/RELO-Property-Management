@@ -5,13 +5,14 @@
   <div v-show="showAddForm">
     <!--Nav Buttons  -->
     <div id="editButtons">
-  <button class="button is-primary" v-on:click="getRenters(); showRents= false; showAddForm = false; showAssignRenter = true;">Assign Renters</button>
-<button class="button is-primary" v-on:click="getMaintenanceRequests(); showRents = false; showAddForm = false; showMaintenance = true">View Maintenance Requests</button>
-<button class="button is-primary" v-on:click=" showRents= true; showAddForm = false; showAssignRenter = false;">View Rents</button>
+  <button class="button is-primary" v-on:click="getRenters(); showRents= false; showAddForm = false; showAssignRenter = true; assignRequestsVar = false">Assign Renters</button>
+<button class="button is-primary" v-on:click="getMaintenanceRequests(); showRents = false; showAddForm = false; showMaintenance = true; assignRequestsVar = false">View Maintenance Requests</button>
+<button class="button is-primary" v-on:click="clearForm(); showRents = false; showAddForm = false; showLandlordApts = false; showAssignRenter = false ; assignRequestsVar = true">Assign Maintenance Requests</button>
+<button class="button is-primary" v-on:click=" showRents= true; showAddForm = false; showAssignRenter = false; ; assignRequestsVar = false">View Rents</button>
 <button class="button is-primary" v-if="newProperty.isRented" @click="putOnMarket()">Put On The Market</button>
 <button class="button is-primary" v-else @click="takeOffMarket()" >Take Off The Market</button>
 <button class="button is-primary">Delete Property</button>
-<button class="button is-primary" v-on:click="clearForm(); showRents = false; showAddForm = false; showLandlordApts = true; showAssignRenter = false ">Back</button>
+<button class="button is-primary" v-on:click="clearForm(); showRents = false; showAddForm = false; showLandlordApts = true; showAssignRenter = false; assignRequestsVar = false ">Back</button>
 </div>
 
 <!--Update or Add Form -->
@@ -90,7 +91,7 @@
 
 <div v-show="showRents">
   <view-rents />
-    <button class="back" v-on:click="showRents = false; showMaintenance = false; showAddForm = true">Back</button>
+    <button class="back" v-on:click="showRents = false; showAddForm = false; showLandlordApts = true; showAssignRenter = false; assignRequestsVar = false ">Back</button>
 </div>
 
 <!--Maintenance Form -->
@@ -121,8 +122,12 @@
       </tr>
     </tbody>
   </table>
-  <button class="back" v-on:click="showMaintenance = false; showAddForm = true">Back</button>
+  <button class="back" v-on:click="showRents = false; showAddForm = false; showLandlordApts = true; showAssignRenter = false; assignRequestsVar = false ">Back</button>
 </div>
+</div>
+<div v-if="assignRequestsVar">
+  <assign-maintenance-requests />
+    <button class="back" v-on:click="showRents = false; showAddForm = false; showLandlordApts = true; showAssignRenter = false; assignRequestsVar = false ">Back</button>
 
 </div>
 </body>
@@ -131,13 +136,15 @@
 <script>
 import ApartmentService from '../services/apartmentService'
 import maintenanceService from "../services/maintenanceService";
+import AssignMaintenanceRequests from './AssignMaintenanceRequests.vue';
 import ViewRents from './ViewRents.vue';
 
 
 
 export default{
   components: { 
-    ViewRents 
+    ViewRents,
+    AssignMaintenanceRequests 
     }, 
 data() {
     return {
@@ -169,7 +176,8 @@ data() {
          response: "",
       requests: [],
       users: [],
-      showMaintenance: false
+      showMaintenance: false,
+      assignRequestsVar: false,
     }
 },
 

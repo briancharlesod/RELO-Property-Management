@@ -5,7 +5,7 @@
        <label>Employee Name</label>
        <input type="name" required v-model="name"/>
        <label>Employee ID</label>
-       <input type="employee id" required v-model="employeeID">
+       <input type="employee id" required v-model="userID">
        <label>Maintenance ID</label>
        <input type="maintenance id" required v-model="maintenanceID"/>
        <label>Rental ID</label>
@@ -26,16 +26,30 @@
 </div>
 </template>
 <script>
+import maintenanceService from '../services/maintenanceService';
 export default {
   data() {
     return {
+      form:{
       name: " ",
-      employeeID: " ",
+      userID: " ",
       maintenanceID: " ",
       rentalID: " ",
       address: " ",
+      }
     };
   },
+methods:{
+  submitForm(){
+    maintenanceService.assignMaintenance(this.form).then(resp => {
+      if(resp.status == 201)
+      {
+        alert("Successfully assigned the maintenance request");
+        this.$router.push('/landlord');
+      }
+    })
+  }
+}
 };
 </script>
 <style>

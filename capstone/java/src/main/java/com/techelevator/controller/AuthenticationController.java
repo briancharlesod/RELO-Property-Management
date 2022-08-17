@@ -219,7 +219,9 @@ public class AuthenticationController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "user/set/maintenance", method = RequestMethod.POST)
     public void setUserToMaintenance(@RequestBody @Valid UserMaintenance uR, Principal principal) throws UserToMaintenanceException {
+        System.out.println("456");
         boolean setUser = userDao.setUserToMaintenance(uR.getUserID(), uR.getMaintenanceID(), principal.getName());
+        System.out.println("123");
         if (!setUser) {
             throw new UserToMaintenanceException();
         }
