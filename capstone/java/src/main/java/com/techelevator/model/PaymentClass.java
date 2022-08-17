@@ -9,6 +9,26 @@ public class PaymentClass {
     String rentalID;
     String address;
     BigDecimal rentAmount;
+    String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    @Override
+    public String toString() {
+        return "PaymentClass{" +
+                "rent='" + rent + '\'' +
+                ", rentalID='" + rentalID + '\'' +
+                ", address='" + address + '\'' +
+                ", rentAmount=" + rentAmount +
+                ", date='" + date + '\'' +
+                '}';
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public BigDecimal getRentAmount() {
         return rentAmount;

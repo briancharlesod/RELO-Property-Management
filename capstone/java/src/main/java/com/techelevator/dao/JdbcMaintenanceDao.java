@@ -24,14 +24,14 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
 
     @Override
     public int addMaintenanceRequest(Maintenance request, String username) {
-        boolean landlordCheck = getUserIDFromUsername(username) == getLandlordFromRentalID(request.getRentalID());
-        boolean renterCheck = getUserIDFromUsername(username) == getUserIDFromRentalID(request.getRentalID());
+        boolean landlordCheck = getUserIDFromUsername(username) == request.getRentalID();
+        boolean renterCheck = getUserIDFromUsername(username) == request.getRentalID();
         if(renterCheck || landlordCheck) {
             String sql = "Insert Into maintenance (maintenance_request, rental_id, completed) " +
                     "Values(?, ?, ?) Returning maintenance_id;";
             Integer newRequest = -1;
             try {
-                newRequest = jdbcTemplate.queryForObject(sql, Integer.class, request.getMaintenanceRequest(), request.getRentalID(), request.isCompleted());
+                newRequest = jdbcTemplate.queryForObject(sql, Integer.class, request.getMaintenanceRequest(), checkProperty(username), request.isCompleted());
             } catch (Exception e) {
                 System.out.println("Could not create report");
             }
@@ -62,6 +62,8 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
         }
         return maintenanceList;
     }
+
+
 
     private int getUserIDFromRentalID(int rentalID)
     {
@@ -268,6 +270,26 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
         maintenance.setMaintenanceRequest(result.getString("maintenance_request"));
         maintenance.setRentalID(result.getInt("rental_id"));
         return maintenance;
+    }
+
+    private int checkProperty(String username)
+    {
+        int rental_id = -1;
+        String sql = "Select rental_id " +
+                "From user_rental " +
+                "Join users Using (user_id) " +
+                "Where username = ?;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, username);
+            if(result.next())
+            {
+                rental_id = result.getInt("rental_id");
+            }
+        }catch (Exception e)
+        {
+            System.out.println("Could not get the required data");
+        }
+        return rental_id;
     }
 
     private int getUserIDFromUsername(String username){
