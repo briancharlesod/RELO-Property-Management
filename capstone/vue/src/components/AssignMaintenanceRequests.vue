@@ -12,15 +12,15 @@
        <input type="rental id" required v-model="rentalID"/>
        <label>Address</label>
        <input type="address" required v-model="address"/>
-       <div class = "select">
+       <div class = "select is-primary">
            <select>
                <option>Priority</option>
                <option>High</option>
                <option>Moderate</option>
                <option>Low</option>
            </select>
-               <button class ="button">Submit</button>
-               <button class ="button">Cancel</button>
+               <button class ="button is-primary">Submit</button>
+               
        </div>
    </form>
 </div>

@@ -127,7 +127,7 @@
 </div>
 <div v-if="assignRequestsVar">
   <assign-maintenance-requests />
-    <button class="back" v-on:click="showRents = false; showAddForm = false; showLandlordApts = true; showAssignRenter = false; assignRequestsVar = false ">Back</button>
+    <button class="button is-primary" v-on:click="showRents = false; showAddForm = false; showLandlordApts = true; showAssignRenter = false; assignRequestsVar = false ">Back</button>
 
 </div>
 </body>
