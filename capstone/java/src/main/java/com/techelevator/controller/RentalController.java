@@ -147,6 +147,8 @@ public class RentalController {
         return rentalDao.OnMarket(id);
 
     }
+
+    @CrossOrigin
     @PreAuthorize("hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "/rental/offmarket/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
