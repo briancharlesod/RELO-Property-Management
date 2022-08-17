@@ -10,7 +10,7 @@
       <p>{{house.name}}</p>
       <img v-bind:src="house.imgURL" alt="Placeholder image" class="is-inline-block" />
       <p class="content">{{house.address}}</p>
-      <p class="content">${{house.price * 10}}.00</p>
+      <p class="content">${{house.price }}.00</p>
     </div>
     </div>
     </div>
