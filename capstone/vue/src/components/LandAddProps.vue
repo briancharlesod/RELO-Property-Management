@@ -230,7 +230,7 @@ methods: {
     },
 
     deleteProperty() {
-      confirm("Are you Sure you want to delete this property")
+      if(confirm("Are you Sure you want to delete this property")) { 
       ApartmentService.deleteRental(this.newProperty.rentalID).then(response => {
         if (response.status == 200) {
           this.getApartments();
@@ -238,6 +238,7 @@ methods: {
           this.showAddForm = false;
         }
       })
+      }
     },
    
     editForm(rental) {
