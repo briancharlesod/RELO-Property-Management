@@ -194,10 +194,10 @@ public class JdbcUserDao implements UserDao {
     @Override
     public boolean setUserToProperty(String userID, int rentalID, String username) {
         int usersid = getUserIDFromUsername(userID);
-        if(!getRole(usersid).contains("RENTER")){
-            System.out.println("Enter a renter");
-            return false;
-        }
+//        if(!getRole(usersid).contains("RENTER")){
+//            System.out.println("Enter a renter");
+//            return false;
+//        }
         if(getUserIDFromUsername(username) != getLandlordFromRentalID(rentalID))
         {
             System.out.println("Could not assign a renter if you do not own the property");

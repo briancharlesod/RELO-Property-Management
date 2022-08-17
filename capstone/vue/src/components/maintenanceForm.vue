@@ -26,8 +26,11 @@
       ></textarea>
       <input date="Date" type="date" />
       <p></p>
-      <button class="button" @click="submitRequest()">Submit</button>
-      <button v-on:click.prevent="resetForm" type="cancel">Cancel</button>
+      <button
+        class="button is-small"
+        type="submit"
+        style="color: rgb(105, 15, 105); margin-top: 5px"  @click="submitRequest()">Submit
+      </button>
     </form>
   </body>
 </template>

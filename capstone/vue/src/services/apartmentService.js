@@ -41,5 +41,17 @@ viewRent(id)
 payRent(form)
 {
     return axios.put(`http://localhost:9000/rental/pay`, form)
+},
+getApartmentsOwned(userId) {
+    return axios.get(`http://localhost:9000/renter/owned/${userId}`)
+},
+
+putOnMarket(rental_id) {
+    return axios.put(`http://localhost:9000/rental/onmarket/${rental_id}`)
+},
+
+putOffMarket(rental_id) {
+    return axios.put(`http://localhost:9000/rental/offmarket/${rental_id}`)
 }
+
 }

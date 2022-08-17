@@ -33,82 +33,86 @@
 </div>
 <div>
 <input date = "Date" type = "date" v-model="rentalForm.date"/>
-    </div>
     <div class="field is-grouped">
- <button class="button" @click="payRent()">Submit</button>
- <button class="button" @click="clearForm()">Cancel</button>
+        <button
+          class="button is-small"
+          type="submit"
+          style="color: rgb(105, 15, 105); margin-top: 5px"
+          @click="payRent()"
+        >
+          Submit
+        </button>
+      </div>
 </div>
   </form>
 </template>
 <script>
-import ApartmentService from '../services/apartmentService'
+import ApartmentService from "../services/apartmentService";
 export default {
   data() {
     return {
-      rentalForm:{
-      email: "",
-      name: "",
-      address: "",
-      rent: "",
-      date: "",
-      type: "",
-      rentalID: this.$store.state.user.id
+      rentalForm: {
+        email: "",
+        name: "",
+        address: "",
+        rent: "",
+        date: "",
+        type: "",
+        rentalID: this.$store.state.user.id,
       },
       rentAmount: "",
-      due: ""
+      due: "",
     };
   },
   methods: {
-    payRent()
-    {
-      ApartmentService.payRent(this.rentalForm).then(resp => {
-        if(resp == 200)
-        {
+    payRent() {
+      ApartmentService.payRent(this.rentalForm).then((resp) => {
+        if (resp == 200) {
           this.clearForm();
-          alert("Payment Submitted")
+          alert("Payment Submitted");
           this.$router.push("/renter");
         }
-      })
+      });
     },
-    clearForm()
-    {
-        this.rentalForm.email = "";
-        this.rentalForm.name = "";
-        this.rentalForm.address = "";
-        this.rentalForm.rent = "";
-        this.rentalForm.date = "";
-        this.rentalForm.type = "";
-        this.rentAmount = "";
-        this.due = "";
-    }
+    clearForm() {
+      this.rentalForm.email = "";
+      this.rentalForm.name = "";
+      this.rentalForm.address = "";
+      this.rentalForm.rent = "";
+      this.rentalForm.date = "";
+      this.rentalForm.type = "";
+      this.rentAmount = "";
+      this.due = "";
+    },
   },
-  created(){
+  created() {
     //view rent
-    ApartmentService.viewRent(this.$store.state.user.id).then(resp => {
+    ApartmentService.viewRent(this.$store.state.user.id).then((resp) => {
       this.rentAmount = resp.data;
     });
-    ApartmentService.getDueDate().then(response => {
+    ApartmentService.getDueDate().then((response) => {
       this.due = response.data;
-    })
-  }
+    });
+  },
 };
 </script>
 <style>
-
-h1{
-  text-align: center;
-}
-h2{
-  text-align: center;
-}
-form#rentForm {
+.rent {
   max-width: 420px;
   margin: 30px auto;
-  background: hsl(48, 26%, 48%);
+  background: #00d1b2;
   text-align: left;
   padding: 40px;
   border-radius: 10px;
 }
+
+h1 {
+  text-align: center;
+}
+h2 {
+  text-align: center;
+}
+
 label {
   color: whitesmoke;
   display: inline-block;

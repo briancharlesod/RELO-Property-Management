@@ -28,4 +28,10 @@ public interface RentalDao {
 
     List<PaymentClass> getAllRents(int userID, String username);
 
+    List<Rental> viewOwnedPropertiesRenter(int userID, String username);
+
+    boolean OffMarket(int rental_id);
+
+    boolean OnMarket(int rental_id);
+
 }
