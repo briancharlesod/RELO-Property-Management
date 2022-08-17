@@ -34,7 +34,6 @@ public class MaintenanceController {
     public List<Maintenance> viewMaintenanceRequests(@PathVariable int id, Principal principal) throws UnauthorizedAccessException {
         System.out.println("Round1");
         List<Maintenance> maintenanceList = dao.viewMaintenanceRequests(id, principal.getName());
-        System.out.println("good so far");
         if(maintenanceList == null)
         {
             throw new UnauthorizedAccessException();

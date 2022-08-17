@@ -52,6 +52,7 @@ public class RentalController {
     @RequestMapping(path = "rental/pay", method =RequestMethod.PUT)
     public void payRent(@RequestBody PaymentClass rent, Principal principal) throws PaymentException {
         boolean check = rentalDao.payRent(rent, principal.getName());
+        System.out.println(rent.toString());
         if(!check)
         {
             throw new PaymentException();

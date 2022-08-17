@@ -16,9 +16,9 @@
 <!--Detailed View -->
 <div v-show="showDetailed">
  <div class="buttons">
-    <button class="button is-primary">Maintenance Request </button>
-    <button class="button is-primary">Make a Payment</button>
-    <button class="button is-primary" @click="showDetailed = false; showAllOwned = true;">Back</button>
+    <button class="button is-primary" @click="submitMaintenanceVar = true; viewRentsVar = false; showDetailed = false; showAllOwned = false;">Maintenance Request </button>
+    <button class="button is-primary" @click="submitMaintenanceVar = false; viewRentsVar = true; showDetailed = false; showAllOwned = false;">Make a Payment</button>
+    <button class="button is-primary" @click="submitMaintenanceVar = false; viewRentsVar = false; showDetailed = false; showAllOwned = true;">Back</button>
     </div>
   <div class="tile is-ancestor is-vertical m-6">
     <div class="tile is-ancestor is-horizontal">
@@ -51,13 +51,39 @@
   </div>
 </div>
 
+<div v-if="viewRentsVar">
+  <rent-form />
+          <button
+          class="button is-small"
+          style="color: rgb(105, 15, 105); margin-top: 5px"
+          type="reset"
+          @click="submitMaintenanceVar = false; viewRentsVar = false; showDetailed = false; showAllOwned = true;"
+        >
+          Cancel
+        </button>
+</div>
+<div v-if="submitMaintenanceVar">
+  <maintenance-form />
+          <button
+          class="button is-small"
+          style="color: rgb(105, 15, 105); margin-top: 5px"
+          type="reset"
+          @click="submitMaintenanceVar = false; viewRentsVar = false; showDetailed = false; showAllOwned = true;"
+        >
+          Cancel
+        </button>
+</div>
+
   </div>
 </template>
 
 <script>
 import ApartmentService from '../services/apartmentService'
+import MaintenanceForm from './maintenanceForm.vue';
+import rentForm from './rentForm.vue';
 
 export default {
+  components: { rentForm, MaintenanceForm },
 data() {
     return {
         ownedApartments: [],
@@ -74,7 +100,9 @@ data() {
                 imgURL: '',
                 landlord_id: ''
     },
-    showDetailed: false
+    showDetailed: false,
+    viewRentsVar: false,
+    submitMaintenanceVar: false
 }
 },
 

@@ -22,28 +22,47 @@
         class="textarea"
         placeholder="What needs fixed?"
         rows="10"
+        v-model="newMaintenanceRequest.maintenanceRequest"
       ></textarea>
       <input date="Date" type="date" />
       <p></p>
       <button
         class="button is-small"
         type="submit"
-        style="color: rgb(105, 15, 105); margin-top: 5px">Submit
+        style="color: rgb(105, 15, 105); margin-top: 5px"  @click="submitRequest()">Submit
       </button>
-      <button class="button is-small" v-on:click.prevent="resetForm" style="color: rgb(105, 15, 105); margin-top: 5px" type="cancel">Cancel</button>
     </form>
   </body>
 </template>
 <script>
+import maintenanceService from '../services/maintenanceService';
 export default {
+
   data() {
     return {
       newMaintenanceRequest: {
-        rentalID: 0,
-        maintenanceRequest: "",
-      },
-    };
-  },
+      rentalID: this.$store.state.user.id,
+      maintenanceRequest: "",
+      completed: false
+    },
+    name:"",
+    email:"",
+    address:""
+  };
+},
+methods:{
+  submitRequest()
+  {
+      maintenanceService.request(this.newMaintenanceRequest).then(resp => {
+        if(resp == 201)
+        {
+          this.clearForm();
+          alert("Request Submitted")
+          this.$router.push("/renter");
+        }
+      })
+  }
+}
 };
 </script>
 <style>
