@@ -79,6 +79,6 @@ INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (12,6, (Select Cu
 
 
 
-INSERT INTO maintenance(maintenance_request, completed) VALUES ('shitters full', false);
+INSERT INTO maintenance(maintenance_request, completed, rental_id) VALUES ('shitters full', false, 14);
 COMMIT TRANSACTION;
 

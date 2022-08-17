@@ -25,8 +25,12 @@
       ></textarea>
       <input date="Date" type="date" />
       <p></p>
-      <button class="button">Submit</button>
-      <button v-on:click.prevent="resetForm" type="cancel">Cancel</button>
+      <button
+        class="button is-small"
+        type="submit"
+        style="color: rgb(105, 15, 105); margin-top: 5px">Submit
+      </button>
+      <button class="button is-small" v-on:click.prevent="resetForm" style="color: rgb(105, 15, 105); margin-top: 5px" type="cancel">Cancel</button>
     </form>
   </body>
 </template>
@@ -35,11 +39,11 @@ export default {
   data() {
     return {
       newMaintenanceRequest: {
-      rentalID: 0,
-      maintenanceRequest: "",
-    }
-  };
-}
+        rentalID: 0,
+        maintenanceRequest: "",
+      },
+    };
+  },
 };
 </script>
 <style>
