@@ -5,19 +5,17 @@
   <div v-show="showAddForm">
     <!--Nav Buttons  -->
     <div id="editButtons">
-  <button class="button is-primary" v-on:click="getRenters(); showAddForm = false; showAssignRenter = true;">Assign Renters</button>
-<button class="button is-primary" v-on:click="getMaintenanceRequests(); showAddForm = false; showMaintenance = true">View Maintenance Requests</button>
-<button class="button is-primary">View Rents</button>
+  <button class="button is-primary" v-on:click="getRenters(); showRents= false; showAddForm = false; showAssignRenter = true;">Assign Renters</button>
+<button class="button is-primary" v-on:click="getMaintenanceRequests(); showRents = false; showAddForm = false; showMaintenance = true">View Maintenance Requests</button>
+<button class="button is-primary" v-on:click=" showRents= true; showAddForm = false; showAssignRenter = false;">View Rents</button>
 <button class="button is-primary">Delete Property</button>
-<button class="button is-primary" v-on:click="clearForm(); showAddForm = false; showLandlordApts = true; showAssignRenter = false ">Back</button>
+<button class="button is-primary" v-on:click="clearForm(); showRents = false; showAddForm = false; showLandlordApts = true; showAssignRenter = false ">Back</button>
 </div>
 
 <!--Update or Add Form -->
   <form id="manageProps" v-on:submit.prevent="submitRental(); landlordHome">
-
     <div id = "container">
     <div class="buttons">
-  
     </div>
   <div class="tile is-ancestor is-vertical m-6">
     <div class="tile is-ancestor is-horizontal">
@@ -88,8 +86,10 @@
 <button class="button is-primary" v-on:click="showAssignRenter = false; showAddForm = true; renters = []; addRenter = false">Cancel</button>
 </div>
 
-
-
+<div v-show="showRents">
+  <view-rents />
+    <button class="back" v-on:click="showRents = false; showMaintenance = false; showAddForm = true">Back</button>
+</div>
 
 <!--Maintenance Form -->
 <div v-show="showMaintenance">
@@ -103,7 +103,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="doc in requests" :key="doc.id">
+      <tr v-for="doc in response.data" :key="doc.id">
         <!--<td class="docs-icon">
           <img src="../assets/icons8-google-docs-48.png" />
         </td>-->
@@ -115,7 +115,6 @@
         <td>
           <button v-on:click="viewRequest(doc.id)">View</button>&nbsp;
           <button v-on:click="deleteDocument(doc.id)">Delete</button>
-          
         </td>
       </tr>
     </tbody>
@@ -130,10 +129,14 @@
 <script>
 import ApartmentService from '../services/apartmentService'
 import maintenanceService from "../services/maintenanceService";
+import ViewRents from './ViewRents.vue';
 
 
 
-export default {
+export default{
+  components: { 
+    ViewRents 
+    }, 
 data() {
     return {
         test: true,
@@ -153,6 +156,7 @@ data() {
         showAddForm: false,
         showLandlordApts: true,
         showAssignRenter: false,
+        showRents: false,
         apartments: [],
         renters: [],
         renterToAdd: {

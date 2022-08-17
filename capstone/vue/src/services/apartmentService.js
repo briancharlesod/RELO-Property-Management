@@ -31,5 +31,15 @@ addRenterToRental(userRental) {
 
 getRenters(rental_id) {
     return axios.get(`http://localhost:9000/rental/renters/${rental_id}`)
+},
+
+viewRent(id)
+{
+    return axios.get(`http://localhost:9000/rent/${id}`)
+},
+
+payRent(form)
+{
+    return axios.put(`http://localhost:9000/rental/pay`, form)
 }
 }

@@ -196,14 +196,15 @@ public class JdbcRentalDao implements RentalDao{
     @Override
     public boolean payRent(PaymentClass rent, String username)
     {
+        System.out.println(Integer.parseInt(rent.getRentalID()));
         System.out.println(checkProperty(username));
-        System.out.println(rent.getRentalID());
-        if (checkProperty(username) == Integer.parseInt(rent.getRentalID())) {
+        if (Integer.parseInt(rent.getRentalID()) == getUserIDFromUsername(username)) {
             String sql = "Update user_rental " +
-                    "Set last_paid = (Select Current_date- INTERVAL '1 DAY') " +
+                    "Set last_paid = (Select Current_date) " +
                     "Where rental_id = ?;";
             try {
-                jdbcTemplate.update(sql, Integer.parseInt(rent.getRentalID()));
+                jdbcTemplate.update(sql, checkProperty(username));
+
                 return true;
             } catch (Exception e) {
                 return false;
@@ -238,7 +239,7 @@ public class JdbcRentalDao implements RentalDao{
     @Override
     public BigDecimal getRent(int rentalID, String username)
     {
-        if(checkProperty(username) != rentalID)
+        if(getUserIDFromUsername(username) != rentalID)
         {
             System.out.println("You do not live here");
             return null;
@@ -248,10 +249,11 @@ public class JdbcRentalDao implements RentalDao{
                 "From rental_property " +
                 "Where rental_id = ?;";
         try {
-            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, rentalID);
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, checkProperty(username));
             if (result.next()) {
                 rent = result.getBigDecimal("rental_amount");
             }
+            System.out.println(rent);
         }catch (Exception e)
         {
             e.printStackTrace();
@@ -350,4 +352,6 @@ public class JdbcRentalDao implements RentalDao{
         }
         return userID;
     }
+
+
 }
