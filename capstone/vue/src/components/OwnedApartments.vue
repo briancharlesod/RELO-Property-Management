@@ -3,7 +3,7 @@
       <!--List of owned Apartments -->
       
 <div v-show="showAllOwned" id="ownedPond" >
-<div id="renterBox" class="box" v-if="ownedApartments.length === 0">No Apartments Owned</div>
+<div id="renterBox" class="box" v-if="ownedApartments.length === 0">No Apartments Rented</div>
 <div v-else id="houseCard" v-for="apartment in ownedApartments" v-bind:key="apartment.id" class="card" v-on:click="detailedView(apartment); showAllOwned = false; showDetailed = true">
       <p>{{apartment.address}}</p>
       <img id="cardImg" v-bind:src="apartment.imgURL" alt="Placeholder image" class="is-inline-block" />

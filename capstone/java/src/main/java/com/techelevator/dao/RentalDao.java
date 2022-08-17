@@ -34,4 +34,6 @@ public interface RentalDao {
 
     boolean OnMarket(int rental_id);
 
+    boolean deleteProperty(int rental_id);
+
 }

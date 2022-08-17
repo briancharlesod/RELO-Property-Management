@@ -4,11 +4,11 @@
 <h2 class="subtitle">Rental Payment Form</h2>
 <h3 class = "subtitle has-text-white">Rent amount: ${{rentAmount}}</h3>
     <label>Email:</label>
-    <input type="email" required v-model="rentalForm.email" />
+    <input class="input" type="email" required v-model="rentalForm.email" />
     <label>Name:</label>
-    <input type="name" required v-model="rentalForm.name" />
+    <input class="input" type="name" required v-model="rentalForm.name" />
     <label>Address:</label>
-    <input type="address" required v-model="rentalForm.address" />
+    <input class="input" type="address" required v-model="rentalForm.address" />
     <p>Email: {{ rentalForm.email }}</p>
     <p>Name: {{ rentalForm.name }}</p>
     <p>Address: {{ rentalForm.address }}</p>
