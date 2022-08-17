@@ -4,11 +4,7 @@
  
   <div v-show="showAddForm">
     <!--Nav Buttons  -->
-    <div id="editButtons" >
-  
-
-
-    <div id="editButtons">
+        <div id="editButtons">
   <button class="button is-primary" v-on:click="getRenters(); showRents= false; showAddForm = false; showAssignRenter = true; assignRequestsVar = false">Assign Renters</button>
 <button class="button is-primary" v-on:click="getMaintenanceRequests(); showRents = false; showAddForm = false; showMaintenance = true; assignRequestsVar = false">View Maintenance Requests</button>
 <button class="button is-primary" v-on:click="clearForm(); showRents = false; showAddForm = false; showLandlordApts = false; showAssignRenter = false ; assignRequestsVar = true">Assign Maintenance Requests</button>
@@ -81,7 +77,7 @@
 
 
 <div id="renterBox" v-for="user in users" v-bind:key="user.user_id" class="box has-text-weight-bold">
-  {{ user.username}}          {{user.last_paid}}
+  {{ user.username}}      
 </div>&nbsp;
 <button v-show="!addRenter" class="button is-primary" v-on:click="addRenter = true;">Add new Renter +</button>
 
@@ -90,7 +86,7 @@
 <button class="button is-primary" type="submit">Submit</button>
 
 </form>
-<button class="button is-primary" v-on:click="showAssignRenter = false; showAddForm = true; renters = []; addRenter = false">Cancel</button>
+<button class="button is-primary" v-on:click="showAssignRenter = false; showAddForm = true; renters = []; addRenter = false">Back</button>
 </div>
 <!--Show Rents-->
 <div v-show="showRents">
