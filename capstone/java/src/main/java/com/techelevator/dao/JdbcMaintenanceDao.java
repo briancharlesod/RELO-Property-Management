@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import com.sun.tools.javac.Main;
 import com.techelevator.model.Maintenance;
 import com.techelevator.model.Rental;
 import com.techelevator.model.User;
@@ -118,6 +119,24 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
         return requestList;
     }
 
+    public List<Maintenance> getAllRequests()
+    {
+        List<Maintenance> newList = new ArrayList<>();
+        String sql = "Select * " +
+                "From maintenance;";
+        try{
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql);
+            while(result.next())
+            {
+                newList.add(mapRowToMaintenance(result));
+            }
+        }catch (Exception e)
+        {
+            System.out.println("nopes");
+        }
+        return newList;
+    }
+
     private String getStatement(List<Integer> propertiesList)
     {
         String inStatement = "(";
@@ -202,11 +221,6 @@ public class JdbcMaintenanceDao implements MaintenanceDao{
 
     @Override
     public boolean completeMaintenanceRequest(int maintenanceID, String username) {
-        if(getLandlordFromRentalID(getRentalIDFromMaintenanceID(maintenanceID)) != getUserIDFromUsername(username))
-        {
-            System.out.println("Cannot complete maintenance request on a property you do not own");
-            return false;
-        }
         String sql = "Update maintenance " +
                 "Set completed = ?, " +
                 "completion_date = ? " +

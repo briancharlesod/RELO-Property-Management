@@ -42,6 +42,11 @@ public class MaintenanceController {
         return maintenanceList;
     }
 
+    @RequestMapping(path = "/maintenance/requests", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Maintenance> getAllMaintenanceRequest() throws UnauthorizedAccessException {
+    return dao.getAllRequests();
+    }
     @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_LANDLORD')")
     @RequestMapping(path = "/maintenance/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

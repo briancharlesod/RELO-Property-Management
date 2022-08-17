@@ -1,20 +1,14 @@
 <template>
-  <div class="tabs">
-  <ul>
-    <li class="{'is-active' :submitMaintenanceRequest}" ><a @click="addProps">View Maintenance Requests</a></li>
-<div v-if="submitMaintenanceRequest">
-    <maintenance-list />
+<div>
+<employee-comp />
 </div>
-  </ul>
-</div>
-
 </template>
 
 <script>
-import MaintenanceList from "../components/MaintenanceList.vue";
+import EmployeeComp from '../components/employeeComp.vue';
 export default {
   components: {
-    MaintenanceList,
+    EmployeeComp,
   },
 };
 </script>
