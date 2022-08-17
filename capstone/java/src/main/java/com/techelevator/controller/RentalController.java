@@ -159,6 +159,14 @@ public class RentalController {
     }
 
 
+    @CrossOrigin
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    @RequestMapping(path = "/rental/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public boolean deleteRental(@PathVariable int id, Principal principal) {
+        return rentalDao.deleteProperty(id);
+
+    }
 
 }
 

@@ -1,7 +1,7 @@
 <template>
 <div id = "container">
     <div class="buttons">
-  <button class="button is-info m-5" @click="goBack">Back to Results</button>
+  <button class="button is-primary m-5" @click="goBack">Back to Results</button>
     </div>
   <div class="tile is-ancestor is-vertical m-6">
     <div class="tile is-ancestor is-horizontal">
