@@ -127,7 +127,33 @@ public class RentalController {
         return rentalList;
     }
 
+    @PreAuthorize("hasRole('ROLE_RENTER') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_LANDLORD')")
+    @RequestMapping(path = "renter/owned/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Rental> byRenter(@PathVariable int id, Principal principal)throws UnauthorizedAccessException{
+        List<Rental> rentalList = rentalDao.viewOwnedPropertiesRenter(id, principal.getName());
+        if(rentalList == null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+        return rentalList;
+    }
 
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    @CrossOrigin
+    @RequestMapping(path = "/rental/onmarket/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public boolean updateRentalonMarket(@PathVariable int id, Principal principal) {
+        return rentalDao.OnMarket(id);
+
+    }
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    @RequestMapping(path = "/rental/offmarket/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public boolean updateRentaloffMarket(@PathVariable int id, Principal principal) {
+        return rentalDao.OffMarket(id);
+
+    }
 
 
 
