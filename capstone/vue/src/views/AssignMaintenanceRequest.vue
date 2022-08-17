@@ -26,34 +26,14 @@
 </div>
 </template>
 <script>
-import maintenanceService from '../services/maintenanceService';
-
 export default {
   data() {
     return {
-      maintenanceService: {
-         rentalID: this.$store.state.user.id,
-      maintenanceRequest: "",
-      completed: false
-      },
       name: " ",
-      userID: " ",
+      employeeID: " ",
       maintenanceID: " ",
       rentalID: " ",
       address: " ",
-      methods:{
-  submitRequest()
-  {
-      maintenanceService.request(this.newMaintenanceAssignment).then(resp => {
-        if(resp == 201)
-        {
-          this.clearForm();
-          alert("Assignment Submitted")
-          this.$router.push("/employee");
-        }
-      })
-  }
-}
     };
   },
 };
