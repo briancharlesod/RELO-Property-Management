@@ -78,6 +78,7 @@
   <ul v-if="Object.keys(this.$store.state.user).length != 0">
     <li v-bind:class="{ 'is-active' :addPropsVar}"><a @click="$router.push('/landlord')">Manage Properties</a></li>
     <li v-bind:class="{ 'is-active' :addPropsVar}"><a @click="$router.push('/renter')">Your Apartments</a></li>
+        <li v-if="this.$store.state.user.authorities[0].name == 'ROLE_EMPLOYEE'"><a @click="$router.push('/employee')">Employee View</a></li>
     <!--
     <li v-bind:class="{ 'is-active' :updatePropsVar}"><a @click="updateProps">Update Properties</a></li>
     <li v-bind:class="{ 'is-active' : viewRentsVar}"><a @click="viewRents">View Rents</a></li>
