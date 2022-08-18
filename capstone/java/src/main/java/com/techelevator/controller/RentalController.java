@@ -168,5 +168,13 @@ public class RentalController {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    @RequestMapping(path = "/rental/del/{user}/{rental}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public boolean deleteRenter(@PathVariable int user, @PathVariable int rental, Principal principal) {
+        return rentalDao.deleteRenterFromProperty(user, rental);
+
+    }
+
 }
 

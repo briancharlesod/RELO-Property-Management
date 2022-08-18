@@ -77,7 +77,7 @@
 
 
 <div id="renterBox" v-for="user in users" v-bind:key="user.user_id" class="box has-text-weight-bold">
-  {{ user.username}}      
+  {{ user.username}}   <button class="button is-danger is-small" v-on:click="deleteRenterFromProp(user.user_id)">Remove</button>  
 </div>&nbsp;
 <button v-show="!addRenter" class="button is-primary" v-on:click="addRenter = true;">Add new Renter +</button>
 
@@ -209,6 +209,22 @@ methods: {
     {
         this.$router.push("/");
     },
+
+    deleteRenterFromProp(user_id) {
+      if (confirm("Are you sure you want to remove this user from the property")) {
+      try{
+        ApartmentService.deleteRenterFromProperty(user_id, this.newProperty.rentalID).then(response => {
+          if (response.status == 200) {
+            
+            this.getRenters()
+          }
+        })
+      } catch (e) {
+        console.log(e)
+      }
+      }
+    },
+
 
     putOnMarket() {
       ApartmentService.putOnMarket(this.newProperty.rentalID).then(response => {
