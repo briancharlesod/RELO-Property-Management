@@ -2,7 +2,7 @@ BEGIN TRANSACTION;
 
 
 INSERT INTO users (username,password_hash,role) VALUES ('Brian','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_LANDLORD');
-INSERT INTO users (username,password_hash,role) VALUES ('Dan','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_LANDLORD');
+INSERT INTO users (username,password_hash,role) VALUES ('Danlord','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_LANDLORD');
 INSERT INTO users (username,password_hash,role) VALUES ('Eric','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_LANDLORD');
 INSERT INTO users (username,password_hash,role) VALUES ('Ethan','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_LANDLORD');
 INSERT INTO users (username,password_hash,role) VALUES ('renter1','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_RENTER');
@@ -75,8 +75,8 @@ INSERT INTO maintenance(maintenance_request, rental_id, completed) VALUES ('shit
 
 INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (5,1,(Select Current_Date - 5));
 INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (6,2,(Select Current_Date - 6));
-INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (7,14,(Select Current_Date - 7));
-INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (8,16,(Select Current_Date - 8));
+INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (7,14,(Select Current_Date - 25));
+INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (8,16,(Select Current_Date - 35));
 INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (9,17,(Select Current_Date - 9));
 INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (10,18,(Select Current_Date - 15));
 INSERT Into user_rental (user_id, rental_id, last_paid) VALUES (11,5,(Select Current_Date - 25));

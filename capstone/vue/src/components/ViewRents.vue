@@ -66,9 +66,11 @@ export default {
       {
           return Math.floor(Math.abs(newDate - new Date()) / (1000 * 60 * 60 * 24));
       }
-      let daysInPastMonth = newDate;
-      daysInPastMonth.setMonth(newDate.getMonth() - 1);
-      return  Math.floor(Math.abs(newDate - new Date()) / (1000 * 60 * 60 * 24)) - daysInPastMonth.getDate();
+      //let daysInPastMonth = newDate;
+      //daysInPastMonth.setMonth(newDate.getMonth() - 1);
+      //return  Math.floor(Math.abs(newDate - new Date()) / (1000 * 60 * 60 * 24)) - daysInPastMonth.getDate();
+      let daysOverdue = new Date();
+      return -daysOverdue.getDate();
     },
   },
   created() {
