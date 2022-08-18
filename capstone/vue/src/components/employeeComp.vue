@@ -59,7 +59,7 @@ export default {
     {
       if(request == false)
       {
-        return "Complete";
+        return "Fixed";
       }
       return "Incomplete";
     }
