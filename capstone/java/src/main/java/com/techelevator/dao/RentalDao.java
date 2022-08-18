@@ -36,4 +36,6 @@ public interface RentalDao {
 
     boolean deleteProperty(int rental_id);
 
+    boolean deleteRenterFromProperty(int User_id, int Rental_id);
+
 }

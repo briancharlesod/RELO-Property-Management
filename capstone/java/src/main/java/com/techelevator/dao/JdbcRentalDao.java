@@ -374,6 +374,17 @@ public class JdbcRentalDao implements RentalDao{
         }
     }
 
+    public boolean deleteRenterFromProperty(int User_id, int Rental_id) {
+        String sql = "DELETE FROM user_rental WHERE user_id = ? and rental_id = ?";
+        try {
+            jdbcTemplate.update(sql, User_id, Rental_id);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
     @Override
     public boolean OffMarket(int rental_id) {
         String sql = "UPDATE rental_property SET is_rented = true WHERE rental_id = ? ";

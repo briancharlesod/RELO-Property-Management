@@ -56,6 +56,11 @@ putOffMarket(rental_id) {
 
 deleteRental(rental_id) {
     return axios.delete(`http://localhost:9000/rental/${rental_id}`)
+},
+
+deleteRenterFromProperty(user_id, rental_id) {
+    return axios.delete(`http://localhost:9000/rental/del/${user_id}/${rental_id}`)
 }
+
 
 }
